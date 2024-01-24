@@ -1,9 +1,11 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
   padding: 1rem;
   font-weight: normal;
+}
+body{
+  background-color: #F7F9F9;
 }
 
 a,
