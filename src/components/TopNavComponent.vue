@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import router from '@/router';
 const buttons = ref([
     {
         rounded: 'xl',
@@ -10,6 +11,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '沐斯拍题',
         isActive: true,
+        to: '/',
     },
     {
         rounded: 'xl',
@@ -20,6 +22,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '错题集',
         isActive: false,
+        to: '/QCollection',
     },
     {
         rounded: 'xl',
@@ -30,6 +33,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '学生档案',
         isActive: false,
+        to: '/userinfo'
     },
 ]);
 
@@ -37,6 +41,7 @@ const changeColor = (index) => {
     buttons.value.forEach((button, i) => {
         button.isActive = i === index;
     });
+    router.push(buttons.value[index].to);
 };
 
 </script>

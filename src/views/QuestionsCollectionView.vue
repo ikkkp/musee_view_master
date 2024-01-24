@@ -1,9 +1,8 @@
 <template>
-    <div>沐斯拍题</div>
+    <div>
+        错题本
+    </div>
 </template>
 
 <script setup>
 </script>
-
-<style>
-</style>
