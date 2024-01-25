@@ -31,21 +31,44 @@
                 <v-col cols="auto">
                     <v-sheet elevation="0" class="py-4 px-1" style="padding: 10px 0 0 0 !important;">
                         <v-chip-group mandatory selected-class="text-primary">
-                            <v-chip v-for="tag in tags" :key="tag">
+                            <v-chip v-for="tag in prompts" :key="tag">
                                 {{ tag }}
                             </v-chip>
                         </v-chip-group>
                     </v-sheet>
-                    <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important;">
-                        <v-chip-group mandatory selected-class="text-primary">
-                            <v-chip v-for="tag in tags" :key="tag">
-                                {{ tag }}
-                            </v-chip>
-                        </v-chip-group>
+                    <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important; overflow-x: hidden;">
+                        <transition name="slide">
+                            <v-chip-group mandatory selected-class="text-primary">
+                                <v-chip v-for="tag in tapromptsgs" :key="tag">
+                                    {{ tag }}
+                                </v-chip>
+                            </v-chip-group>
+                        </transition>
                     </v-sheet>
                 </v-col>
             </v-row>
         </div>
+        <div>
+            <div style="    display: flex;
+    align-items: center;">
+                <p>Tags:</p>
+                <v-sheet elevation="0" class="py-4 px-1" style="padding: 10px !important; overflow-x: hidden;">
+                    <v-chip-group mandatory selected-class="text-primary">
+                        <v-chip v-for="tag in tags" :key="tag">
+                            {{ tag }}
+                        </v-chip>
+                    </v-chip-group>
+                </v-sheet>
+            </div>
+            <div>
+                <v-autocomplete :items="items" append-inner-icon="mdi-microphone" auto-select-first class="flex-full-width"
+                    density="comfortable" item-props menu-icon="" placeholder="Search Google or type a URL"
+                    prepend-inner-icon="mdi-magnify" rounded theme="light" variant="solo"
+                    style="width:  80%"></v-autocomplete>
+            </div>
+        </div>
+
+
     </v-card>
 </template>
 
@@ -53,7 +76,7 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiFormatListBulleted } from '@mdi/js';
 
-var tags = [
+var prompts = [
     'Work',
     'Home Improvement',
     'Vacation',
@@ -63,5 +86,23 @@ var tags = [
     'Art',
     'Tech',
     'Creative Writing',
-]
+];
+var tags = [
+    '#步骤1',
+    '#步骤2',
+    '#步骤3'
+];
 </script>
+
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+    transition: transform 0.5s ease;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translateX(100%);
+    /* 初始状态为从右边进入或离开 */
+}
+</style>
