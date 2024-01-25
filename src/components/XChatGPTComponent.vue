@@ -1,16 +1,11 @@
 <template>
-    <v-card style="height: 85vh;    padding: 20px 5px 20px 20px;
-    display: flex;
-    flex-direction: column;">
-        <v-btn density="compact" icon="mdi-format-list-bulleted">
-            <svg-icon type="mdi" :path="mdiFormatListBulleted"></svg-icon>
+    <v-card class="card-container">
+        <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="30" height="30">
+            <svg-icon type="mdi" :path="mdiFormatListBulleted" style="height: 30px;width: 30px;"></svg-icon>
         </v-btn>
-        <div style="    display: flex;
-    /* flex: 1; */
-    justify-content: flex-end;
-    height: 40%;
-    flex-direction: column;
-    align-items: center;">
+
+        <div class="svg-container">
+            <!-- SVG code here -->
             <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
                 <path d="M45.9502 69.85V33.85L73.9252 17.7C89.4252 8.75 117.175 30.825 105.525 51.025" stroke="#2081C3"
                     stroke-opacity="0.89" stroke-width="6" stroke-linejoin="round" />
@@ -26,68 +21,85 @@
                     stroke-opacity="0.89" stroke-width="6" stroke-linejoin="round" />
             </svg>
         </div>
-        <div>
+
+        <div class="prompts_container">
             <v-row justify="space-around">
                 <v-col cols="auto">
-                    <v-sheet elevation="0" class="py-4 px-1" style="padding: 10px 0 0 0 !important;">
-                        <v-chip-group mandatory selected-class="text-primary">
-                            <v-chip v-for="tag in prompts" :key="tag">
-                                {{ tag }}
-                            </v-chip>
+                    <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
+                        <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
+                            <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
+                                rounded style="margin: 0 10px;">
+                                <span class="chip-around">
+                                    {{ tag }}
+                                </span>
+                            </v-btn>
                         </v-chip-group>
                     </v-sheet>
-                    <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important; overflow-x: hidden;">
-                        <transition name="slide">
-                            <v-chip-group mandatory selected-class="text-primary">
-                                <v-chip v-for="tag in tapromptsgs" :key="tag">
+
+                    <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
+                        <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
+                            <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
+                                rounded style="margin: 0 10px;">
+                                <span class="chip-around">
                                     {{ tag }}
-                                </v-chip>
-                            </v-chip-group>
-                        </transition>
+                                </span>
+                            </v-btn>
+                        </v-chip-group>
                     </v-sheet>
                 </v-col>
             </v-row>
         </div>
-        <div style="  display: flex;  flex-direction: column;
-    height: 400px;
-    justify-content: flex-end;">
-            <div style="    display: flex;
-    align-items: center;">
-                <p>Tags:</p>
-                <v-sheet elevation="0" class="py-4 px-1" style="padding: 10px !important; overflow-x: hidden;">
-                    <v-chip-group mandatory selected-class="text-primary">
-                        <v-chip v-for="tag in tags" :key="tag">
-                            {{ tag }}
-                        </v-chip>
-                    </v-chip-group>
-                </v-sheet>
-            </div>
-            <div style="display: flex;">
-                    <v-autocomplete :items="items" append-inner-icon="mdi-microphone" auto-select-first
-                class="flex-full-width" density="comfortable" item-props menu-icon=""
-                placeholder="Search Google or type a URL" prepend-inner-icon="mdi-magnify" rounded theme="light"
-                variant="solo"></v-autocomplete>
-            </div>
+
+        <div class="tags-container">
+            <span style="color: #398FCA;
+font-family: Inter;
+font-size: 16px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;">Tags:</span>
+            <v-sheet elevation="0" class="py-4 px-1 tags-sheet">
+                <v-chip-group mandatory selected-class="text-primary">
+                    <v-chip v-for="tag in tags" :key="tag">
+                        {{ tag }}
+                    </v-chip>
+                </v-chip-group>
+            </v-sheet>
         </div>
 
-
+        <div class="textarea">
+            <v-textarea placeholder="Message" rows="1" variant="solo" rounded></v-textarea>
+            <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="50" height="50">
+                <svg-icon type="mdi" :path="mdiMicrophone" class="textarea-svg"></svg-icon>
+            </v-btn>
+            <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="50" height="50">
+                <svg-icon type="mdi" :path="mdiArrowUpCircle" class="textarea-svg"></svg-icon>
+            </v-btn>
+        </div>
     </v-card>
 </template>
 
 <script setup>
 import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiArrowUpCircle } from '@mdi/js';
+import { mdiMicrophone } from '@mdi/js';
 import { mdiFormatListBulleted } from '@mdi/js';
-
+function beforeEnter(el) {
+    el.style.transform = "translateX(100%)"; // 设置进入前的初始状态
+};
+function afterEnter() {
+    this.currentIndex = (this.currentIndex + 1) % this.tags.length; // 循环逻辑
+};
+function getTagColor(index) {
+    return '#' + tagColors[index % tagColors.length];
+};
+var tagColors = ["A1C9E3", "2081C3", "BED8D4"]
 var prompts = [
-    'Work',
-    'Home Improvement',
-    'Vacation',
-    'Food',
-    'Drawers',
-    'Shopping',
-    'Art',
-    'Tech',
-    'Creative Writing',
+    '反比例函数是什么？',
+    '反比例函数的一般方程？',
+    '辅助线怎么作？',
+    '我错在哪？',
+    '反比例函数的k值？',
+    '笛卡尔坐标系',
 ];
 var tags = [
     '#步骤1',
@@ -97,14 +109,54 @@ var tags = [
 </script>
 
 <style scoped>
-.slide-enter-active,
-.slide-leave-active {
-    transition: transform 0.5s ease;
+.card-container {
+    height: 85vh;
+    padding: 20px 5px 20px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.slide-enter,
-.slide-leave-to {
-    transform: translateX(100%);
-    /* 初始状态为从右边进入或离开 */
+.svg-container {
+    display: flex;
+    justify-content: flex-end;
+    height: 40%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prompts_container {
+    height: 40vh;
+}
+
+.chip-around {
+    margin: 0 10px;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.tags-container {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 40px;
+}
+
+.tags-sheet {
+    padding: 10px !important;
+    overflow-x: hidden;
+}
+
+.textarea {
+    display: flex;
+    padding: 0 10px 0 30px;
+    width: 95%
+}
+
+.textarea-svg {
+    height: 50px;
+    width: 50px;
 }
 </style>
