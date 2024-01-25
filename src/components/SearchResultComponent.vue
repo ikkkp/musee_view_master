@@ -9,8 +9,7 @@
 
     <!-- Second Card in Left Section -->
     <v-card class="inner-card-2" color="#FFFFFF" elevation="0">
-        <v-card-title>Card title</v-card-title>
-        <v-card-subtitle>Card subtitle secondary text</v-card-subtitle>
+        <div style="height: 200px;"></div>
     </v-card>
 </template>
 <script setup>
@@ -41,7 +40,7 @@ const selectCard = (index) => {
 
 .inner-card-2 {
     margin: 0px 10px 10px 10px;
-    height: 400px;
+    flex: 1;
 }
 
 

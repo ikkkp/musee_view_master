@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jamescoyle/vue-icon": "^0.1.2",
+    "@mdi/js": "^7.4.47",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
     "vuetify": "^3.5.1"

@@ -1,5 +1,6 @@
 <script setup>
 import SearchResultComponent from '@/components/SearchResultComponent.vue';
+import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
 </script>
 <template>
     <div class="container">
@@ -18,18 +19,7 @@ import SearchResultComponent from '@/components/SearchResultComponent.vue';
 
         <!-- Right Section -->
         <div class="right-section">
-            <v-card>
-                <v-card-item>
-                    <v-card-title>Card title</v-card-title>
-                    <v-card-subtitle>Card subtitle secondary text</v-card-subtitle>
-                </v-card-item>
-
-                <v-card-text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore
-                    magna aliqua.
-                </v-card-text>
-            </v-card>
+            <XChatGPTComponent></XChatGPTComponent>
         </div>
     </div>
 </template>
@@ -41,8 +31,8 @@ import SearchResultComponent from '@/components/SearchResultComponent.vue';
 
 .left-section {
     width: 45%;
-    height: 100%;
     padding: 20px 5px 20px 20px;
+    display: flex;
 }
 
 .right-section {
@@ -52,17 +42,20 @@ import SearchResultComponent from '@/components/SearchResultComponent.vue';
 }
 
 .left-card {
-    height: auto;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .inner-card-1 {
     margin: 10px;
-    height: 400px;
+    flex: 1;
 }
 
 .inner-card-2 {
     margin: 0px 10px 10px 10px;
-    height: 400px;
+    flex: 1;
 }
 
 
