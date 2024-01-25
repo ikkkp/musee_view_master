@@ -48,7 +48,9 @@
                 </v-col>
             </v-row>
         </div>
-        <div>
+        <div style="  display: flex;  flex-direction: column;
+    height: 400px;
+    justify-content: flex-end;">
             <div style="    display: flex;
     align-items: center;">
                 <p>Tags:</p>
@@ -60,11 +62,11 @@
                     </v-chip-group>
                 </v-sheet>
             </div>
-            <div>
-                <v-autocomplete :items="items" append-inner-icon="mdi-microphone" auto-select-first class="flex-full-width"
-                    density="comfortable" item-props menu-icon="" placeholder="Search Google or type a URL"
-                    prepend-inner-icon="mdi-magnify" rounded theme="light" variant="solo"
-                    style="width:  80%"></v-autocomplete>
+            <div style="display: flex;">
+                    <v-autocomplete :items="items" append-inner-icon="mdi-microphone" auto-select-first
+                class="flex-full-width" density="comfortable" item-props menu-icon=""
+                placeholder="Search Google or type a URL" prepend-inner-icon="mdi-magnify" rounded theme="light"
+                variant="solo"></v-autocomplete>
             </div>
         </div>
 
