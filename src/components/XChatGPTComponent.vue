@@ -27,23 +27,27 @@
                 <v-col cols="auto">
                     <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
                         <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
-                            <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
-                                rounded style="margin: 0 10px;">
-                                <span class="chip-around">
-                                    {{ tag }}
-                                </span>
-                            </v-btn>
+                            <div class="prompts_btn">
+                                <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
+                                    rounded style="margin: 0 10px;">
+                                    <span class="chip-around">
+                                        {{ tag }}
+                                    </span>
+                                </v-btn>
+                            </div>
                         </v-chip-group>
                     </v-sheet>
 
                     <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
                         <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
-                            <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
-                                rounded style="margin: 0 10px;">
-                                <span class="chip-around">
-                                    {{ tag }}
-                                </span>
-                            </v-btn>
+                            <div class="prompts_btn">
+                                <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
+                                    rounded style="margin: 0 10px;">
+                                    <span class="chip-around">
+                                        {{ tag }}
+                                    </span>
+                                </v-btn>
+                            </div>
                         </v-chip-group>
                     </v-sheet>
                 </v-col>
@@ -51,12 +55,7 @@
         </div>
 
         <div class="tags-container">
-            <span style="color: #398FCA;
-font-family: Inter;
-font-size: 16px;
-font-style: normal;
-font-weight: 600;
-line-height: normal;">Tags:</span>
+            <span class="tags-font">Tags:</span>
             <v-sheet elevation="0" class="py-4 px-1 tags-sheet">
                 <v-chip-group mandatory selected-class="text-primary">
                     <v-chip v-for="tag in tags" :key="tag">
@@ -83,17 +82,17 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import { mdiArrowUpCircle } from '@mdi/js';
 import { mdiMicrophone } from '@mdi/js';
 import { mdiFormatListBulleted } from '@mdi/js';
-function beforeEnter(el) {
-    el.style.transform = "translateX(100%)"; // 设置进入前的初始状态
-};
-function afterEnter() {
-    this.currentIndex = (this.currentIndex + 1) % this.tags.length; // 循环逻辑
-};
 function getTagColor(index) {
     return '#' + tagColors[index % tagColors.length];
 };
 var tagColors = ["A1C9E3", "2081C3", "BED8D4"]
 var prompts = [
+    '反比例函数是什么？',
+    '反比例函数的一般方程？',
+    '辅助线怎么作？',
+    '我错在哪？',
+    '反比例函数的k值？',
+    '笛卡尔坐标系',
     '反比例函数是什么？',
     '反比例函数的一般方程？',
     '辅助线怎么作？',
@@ -128,6 +127,25 @@ var tags = [
     height: 40vh;
 }
 
+.prompts_btn {
+    animation: marquee 20s linear infinite;
+}
+
+/* 伪类失效 */
+.prompts_btn:hover {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
 .chip-around {
     margin: 0 10px;
     color: #FFF;
@@ -142,6 +160,15 @@ var tags = [
     display: flex;
     align-items: center;
     padding: 0 0 0 40px;
+}
+
+.tags-font {
+    color: #398FCA;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 
 .tags-sheet {
