@@ -20,25 +20,25 @@
         </div>
 
         <div class="textarea">
-            <v-textarea placeholder="Message" rows="1" variant="solo" rounded></v-textarea>
-            <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="50" height="50"
-                @click="openDialog">
-                <svg-icon type="mdi" :path="mdiMicrophone" class="textarea-svg"></svg-icon>
-            </v-btn>
-            <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="50" height="50">
+            <v-textarea placeholder="Message" rows="1" variant="solo" rounded @click="openDialog"></v-textarea>
+            <v-btn density="compact" icon="mdi-format-list-bulleted" elevation="0" width="52" height="52">
                 <svg-icon type="mdi" :path="mdiArrowUpCircle" class="textarea-svg"></svg-icon>
             </v-btn>
         </div>
     </v-card>
     <v-dialog v-model="dialog" width="auto">
         <v-card>
-            <v-card-text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-            </v-card-text>
-            <v-card-actions>
-                <v-btn color="primary" block @click="closeDialog">Close Dialog</v-btn>
-            </v-card-actions>
+            <EditableArea :msg="dialog"></EditableArea>
+            <div style="display: flex; justify-content: flex-end;">
+                <v-btn color="primary" width="92" rounded variant="outlined" @click="dialog = false"
+                    style="margin: 10px 5px;">
+                    取消
+                </v-btn>
+                <v-btn color="primary" width="92" rounded variant="outlined" @click="dialog = false"
+                    style="margin: 10px 5px;">
+                    确定
+                </v-btn>
+            </div>
         </v-card>
     </v-dialog>
 </template>
@@ -48,18 +48,18 @@ import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
 import GPTSVGComponent from './GPTSVGComponent.vue';
 import { mdiArrowUpCircle } from '@mdi/js';
-import { mdiMicrophone } from '@mdi/js';
+import EditableArea from './EditableArea.vue';
 import { mdiFormatListBulleted } from '@mdi/js';
 import { ref } from 'vue';
 
 const dialog = ref(false);
 
 function openDialog() {
-  dialog.value = true;
+    dialog.value = true;
 }
 
 function closeDialog() {
-  dialog.value = false;
+    dialog.value = false;
 }
 var tags = [
     '#步骤1',

@@ -11,9 +11,11 @@
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
+    "easy-formula-editor": "^0.0.2-alpha.1",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.5.1"
+    "vuetify": "^3.5.1",
+    "wangeditor": "^4.7.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
