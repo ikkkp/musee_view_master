@@ -28,17 +28,8 @@
     </v-card>
     <v-dialog v-model="dialog" width="auto">
         <v-card>
-            <EditableArea :msg="dialog"></EditableArea>
-            <div style="display: flex; justify-content: flex-end;">
-                <v-btn color="primary" width="92" rounded variant="outlined" @click="dialog = false"
-                    style="margin: 10px 5px;">
-                    取消
-                </v-btn>
-                <v-btn color="primary" width="92" rounded variant="outlined" @click="dialog = false"
-                    style="margin: 10px 5px;">
-                    确定
-                </v-btn>
-            </div>
+            <EditableArea></EditableArea>
+
         </v-card>
     </v-dialog>
 </template>
@@ -58,9 +49,6 @@ function openDialog() {
     dialog.value = true;
 }
 
-function closeDialog() {
-    dialog.value = false;
-}
 var tags = [
     '#步骤1',
     '#步骤2',

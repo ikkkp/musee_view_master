@@ -5,10 +5,9 @@ export default function (wangEditor, formulaEditor) {
      * 插入公式
      */
     function insertFomule() {
-      const formula = formulaEditor.$textSvgElem.html()
+      const formula = formulaEditor.latex.text()
       // 注意插入wangEditor时左右两边的空格不能去掉，不然会导致无法获取焦点
-      wangEditor.cmd.do('insertHTML', '<span>&nbsp;</span>' + formula + '<span>&nbsp;</span>')
-      formulaEditor.destoryDom()
+      wangEditor.txt.append('<p>'+formula+'</p>')
       return true
     }
   
@@ -38,9 +37,9 @@ export default function (wangEditor, formulaEditor) {
     ]
   
     return {
-      width: 800,
-      height: 0,
-      // panel 中可包含多个 tab
-      tabs: tabsConf, // tabs end
-    }
+        width: 660,
+        height: 0,
+        // panel 中可包含多个 tab
+        tabs: tabsConf, // tabs end
+      }
   }
