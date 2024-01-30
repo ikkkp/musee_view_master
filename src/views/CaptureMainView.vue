@@ -1,7 +1,3 @@
-<script setup>
-import SearchResultComponent from '@/components/SearchResultComponent.vue';
-import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
-</script>
 <template>
     <div class="container">
         <!-- Left Section -->
@@ -13,7 +9,6 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
                     <v-card-subtitle>Card subtitle secondary text</v-card-subtitle>
                 </v-card>
                 <SearchResultComponent />
-
             </v-card>
         </div>
 
@@ -23,6 +18,11 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
         </div>
     </div>
 </template>
+
+<script setup>
+import SearchResultComponent from '@/components/SearchResultComponent.vue';
+import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
+</script>
   
 <style scoped>
 .container {

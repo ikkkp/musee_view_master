@@ -19,7 +19,7 @@
                     <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
                         <div class="prompts_btn">
                             <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
-                                rounded style="margin: 0 10px;">
+                                rounded style="margin: 0 10px;" @click="addToTextArea(tag)">
                                 <span class="chip-around">
                                     {{ tag }}
                                 </span>
@@ -64,7 +64,7 @@ var prompts = [
 </script>
 <style scoped>
 .prompts_container {
-    height: 40vh;
+    height: 35vh;
 }
 
 .prompts_btn {
