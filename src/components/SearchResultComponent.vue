@@ -3,7 +3,7 @@
     <div class="color-cards">
         <v-card v-for="(card, index) in colorCards" :key="index" class="color-card"
             :color="card.isActive ? '#FFFFFF' : card.color" :width="card.width"
-            :height="card.isActive ? '39px' : card.height" :elevation="card.isActive ? '' : card.elevation"
+            :height="card.isActive ? '39px' : card.height" 
             @click="selectCard(index)">
             <div class="custom-style" :style="{
                 'color': card.isActive ? '#000' : '#8F9CA6'

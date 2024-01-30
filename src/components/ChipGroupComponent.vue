@@ -6,7 +6,7 @@
                     <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
                         <div class="prompts_btn">
                             <v-btn v-for="(tag, index) in prompts" :key="tag" :color="getTagColor(index)" elevation="0"
-                                rounded style="margin: 0 10px;">
+                                rounded style="margin: 0 10px;" @click="addToTextArea(tag)">
                                 <span class="chip-around">
                                     {{ tag }}
                                 </span>
@@ -33,7 +33,15 @@
 </template>
 
 <script setup>
+import { defineEmits } from 'vue';
 
+// 声明将要使用的自定义事件
+const emit = defineEmits(['addToTextArea']);
+
+function addToTextArea(tag) {
+  // 使用 emit 触发事件
+  emit('addToTextArea', tag);
+}
 function getTagColor(index) {
     return '#' + tagColors[index % tagColors.length];
 };
@@ -52,6 +60,7 @@ var prompts = [
     '反比例函数的k值？',
     '笛卡尔坐标系',
 ];
+
 </script>
 <style scoped>
 .prompts_container {
