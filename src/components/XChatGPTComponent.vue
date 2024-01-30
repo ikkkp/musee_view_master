@@ -4,7 +4,6 @@
             <svg-icon type="mdi" :path="mdiFormatListBulleted" style="height: 30px;width: 30px;"></svg-icon>
         </v-btn>
         <div class="svg-container">
-            <!-- SVG code here -->
             <GPTSVGComponent></GPTSVGComponent>
         </div>
         <ChipGroupComponent />
@@ -38,7 +37,6 @@
 import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
 import GPTSVGComponent from './GPTSVGComponent.vue';
-import { mdiArrowUpCircle } from '@mdi/js';
 import EditableArea from './EditableArea.vue';
 import { mdiFormatListBulleted } from '@mdi/js';
 import { ref } from 'vue';
@@ -83,9 +81,7 @@ var tags = [
     color: #398FCA;
     font-family: Inter;
     font-size: 16px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
 }
 
 .tags-sheet {
