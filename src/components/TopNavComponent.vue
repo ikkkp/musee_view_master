@@ -82,6 +82,7 @@ const changeColor = (index) => {
 .logo-section {
     display: flex;
     align-items: center;
+    width: 350px;
 }
 
 .logo-image {
@@ -110,7 +111,7 @@ const changeColor = (index) => {
 .button-section {
     display: flex;
     justify-content: space-around;
-    width: 35%;
+    width: 450px;
 }
 
 .about-us-section {

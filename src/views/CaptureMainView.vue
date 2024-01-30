@@ -30,15 +30,16 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
 }
 
 .left-section {
-    width: 45%;
+    width: 45vw;
     padding: 20px 5px 20px 20px;
     display: flex;
+    min-width: 500px;
 }
 
 .right-section {
-    width: 55%;
-    height: 100%;
-    padding: 20px 20px 20px 5px;
+    width: 55vw;
+    min-width: 600px;
+    padding: 20px 20px 20px 5px
 }
 
 .left-card {
