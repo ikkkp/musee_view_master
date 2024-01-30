@@ -1,42 +1,34 @@
 <template>
   <div class="formula-container">
-    <v-card elevation="1" class="formula-card">
+    <v-card elevation="0" class="formula-card"  title="输出区域"
+      subtitle="Output">
       <div id="formula" class="formula-content">
         {{ renderedFormula ? `$${renderedFormula}$` : '' }}
       </div>
     </v-card>
-    <div id="wang-editor" class="editor"></div>
+    <div class="editor-area">
+      <div id="wang-editor" class="editor"></div>
+    </div>
   </div>
 </template>
 
 
 <script setup>
-import { renderFormula } from "easy-formula-editor";
 import E from "../utils/formula-menu-conf";
 import { ref, onMounted, nextTick } from "vue";
 
+const editor = ref(null);
+const renderedFormula = ref("");
+
 function convert() {
-  // Your convert function logic
   MathJax.texReset();
   MathJax.typesetClear();
   MathJax.typesetPromise();
 }
 
-const editor = ref(null);
-const renderedFormula = ref("");
-
 function updateFormula() {
   renderedFormula.value = editor.value.txt.text();
   nextTick(convert);
-}
-
-function renderMath() {
-  try {
-    const el = document.getElementById("formula");
-    renderFormula(el);
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 onMounted(() => {
@@ -47,14 +39,14 @@ onMounted(() => {
   editor.value.config.onchangeTimeout = 500;
   editor.value.create();
 });
+
 </script>
 
 
 <style scoped>
 .formula-container {
   width: 800px;
-  height: 720px;
-  padding: 5px 5px 0 5px;
+  height: 700px;
 }
 
 .MathJax,
@@ -62,20 +54,30 @@ onMounted(() => {
   font-size: 200% !important;
   /* color: white !important; */
   /* background-color: black !important; */
+  display: block;
+    text-align: center;
 }
 
 .formula-card {
-  padding: 30px;
+  padding: 10px;
 }
 
 .formula-content {
-  font-size: 200% !important;
+  font-size: 150% !important;
   font-family: MJXZERO, MJXTEX;
   min-height: 2em;
-  height: 250px;
+  height: 180px;
+  padding: 10px 20px 10px 20px;
+  overflow-x: auto; /* 允许横向滚动，根据需要使用"scroll"或"auto" */
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .editor {
   /* Add any specific styles for the editor here */
+}
+
+.editor-area {
+padding: 10px;
 }
 </style>
