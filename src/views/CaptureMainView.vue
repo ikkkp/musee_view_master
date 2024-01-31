@@ -5,8 +5,7 @@
             <v-card class="left-card" color="#A1C9E3">
                 <!-- First Card in Left Section -->
                 <v-card class="inner-card-1" color="#F7F9F9">
-                    <v-card-title>Card title</v-card-title>
-                    <v-card-subtitle>Card subtitle secondary text</v-card-subtitle>
+                    <UploadPicComponent></UploadPicComponent>
                 </v-card>
                 <SearchResultComponent />
             </v-card>
@@ -21,6 +20,7 @@
 
 <script setup>
 import SearchResultComponent from '@/components/SearchResultComponent.vue';
+import UploadPicComponent from '@/components/UploadPicComponent.vue';
 import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
 </script>
   
@@ -52,6 +52,10 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
 .inner-card-1 {
     margin: 10px;
     flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .inner-card-2 {
