@@ -11,7 +11,6 @@
 import E from "../utils/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
-// 定义props
 const props = defineProps({
     initMessage: {
         type: String,

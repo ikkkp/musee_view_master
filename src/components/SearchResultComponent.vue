@@ -1,5 +1,5 @@
 <template>
-    <!-- Colorful Cards -->
+
     <div class="tab-cards">
         <v-card v-for="(card, index) in colorCards" :key="index" class="color-card"
             :color="card.isActive ? '#FFFFFF' : card.color" :width="card.width"
@@ -12,7 +12,6 @@
         </v-card>
     </div>
 
-    <!-- Second Card in Left Section -->
     <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 0">
         <AnalysisCard />
     </v-card>
