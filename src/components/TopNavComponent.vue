@@ -1,3 +1,29 @@
+<template>
+    <div class="header-container">
+        <div class="logo-section">
+            <img src="@/icons/ChatGPT.png" alt="" class="logo-image">
+            <div class="logo-text">
+                <div class="main-title">Musee</div>
+                <div class="subtitle">Education</div>
+            </div>
+        </div>
+        <div class="button-section">
+            <v-btn v-for="(button, index) in buttons" :key="index" :rounded="button.rounded" :size="button.size"
+                :color="button.isActive ? '#2081C3' : button.color" :elevation="button.elevation"
+                :style="{ fontSize: button.fontSize, color: button.isActive ? '#FFFFFF' : button.textColor }"
+                @click="changeColor(index)">
+                {{ button.label }}
+            </v-btn>
+        </div>
+        <div class="about-us-section">
+            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA">About us</v-btn>
+            <v-avatar color="info" size="45px">
+                <span class="text-h6">IK</span>
+            </v-avatar>
+        </div>
+    </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import router from '@/router';
@@ -45,32 +71,6 @@ const changeColor = (index) => {
 };
 
 </script>
-
-<template>
-    <div class="header-container">
-        <div class="logo-section">
-            <img src="@/icons/ChatGPT.png" alt="" class="logo-image">
-            <div class="logo-text">
-                <div class="main-title">Musee</div>
-                <div class="subtitle">Education</div>
-            </div>
-        </div>
-        <div class="button-section">
-            <v-btn v-for="(button, index) in buttons" :key="index" :rounded="button.rounded" :size="button.size"
-                :color="button.isActive ? '#2081C3' : button.color" :elevation="button.elevation"
-                :style="{ fontSize: button.fontSize, color: button.isActive ? '#FFFFFF' : button.textColor }"
-                @click="changeColor(index)">
-                {{ button.label }}
-            </v-btn>
-        </div>
-        <div class="about-us-section">
-            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA">About us</v-btn>
-            <v-avatar color="info" size="45px">
-                <span class="text-h6">IK</span>
-            </v-avatar>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .header-container {

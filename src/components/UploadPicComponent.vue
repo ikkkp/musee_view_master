@@ -14,8 +14,7 @@
 
     <v-card class="card-large" elevation="0">
         <div class="card-content">
-            <v-img class="large-image" cover :height="380" :src="largeImage.url" :lazy-src="largeImage.lazySrc"
-                max-width="500">
+            <v-img class="large-image" cover height="300" :src="largeImage.url" :lazy-src="largeImage.lazySrc" max-width="500">
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -33,7 +32,6 @@ export default {
             type: Array,
             required: true,
             default: () => [
-                { url: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg', lazySrc: 'https://picsum.photos/10/6?image=1' },
                 { url: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg', lazySrc: 'https://picsum.photos/10/6?image=1' },
                 { url: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg', lazySrc: 'https://picsum.photos/10/6?image=1' },
                 { url: 'https://cdn.vuetifyjs.com/images/parallax/material.jpg', lazySrc: 'https://picsum.photos/10/6?image=1' },
@@ -61,7 +59,7 @@ export default {
 }
 
 .card-grid {
-    height: 90px;
+    height: 85px;
     width: 100%;
 }
 
@@ -81,11 +79,13 @@ export default {
 
 .card-content {
     width: 100%;
+    height: 100%;
 }
 
 .large-image {
     margin: auto;
     width: 100%;
+    height: 100%;
     max-width: 500px;
 }
 

@@ -1,32 +1,33 @@
 <template>
     <!-- Colorful Cards -->
-    <div class="color-cards">
+    <div class="tab-cards">
         <v-card v-for="(card, index) in colorCards" :key="index" class="color-card"
             :color="card.isActive ? '#FFFFFF' : card.color" :width="card.width"
-            :height="card.isActive ? '39px' : card.height" 
-            @click="selectCard(index)">
+            :height="card.isActive ? '39px' : card.height" @click="selectCard(index)">
             <div class="custom-style" :style="{
                 'color': card.isActive ? '#000' : '#8F9CA6'
             }">
                 {{ card.title }}
             </div>
         </v-card>
-
     </div>
 
     <!-- Second Card in Left Section -->
-    <v-card class="inner-card-2" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 0">
-        <div style="height: 200px;">题目解析</div>
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 0">
+        <AnalysisCard />
     </v-card>
-    <v-card class="inner-card-2" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 1">
-        <div style="height: 200px;">解题步骤</div>
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 1">
+        <StepsCard />
     </v-card>
-    <v-card class="inner-card-2" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 2">
-        <div style="height: 200px;">做题笔记</div>
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 2">
+        <NotesCard/>
     </v-card>
 </template>
 <script setup>
 import { ref } from 'vue';
+import AnalysisCard from './ResultSecComponent/AnalysisCard.vue';
+import StepsCard from './ResultSecComponent/StepsCard.vue';
+import NotesCard from './ResultSecComponent/NotesCard.vue';
 
 const colorCards = ref([
     { color: '#D0E4F1', width: '120px', height: '34px', elevation: '0', isActive: false, title: '题目解析' },
@@ -43,22 +44,15 @@ const selectCard = (index) => {
 };
 </script>
 <style scoped>
-.left-card {
-    height: auto;
-}
-
-.inner-card-1 {
-    margin: 10px;
-    height: 400px;
-}
-
-.inner-card-2 {
+.content-cards {
     margin: 0px 10px 10px 10px;
     flex: 1;
+    padding: 0 2px 0 5px;
+    overflow-y: auto;
 }
 
 
-.color-cards {
+.tab-cards {
     display: flex;
     margin: 0 20px 0 20px;
     width: 400px;
@@ -84,5 +78,30 @@ const selectCard = (index) => {
     justify-content: center;
     align-items: center;
     width: 120px;
+}
+
+/* 对于一些浏览器可能需要自定义滚动条样式 */
+/* 注意：这些是实验性质或特定浏览器的前缀属性 */
+::-webkit-scrollbar {
+    /* Webkit 浏览器（Chrome, Safari等） */
+    width: 10px;
+    height: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    /* 滚动条滑块部分 */
+    background-color: rgba(143, 156, 166, 0.8);
+    border-radius: 5px;
+}
+
+/* 其他浏览器的滚动条样式支持，但请注意不是所有浏览器都支持完全自定义滚动条 */
+::-moz-scrollbar {
+    /* Firefox */
+    width: 10px;
+}
+
+::-ms-scrollbar {
+    /* Internet Explorer和旧版Edge */
+    width: 10px;
 }
 </style>

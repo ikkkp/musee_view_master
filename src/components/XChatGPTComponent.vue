@@ -144,8 +144,8 @@ var tags = [
 
 <style scoped>
 .card {
-    height: 85vh;
     padding: 20px 10px 20px 10px;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -230,4 +230,5 @@ var tags = [
     /* Internet Explorer和旧版Edge */
     width: 10px;
 }
+
 </style>

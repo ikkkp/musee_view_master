@@ -26,20 +26,21 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
   
 <style scoped>
 .container {
+    height: 85vh;
     display: flex;
 }
 
 .left-section {
     width: 45vw;
-    padding: 20px 5px 20px 20px;
+    padding: 20px 5px 0px 20px;
     display: flex;
     min-width: 500px;
 }
 
 .right-section {
     width: 55vw;
-    min-width: 600px;
-    padding: 20px 20px 20px 5px
+    min-width: 500px;
+    padding: 20px 20px 0px 5px
 }
 
 .left-card {
@@ -51,7 +52,6 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
 
 .inner-card-1 {
     margin: 10px;
-    flex: 1;
     display: flex;
     align-items: center;
     flex-direction: row;
