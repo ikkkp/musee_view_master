@@ -10,9 +10,7 @@
             <ChipGroupComponent @addToTextArea="handleTagClick" />
         </div>
 
-        <div v-else style="height: 65vh;
-    overflow-y: auto;
-    margin: 20px 0 0 0;" ref="scrollContainer">
+        <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
             <div v-for="(message, index) in dialogueArray" :key="index">
                 <ChatComponent v-if="message.speaker == '用户'" :userMessage=message.message :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
@@ -31,8 +29,11 @@
         <div class="textarea-container">
             <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
                 class="single-line-textarea"></v-text-field>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="textSend">
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend">
                 <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
+            </v-btn>
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel">
+                <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"></svg-icon>
             </v-btn>
         </div>
 
@@ -42,21 +43,26 @@
             <EditableArea :initMessage="textValue"></EditableArea>
         </v-card>
     </v-dialog>
+    <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate">
+    </ConversationComponents>
 </template>
 
 <script setup>
 import { ref, watchEffect, onMounted } from 'vue';
-import { mdiArrowUpCircle, mdiFormatListBulleted } from '@mdi/js';
+import { mdiArrowUpCircle, mdiFormatListBulleted, mdiMicrophone } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
 import GPTSVGComponent from './GPTSVGComponent.vue';
 import EditableArea from './EditableArea.vue';
 import ChatComponent from '../components/ConversationComponent/ChatComponent.vue';
+import ConversationComponents from './ConversationComponent/ConversationComponents.vue';
 
 const textValue = ref('');
+const ConversationShow = ref(false);
 const dialog = ref(false);
 const user = ref({ 'userName': '测试01', 'avatarSrc': 'test', 'userInfo': '初高中万千少萝的梦' });
 const scrollContainer = ref(null);
+
 // 与大模型对话的会话信息数组（初中数学题相关）
 const dialogueArray = ref([
     {
@@ -111,7 +117,7 @@ watchEffect(() => {
     textValue.value = localStorage.getItem('renderedFormula');
 });
 
-function textSend() {
+function TextSend() {
     dialogueArray.value.push({
         "speaker": "用户",
         "message": textValue.value,
@@ -123,8 +129,16 @@ function textSend() {
     }, 0);
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
-
 }
+
+function ConversationModel() {
+    console.log('parent', ConversationShow.value);
+    ConversationShow.value = true;
+}
+
+function handleOverlayUpdate(value) {
+    ConversationShow.value = value;
+};
 
 function handleTagClick(tag) {
     textValue.value += tag;
@@ -216,7 +230,7 @@ var tags = [
 
 ::-webkit-scrollbar-thumb {
     /* 滚动条滑块部分 */
-    background-color: rgba(143, 156, 166,0.8);
+    background-color: rgba(143, 156, 166, 0.8);
     border-radius: 5px;
 }
 
@@ -230,5 +244,4 @@ var tags = [
     /* Internet Explorer和旧版Edge */
     width: 10px;
 }
-
 </style>

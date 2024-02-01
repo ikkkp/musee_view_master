@@ -1,6 +1,6 @@
 <template>
     <v-list>
-        <v-card v-for="item in listItems" :key="item.id" :elevation="0" :color="'rgb(247, 249, 249)'"
+        <v-card v-for="item in listItems" :key="item.id" :elevation="0" 
             class="list-item-card">
             <v-list-item>
                 <template v-slot:prepend>
