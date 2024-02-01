@@ -1,7 +1,24 @@
 <template>
-    <div @click="() => { dialog = true }" style="height:200px">
-        <span v-html="textValue"></span>
+    <div class="text-area" v-if="hasData" @click="openNotesCard">
+        <div v-html="textValue"></div>
     </div>
+    <template slot="image" class="text-area" v-else style="">
+        <div style="display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Inter;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1.7px;
+    color: rgb(166, 200, 227);" @click="openNotesCard">
+            <img src="@/images/empty-picture/undraw_no_data_re_kwbl2.svg" style="height:40%" />
+            点击任意处创建笔记
+        </div>
+    </template>
     <v-dialog v-model="dialog" width="auto">
         <v-card>
             <NotesEditableArea :initMessage="textValue"></NotesEditableArea>
@@ -13,16 +30,109 @@
 import { ref, watchEffect, onMounted } from 'vue';
 import NotesEditableArea from '../NotesEditableArea.vue';
 
+
+
 const dialog = ref(false);
 const textValue = ref('');
+const hasData = ref(false);
 
 onMounted(() => {
     textValue.value = '';
     localStorage.setItem('Notes', '');
+    if (localStorage.getItem('Notes') !== '') {
+        hasData.value = true;
+    }
 });
 
 watchEffect(() => {
     dialog.value;
     textValue.value = localStorage.getItem('Notes');
+    (localStorage.getItem('Notes') === '') ? hasData.value = false : hasData.value = true;
 });
+
+function openNotesCard() {
+    dialog.value = true;
+}
 </script>
+<style>
+.text-area {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+
+/* table 样式 */
+table {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+
+table td,
+table th {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 3px 5px;
+}
+
+table th {
+    border-bottom: 2px solid #ccc;
+    text-align: center;
+}
+
+/* blockquote 样式 */
+blockquote {
+    display: block;
+    border-left: 8px solid #d0e5f2;
+    padding: 5px 10px;
+    margin: 10px 0;
+    line-height: 1.4;
+    font-size: 100%;
+    background-color: #f1f1f1;
+}
+
+/* code 样式 */
+code {
+    display: inline-block;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    padding: 3px 5px;
+    margin: 0 3px;
+}
+
+pre code {
+    display: block;
+}
+
+/* ul ol 样式 */
+ul,
+ol {
+    margin: 10px 0 10px 20px;
+}
+
+/* 对于一些浏览器可能需要自定义滚动条样式 */
+/* 注意：这些是实验性质或特定浏览器的前缀属性 */
+::-webkit-scrollbar {
+    /* Webkit 浏览器（Chrome, Safari等） */
+    width: 10px;
+    height: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+    /* 滚动条滑块部分 */
+    background-color: rgba(143, 156, 166, 0.8);
+    border-radius: 5px;
+}
+
+/* 其他浏览器的滚动条样式支持，但请注意不是所有浏览器都支持完全自定义滚动条 */
+::-moz-scrollbar {
+    /* Firefox */
+    width: 10px;
+}
+
+::-ms-scrollbar {
+    /* Internet Explorer和旧版Edge */
+    width: 10px;
+}
+</style>

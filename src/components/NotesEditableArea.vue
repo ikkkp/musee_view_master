@@ -8,7 +8,7 @@
   
   
 <script setup>
-import E from "../utils/formula-menu-conf";
+import E from "../utils/LatexSvgRender/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
 const props = defineProps({
@@ -26,9 +26,6 @@ const editor = ref(null);
 const renderedFormula = ref("");
 
 function convert() {
-    MathJax.texReset();
-    MathJax.typesetClear();
-    MathJax.typesetPromise();
     localStorage.setItem("Notes", renderedFormula.value);
 }
 
@@ -76,10 +73,13 @@ onMounted(() => {
 <style scoped>
 .formula-container {
     width: 800px;
-    height: 510px;
+    height: 530px;
+    display: flex;
+    align-items: flex-end;
 }
 
 .editor-area {
     padding: 10px;
 }
-</style>
+
+</style>../utils/LatexTextRender/formula-menu-conf

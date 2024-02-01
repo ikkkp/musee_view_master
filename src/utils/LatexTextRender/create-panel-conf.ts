@@ -4,7 +4,7 @@ export default function (wangEditor, formulaEditor) {
     /**
      * 插入公式
      */
-    function insertFomule() {
+    function insertFomuletext() {
       const formula = formulaEditor.latex.text()
       // 注意插入wangEditor时左右两边的空格不能去掉，不然会导致无法获取焦点
       wangEditor.txt.append('<p>'+formula+'</p>')
@@ -29,7 +29,7 @@ export default function (wangEditor, formulaEditor) {
           {
             selector: '#' + btnOkId,
             type: 'click',
-            fn: insertFomule,
+            fn: insertFomuletext,
             bindEnter: true,
           },
         ],

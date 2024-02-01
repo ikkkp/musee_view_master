@@ -46,7 +46,6 @@ const selectCard = (index) => {
 .content-cards {
     margin: 0px 10px 10px 10px;
     flex: 1;
-    padding: 0 2px 0 5px;
     overflow-y: auto;
 }
 

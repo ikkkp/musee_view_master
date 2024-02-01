@@ -13,7 +13,7 @@
 
 
 <script setup>
-import E from "../utils/formula-menu-conf";
+import E from "../utils/LatexTextRender/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
 // 定义props
@@ -87,4 +87,4 @@ onMounted(() => {
 .editor-area {
   padding: 10px;
 }
-</style>
+</style>../utils/LatexTextRender/formula-menu-conf
