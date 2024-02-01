@@ -13,8 +13,9 @@
 
 
 <script setup>
-import E from "@/utils/LatexTextRender/formula-menu-conf";
+import E from "wangeditor";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
+import AlertMenu  from "@/utils/LatexTextRender/formula-menu-conf";
 
 // 定义props
 const props = defineProps({
@@ -40,13 +41,14 @@ function convert() {
 
 function updateFormula() {
   renderedFormula.value = editor.value.txt.text();
-  nextTick(convert);
+  nextTick(convert); 
 }
 
 onMounted(() => {
   editor.value = new E("#wang-editor");
+  editor.value.menus.extend('LatexTextRender', AlertMenu)
   editor.value.config.height = 360;
-  editor.value.config.menus = ['head', 'bold', 'underline', 'strikeThrough','emoticon', 'undo', 'redo'];
+  editor.value.config.menus = ['head', 'bold', 'underline', 'strikeThrough','emoticon', 'undo', 'redo','LatexTextRender'];
   editor.value.config.onchange = updateFormula;
   editor.value.config.onchangeTimeout = 500;
   editor.value.create();

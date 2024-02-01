@@ -8,7 +8,8 @@
   
   
 <script setup>
-import E from "@/utils/LatexSvgRender/formula-menu-conf";
+import E from "wangeditor";
+import  AlertMenu  from "@/utils/LatexSvgRender/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
 const props = defineProps({
@@ -36,6 +37,8 @@ function updateFormula() {
 
 onMounted(() => {
     editor.value = new E("#wang-editor-area");
+    console.log(editor.value);
+    editor.value.menus.extend('LatexSvgRender', AlertMenu)
     editor.value.config.height = 400;
     editor.value.config.menus = ['head',
         'bold',
@@ -58,7 +61,7 @@ onMounted(() => {
         'video',
         'table',
         'code',
-        'splitLine',
+        'splitLine','LatexSvgRender',
         'undo',
         'redo',];
     editor.value.config.onchange = updateFormula;
@@ -82,4 +85,4 @@ onMounted(() => {
     padding: 10px;
 }
 
-</style>../utils/LatexTextRender/formula-menu-conf
+</style>

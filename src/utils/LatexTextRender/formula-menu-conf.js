@@ -23,15 +23,11 @@ class AlertMenu extends PanelMenu {
     const conf = createPanelConf(this.editor, formula);
     const panel = new Panel(this, conf);
     panel.create();
+
     formula.create("#edit-content");
   }
 
-  tryChangeActive() {}
+  tryChangeActive() { }
 }
 
-const menuKey = "alertMenuKey";
-
-// 注册菜单
-E.registerMenu(menuKey, AlertMenu);
-
-export default E;
+export default  AlertMenu;

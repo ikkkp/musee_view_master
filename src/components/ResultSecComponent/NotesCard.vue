@@ -1,22 +1,11 @@
 <template>
-    <div class="text-area" v-if="hasData" @click="openNotesCard">
+    <div v-if="hasData" class="text-area" @click="openNotesCard">
         <div v-html="textValue"></div>
     </div>
-    <template slot="image" class="text-area" v-else style="">
-        <div style="display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    flex-direction: column;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: Inter;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: 1.7px;
-    color: rgb(166, 200, 227);" @click="openNotesCard">
-            <img src="@/images/empty-picture/undraw_no_data_re_kwbl2.svg" style="height:40%" />
-            点击任意处创建笔记
+    <template v-else>
+        <div class="text-area empty-area" @click="openNotesCard">
+            <img src="@/images/empty-picture/no_data.svg" style="height: 50%" />
+            <div class="text-font">点击任意处创建笔记</div>
         </div>
     </template>
     <v-dialog v-model="dialog" width="auto">
@@ -25,12 +14,10 @@
         </v-card>
     </v-dialog>
 </template>
-
+  
 <script setup>
 import { ref, watchEffect, onMounted } from 'vue';
 import NotesEditableArea from '../NotesEditableArea.vue';
-
-
 
 const dialog = ref(false);
 const textValue = ref('');
@@ -47,13 +34,14 @@ onMounted(() => {
 watchEffect(() => {
     dialog.value;
     textValue.value = localStorage.getItem('Notes');
-    (localStorage.getItem('Notes') === '') ? hasData.value = false : hasData.value = true;
+    hasData.value = localStorage.getItem('Notes') !== '';
 });
 
 function openNotesCard() {
     dialog.value = true;
 }
 </script>
+  
 <style>
 .text-area {
     width: 100%;
@@ -61,6 +49,25 @@ function openNotesCard() {
     padding: 20px;
     overflow-y: auto;
     border-radius: 4px;
+}
+
+.empty-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+
+.text-font {
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: Inter;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: 1.7px;
+    color: rgb(166, 200, 227);
 }
 
 /* table 样式 */

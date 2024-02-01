@@ -27,12 +27,7 @@ class AlertMenu extends PanelMenu {
     formula.create("#edit-content");
   }
 
-  tryChangeActive() {}
+  tryChangeActive() { }
 }
 
-const menuKey = "alertMenuKey";
-
-// 注册菜单
-E.registerMenu(menuKey, AlertMenu);
-
-export default E;
+export default AlertMenu ;
