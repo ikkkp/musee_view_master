@@ -13,7 +13,7 @@
 
 
 <script setup>
-import E from "../utils/LatexTextRender/formula-menu-conf";
+import E from "@/utils/LatexTextRender/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
 // 定义props

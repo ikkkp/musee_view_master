@@ -1,14 +1,14 @@
 <template>
     <div class="formula-container">
         <div class="editor-area">
-            <div id="wang-editor" class="editor"></div>
+            <div id="wang-editor-area" class="editor"></div>
         </div>
     </div>
 </template>
   
   
 <script setup>
-import E from "../utils/LatexSvgRender/formula-menu-conf";
+import E from "@/utils/LatexSvgRender/formula-menu-conf";
 import { ref, onMounted, nextTick, defineProps, watchEffect } from "vue";
 
 const props = defineProps({
@@ -35,7 +35,7 @@ function updateFormula() {
 }
 
 onMounted(() => {
-    editor.value = new E("#wang-editor");
+    editor.value = new E("#wang-editor-area");
     editor.value.config.height = 400;
     editor.value.config.menus = ['head',
         'bold',
