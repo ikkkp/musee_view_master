@@ -123,7 +123,7 @@ ol {
 ::-webkit-scrollbar {
     /* Webkit 浏览器（Chrome, Safari等） */
     width: 10px;
-    height: 20px;
+
 }
 
 ::-webkit-scrollbar-thumb {

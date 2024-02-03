@@ -89,4 +89,4 @@ onMounted(() => {
 .editor-area {
   padding: 10px;
 }
-</style>../utils/LatexTextRender/formula-menu-conf
+</style>

@@ -26,25 +26,24 @@
                 </v-chip-group>
             </v-sheet>
         </div>
-        <div class="textarea-container">
+        <div class="textarea-container" v-if="!ConversationShow">
             <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
                 class="single-line-textarea"></v-text-field>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend">
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend" color="#2081C3">
                 <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
             </v-btn>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel">
-                <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"></svg-icon>
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel" color="#2081C3">
+                <svg-icon type="mdi" :path="mdiMicrophone"
+                    class="expand-icon" style="height: 40px;height: 40px;"></svg-icon>
             </v-btn>
         </div>
-
+        <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
     </v-card>
     <v-dialog v-model="dialog" width="auto">
         <v-card>
             <EditableArea :initMessage="textValue"></EditableArea>
         </v-card>
     </v-dialog>
-    <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate">
-    </ConversationComponents>
 </template>
 
 <script setup>
@@ -162,6 +161,7 @@ var tags = [
     height: 100%;
     display: flex;
     flex-direction: column;
+    
 }
 
 .svg-container {
@@ -191,6 +191,7 @@ var tags = [
 }
 
 .compact-button {
+    margin: 5px;
     density: compact;
     elevation: 0;
     width: 30px;
@@ -213,8 +214,8 @@ var tags = [
 }
 
 .expand-icon {
-    height: 50px;
-    width: 50px;
+    height: 49px;
+    width: 48px;
 }
 
 .primary-text {
