@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import router from '@/router';
 const buttons = ref([
     {
@@ -36,8 +36,8 @@ const buttons = ref([
         fontSize: '20px',
         textColor: '#96ABB3',
         label: '沐斯拍题',
-        isActive: true,
-        to: '/',
+        isActive: false,
+        to: '/index',
     },
     {
         rounded: 'xl',
@@ -48,7 +48,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '错题集',
         isActive: false,
-        to: '/QCollection',
+        to: '/collection',
     },
     {
         rounded: 'xl',
@@ -69,7 +69,16 @@ const changeColor = (index) => {
     });
     router.push(buttons.value[index].to);
 };
-
+onMounted(() => {
+    const path = window.location.pathname;
+    if (path === '/index') {
+        buttons.value[0].isActive = true;
+    } else if (path === '/collection') {
+        buttons.value[1].isActive = true;
+    } else if (path === '/userinfo') {
+        buttons.value[2].isActive = true;
+    }
+});
 </script>
 
 <style scoped>

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
+    "@mdi/font": "^7.4.47",
     "@mdi/js": "^7.4.47",
     "easy-formula-editor": "^0.0.2-alpha.1",
     "mathjax": "^3.2.2",

@@ -7,12 +7,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: '/index',
+      name: 'index',
       component: CaptureMainView
     },
     {
-      path: '/QCollection',
+      path: '/collection',
       name: 'QuestionsCollectionView',
       component: QuestionsCollectionView
     }, 
