@@ -7,7 +7,7 @@
                         image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
                         v-if="props.userName == '用户'"></v-avatar>
                     <v-avatar color="grey-lignt-3" v-else>
-                        <GPTSVGComponent></GPTSVGComponent>
+                        <GptSvgComponent></GptSvgComponent>
                     </v-avatar>
                 </template>
                 <v-list-item-title>{{ props.userName == '用户' ? props.userName : "ChatGpt" }}</v-list-item-title>
@@ -20,7 +20,7 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import GPTSVGComponent from '../GPTSVGComponent.vue';
+import GptSvgComponent from '../GptSvgComponent.vue';
 const props = defineProps({
     userMessage: {
         type: String,
