@@ -8,11 +8,13 @@
         </div>
         <!-- Right Section -->
         <div class="right-section">
-            <v-card color="#FFFFFF" style="height: 100%;overflow-y: auto;">
-                <div style="margin: 10px 0;" v-for="(mistake, index) in mistakeData" :key="index">
-                    <MistakePreviewComponent :tags="mistake.tags" :cardTitle="mistake.cardTitle" :cardMsg="mistake.cardMsg"
-                        :cardTime="mistake.cardTime" :cardColor="mistake.cardColor">
-                    </MistakePreviewComponent>
+            <v-card color="#FFFFFF" style="height: 100%;">
+                <div style="height: 100%;overflow-y: auto;">
+                    <div style="margin: 10px 0;" v-for="(mistake, index) in mistakeData" :key="index">
+                        <MistakePreviewComponent :tags="mistake.tags" :cardTitle="mistake.cardTitle"
+                            :cardMsg="mistake.cardMsg" :cardTime="mistake.cardTime" :cardColor="mistake.cardColor">
+                        </MistakePreviewComponent>
+                    </div>
                 </div>
             </v-card>
         </div>

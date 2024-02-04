@@ -14,7 +14,7 @@
                 </v-sheet>
             </div>
         </v-card>
-        <v-card class="image-card" width="360" height="200px" elevation="0" :image="props.imgSrc"></v-card>
+        <v-card class="image-card" width="360" height="200" elevation="0" :image="props.imgSrc"></v-card>
     </div>
 </template>
   
@@ -68,18 +68,22 @@ const props = defineProps({
 }
 
 .card-msg {
-    padding: 10px 20px;
+    padding: 10px 20px 0 20px;
+    margin-bottom: 10px;
     color: rgb(95, 108, 106);
     caret-color: rgb(0, 0, 0);
     font-weight: 600;
-    -webkit-line-clamp: 4;
-    /* 限制最多显示4行 */
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5em;
 }
 
 .card-time-chip {
     display: flex;
     align-items: center;
-    color: #5F6C6A;
+    color: #BED8D4;
     caret-color: rgb(0, 0, 0);
     font-weight: 600;
     padding: 0px 20px;
@@ -98,10 +102,11 @@ const props = defineProps({
     padding-bottom: 0 !important;
     display: flex;
     align-items: center;
+    
 }
 
 .main-card {
-    width: 400px;
+    flex: 4;
 }
 
 .primary-text {
@@ -110,6 +115,7 @@ const props = defineProps({
 
 .image-card {
     border-radius: 10px;
-    margin: 10px 0;
+    margin: 10px 10px;
+    flex: 5;
 }
 </style>

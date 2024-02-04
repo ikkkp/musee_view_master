@@ -37,7 +37,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '沐斯拍题',
         isActive: false,
-        to: '/index',
+        to: '/',
     },
     {
         rounded: 'xl',
@@ -71,7 +71,7 @@ const changeColor = (index) => {
 };
 onMounted(() => {
     const path = window.location.pathname;
-    if (path === '/index') {
+    if (path === '/') {
         buttons.value[0].isActive = true;
     } else if (path === '/collection') {
         buttons.value[1].isActive = true;

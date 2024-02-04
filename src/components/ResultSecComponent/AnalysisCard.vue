@@ -5,7 +5,7 @@
       <!-- 单个视频源 -->
       <div class="video-container">
         <video controls width="100%" height="240px">
-          <source src="" type="video/mp4">
+          <source src="https://youtu.be/YRvf00NooN8" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div>
@@ -46,6 +46,8 @@ const props = defineProps({
 .analysis-content {
   padding: 10px 10px;
   white-space: normal;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .video-container {

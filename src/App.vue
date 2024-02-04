@@ -3,10 +3,8 @@ import TopNavComponent from './components/TopNavComponent.vue';
 </script>
 
 <template>
-  <TopNavComponent/>
+  <TopNavComponent />
   <RouterView />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

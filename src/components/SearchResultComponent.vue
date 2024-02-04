@@ -1,5 +1,4 @@
 <template>
-
     <div class="tab-cards">
         <v-card v-for="(card, index) in colorCards" :key="index" class="color-card"
             :color="card.isActive ? '#FFFFFF' : card.color" :width="card.width"
@@ -12,14 +11,14 @@
         </v-card>
     </div>
 
-    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 0">
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 0">
         <AnalysisCard />
     </v-card>
-    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 1">
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 1">
         <StepsCard />
     </v-card>
     <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 2">
-        <NotesCard/>
+        <NotesCard />
     </v-card>
 </template>
 <script setup>
@@ -46,7 +45,6 @@ const selectCard = (index) => {
 .content-cards {
     margin: 0px 10px 10px 10px;
     flex: 1;
-    overflow-y: auto;
 }
 
 
