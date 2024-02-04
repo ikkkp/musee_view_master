@@ -8,7 +8,7 @@
                 <p>late 16th century (as a noun denoting a place where alms were distributed): from medieval Latin
                     eleemosynarius, from late Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’ </p>
             </v-card-text>
-            <GptSvgComponent />
+            <GPTSVGComponent />
             <v-card-actions>
                 <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="toggleOverlay" color="#2081C3">
                     <svg-icon type="mdi" :path="mdiMicrophoneOff" class="expand-icon"></svg-icon>
@@ -21,7 +21,7 @@
 <script setup>
 import { defineProps, ref, watch } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
-import GptSvgComponent from '@/components/GptSvgComponent.vue';
+import GPTSVGComponent from '@/components/GPTSVGComponent.vue';
 import { mdiMicrophoneOff } from '@mdi/js'
 
 
