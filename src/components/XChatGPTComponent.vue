@@ -131,7 +131,6 @@ function TextSend() {
 }
 
 function ConversationModel() {
-    console.log('parent', ConversationShow.value);
     ConversationShow.value = true;
 }
 

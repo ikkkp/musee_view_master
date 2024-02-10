@@ -29,13 +29,47 @@ const props = defineProps({
 const emit = defineEmits(['update:overlay']);
 const overlayValue = ref(props.overlay);
 const computedwidth = ref(0);
-onMounted(() => {
-    navigator.mediaDevices
-        .getUserMedia({ video: false, audio: true })
-        .then((s) => {
-            volume.value = useVolume(s);
+var mediaRecorder;
+var recordedChunks = []; // 在函数内定义 recordedChunks 变量
+
+
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            volume.value = useVolume(stream);
+            mediaRecorder.ondataavailable = event => {
+                recordedChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
+
+                // 创建一个 <a> 标签用于下载
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(audioBlob);
+                downloadLink.download = 'recorded_audio.wav'; // 设置下载的文件名
+
+                // 将 <a> 标签添加到 DOM 中并模拟点击
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+
+                // 移除 <a> 标签
+                document.body.removeChild(downloadLink);
+            };
+        })
+        .catch(error => {
+            console.error("Error starting recording: ", error);
         });
-})
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+    }
+}
+
 function computedWidth() {
     // 根据 volume 值映射到宽度范围
     // 这里假设音量最大为 100，对应的最大宽度为 300px
@@ -43,17 +77,22 @@ function computedWidth() {
 }
 watch(() => props.overlay, (val) => {
     overlayValue.value = val;
+    if (val) {
+        startRecording();
+    } else {
+        stopRecording();
+    }
 });
 
 watch(() => volume, (val) => {
-    computedwidth.value = 100+val*20;
+    computedwidth.value = 100 + val * 20;
 });
 
 function toggleOverlay() {
+    stopRecording();
     overlayValue.value = !overlayValue.value;
     emit('update:overlay', overlayValue.value);
     console.log(overlayValue.value);
-    stopRecording();
 }
 </script>
 
