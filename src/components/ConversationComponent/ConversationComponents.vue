@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, watch, onMounted } from 'vue';
+import { defineProps, ref, watch } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import GPTSVGComponent from '@/components/GPTSVGComponent.vue';
 import { mdiMicrophoneOff } from '@mdi/js'
@@ -46,16 +46,13 @@ function startRecording() {
             mediaRecorder.onstop = () => {
                 const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
 
-                // 创建一个 <a> 标签用于下载
                 const downloadLink = document.createElement('a');
                 downloadLink.href = URL.createObjectURL(audioBlob);
-                downloadLink.download = 'recorded_audio.wav'; // 设置下载的文件名
+                downloadLink.download = 'recorded_audio.wav';
 
-                // 将 <a> 标签添加到 DOM 中并模拟点击
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
 
-                // 移除 <a> 标签
                 document.body.removeChild(downloadLink);
             };
         })

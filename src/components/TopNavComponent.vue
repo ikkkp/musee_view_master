@@ -16,17 +16,32 @@
             </v-btn>
         </div>
         <div class="about-us-section">
-            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA">About us</v-btn>
+            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA" @click="() => ConversationShow = true">About
+                us</v-btn>
             <v-avatar color="info" size="45px">
                 <span class="text-h6">IK</span>
             </v-avatar>
         </div>
+    </div>
+    <div class="text-center">
+        <v-dialog v-model="ConversationShow" width="auto">
+            <v-card>
+                <v-card-text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua.
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary" block @click="ConversationShow = false">Close Dialog</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import router from '@/router';
+const ConversationShow = ref(false);
 const buttons = ref([
     {
         rounded: 'xl',
@@ -79,6 +94,7 @@ onMounted(() => {
         buttons.value[2].isActive = true;
     }
 });
+
 </script>
 
 <style scoped>

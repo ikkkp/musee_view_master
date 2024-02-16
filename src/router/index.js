@@ -23,11 +23,6 @@ const router = createRouter({
       component: UserInformationView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/error',
       name: 'not-found',
       component: NotFoundComponent

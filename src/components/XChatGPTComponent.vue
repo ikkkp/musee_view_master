@@ -32,9 +32,10 @@
             <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend" color="#2081C3">
                 <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
             </v-btn>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel" color="#2081C3">
-                <svg-icon type="mdi" :path="mdiMicrophone"
-                    class="expand-icon" style="height: 40px;height: 40px;"></svg-icon>
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel"
+                color="#2081C3">
+                <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"
+                    style="height: 40px;height: 40px;"></svg-icon>
             </v-btn>
         </div>
         <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
@@ -104,6 +105,9 @@ const dialogueArray = ref([
 
 
 onMounted(() => {
+    MathJax.texReset();
+    MathJax.typesetClear();
+    MathJax.typesetPromise();
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
     setTimeout(() => {
@@ -160,7 +164,7 @@ var tags = [
     height: 100%;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .svg-container {
