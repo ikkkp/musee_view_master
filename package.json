@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "lint": "eslint \"**/*.js\"",
+    "lint-fix": "eslint \"**/*.js\" --fix",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -23,6 +25,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.21.1",
     "vite": "^5.0.10"
   }
 }

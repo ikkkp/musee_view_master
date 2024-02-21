@@ -1,14 +1,21 @@
 <template>
     <v-expand-transition class="conversation-container">
-        <v-card v-if="overlayValue" class="v-card--reveal" color="#a1c9e3">
+        <v-card v-if="overlayValue" class="v-card--reveal">
             <GPTSVGComponent class="svg-display" :style="{ width: computedWidth + 'px' }" />
             {{ volume }}
-            <v-card-actions>
-                <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="toggleOverlay"
-                    color="#2081C3">
-                    <svg-icon type="mdi" :path="mdiMicrophoneOff" class="expand-icon"></svg-icon>
-                </v-btn>
-            </v-card-actions>
+            <div class="btn-area">
+                <div> <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="toggleOverlay"
+                        color="#2081C3" style="margin: 10px 10px;">
+                        <svg-icon type="mdi" :path="mdiCloseCircleOutline" class="expand-icon"></svg-icon>
+                    </v-btn>
+                </div>
+                <div>
+                    <v-btn icon="mdi-arrow-up-circle" @click="stopRecording" color="#2081C3" style="margin: 10px 10px; ">
+                        <svg-icon type="mdi" :path="mdiStopCircleOutline" class="expand-icon"></svg-icon>
+                    </v-btn>
+                </div>
+
+            </div>
         </v-card>
     </v-expand-transition>
 </template>
@@ -17,7 +24,7 @@
 import { defineProps, ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import GPTSVGComponent from '@/components/GPTSVGComponent.vue';
-import { mdiMicrophoneOff } from '@mdi/js'
+import { mdiCloseCircleOutline, mdiStopCircleOutline } from '@mdi/js'
 import useVolume from "@/hooks/useVolume/useVolume";
 const volume = ref(0)
 const props = defineProps({
@@ -28,7 +35,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:overlay']);
 const overlayValue = ref(props.overlay);
-const computedWidth = ref(100);
+const computedWidth = ref(200);
 var mediaRecorder;
 var recordedChunks = []; // 在函数内定义 recordedChunks 变量
 
@@ -68,15 +75,22 @@ function stopRecording() {
 }
 
 let intervalId = null;
-
 onMounted(() => {
+    let increasing = true; // 初始设定为递增
+
     intervalId = setInterval(() => {
-        if (computedWidth.value >= 300) {
-            computedWidth.value = 100; // 重置宽度，避免超过最大值
-        } else {
-            computedWidth.value += 10; // 增加宽度
+        if (computedWidth.value >= 200) {
+            increasing = false; // 达到300后开始递减
+        } else if (computedWidth.value <= 100) {
+            increasing = true; // 达到100后开始递增
         }
-    }, 100);
+
+        if (increasing) {
+            computedWidth.value += 5; // 递增宽度
+        } else {
+            computedWidth.value -= 5; // 递减宽度
+        }
+    }, 33.33); // 30fps
 });
 
 onUnmounted(() => {
@@ -84,6 +98,7 @@ onUnmounted(() => {
         clearInterval(intervalId);
     }
 });
+
 watch(() => props.overlay, (val) => {
     overlayValue.value = val;
     if (val) {
@@ -99,7 +114,6 @@ function toggleOverlay() {
     stopRecording();
     overlayValue.value = !overlayValue.value;
     emit('update:overlay', overlayValue.value);
-    console.log(overlayValue.value);
 }
 </script>
 
@@ -114,8 +128,8 @@ function toggleOverlay() {
 }
 
 .expand-icon {
-    height: 50px;
-    width: 50px;
+    height: 49px;
+    width: 49px;
 }
 
 @keyframes rotate {
@@ -134,6 +148,12 @@ function toggleOverlay() {
     /* 使用rotate动画，设置旋转时间、动画速度和无限循环 */
     transform-origin: center;
     /* 设置旋转的中心点为元素中心 */
-    margin: 10px 20px 80px 20px;
+    margin: 10px 20px 50px 20px;
+}
+
+.btn-area {
+    display: flex;
+
+
 }
 </style>
