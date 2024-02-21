@@ -33,8 +33,8 @@ export default {
             required: true,
             default: () => [
                 { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-                { url: '', lazySrc: 'src/images/empty-picture/no_search.svg' },
-                { url: '', lazySrc: 'src/images/empty-picture/no_search.svg' },
+                { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
+                { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
                 // Add more default images or make sure you pass an array with the correct structure from parent component
             ]
         },

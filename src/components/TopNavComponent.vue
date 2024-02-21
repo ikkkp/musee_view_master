@@ -16,7 +16,8 @@
             </v-btn>
         </div>
         <div class="about-us-section">
-            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA" @click="() => ConversationShow = true">About
+            <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA"
+                @click="() => ConversationShow = true">About
                 us</v-btn>
             <v-avatar color="info" size="45px">
                 <span class="text-h6">IK</span>
@@ -24,17 +25,28 @@
         </div>
     </div>
     <div class="text-center">
-        <v-dialog v-model="ConversationShow" width="auto">
+        <v-dialog v-model="ConversationShow" width="600px">
             <v-card>
-                <v-card-text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua.
+                <v-card-title class="headline blue lighten-2 white--text">关于沐斯慧教</v-card-title>
+                <v-card-text class="mt-4">
+                    <v-container>
+                        <v-row>
+                            <v-col cols="12" sm="6">
+                                <v-img src="src/images/musee-edu/musee-edu.webp" aspect-ratio="1.7" class="mx-auto" cover :height="300"></v-img>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                {{ intro }}
+                            </v-col>
+                        </v-row>
+                    </v-container>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary" block @click="ConversationShow = false">Close Dialog</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="ConversationShow = false">关闭</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
     </div>
 </template>
 
@@ -42,6 +54,7 @@
 import { onMounted, ref } from 'vue';
 import router from '@/router';
 const ConversationShow = ref(false);
+const intro = ref("沐斯慧教（MuseeEducation）致力于运用人工智能大模型推动教育的智慧化转型。通过结合先进的AI技术和教育行业的深刻理解，能够为学习者提供更加个性化、互动性强和效率高的学习体验。沐斯慧教的核心理念是利用大数据分析、自然语言处理和机器学习等技术，为教育领域带来创新的解决方案，包括但不限于个性化学习路径推荐、智能辅导机器人、以及基于学习者表现的实时反馈系统。");
 const buttons = ref([
     {
         rounded: 'xl',

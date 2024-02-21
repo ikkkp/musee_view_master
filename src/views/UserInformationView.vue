@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 80vh;">
-        <v-img src="src/images/empty-picture/no_search.svg" height="300" max-width="500"/>
+        <v-img src="src/images/empty-picture/on_dev.svg" height="500" max-width="800"/>
     </div>
 </template>
 

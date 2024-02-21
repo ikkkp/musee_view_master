@@ -1,7 +1,7 @@
 <template>
     <v-expand-transition class="conversation-container">
-        <v-card v-if="overlayValue" class="v-card--reveal" style="height: 100%;">
-            <GPTSVGComponent class="svg-display" :style="{ 'width': computedWidth }" />
+        <v-card v-if="overlayValue" class="v-card--reveal" color="#a1c9e3">
+            <GPTSVGComponent class="svg-display" :style="{ width: computedWidth + 'px' }" />
             {{ volume }}
             <v-card-actions>
                 <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="toggleOverlay"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, watch } from 'vue';
+import { defineProps, ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
 import GPTSVGComponent from '@/components/GPTSVGComponent.vue';
 import { mdiMicrophoneOff } from '@mdi/js'
@@ -28,7 +28,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:overlay']);
 const overlayValue = ref(props.overlay);
-const computedwidth = ref(0);
+const computedWidth = ref(100);
 var mediaRecorder;
 var recordedChunks = []; // 在函数内定义 recordedChunks 变量
 
@@ -67,11 +67,23 @@ function stopRecording() {
     }
 }
 
-function computedWidth() {
-    // 根据 volume 值映射到宽度范围
-    // 这里假设音量最大为 100，对应的最大宽度为 300px
-    return `${100 + volume * 20}px`;
-}
+let intervalId = null;
+
+onMounted(() => {
+    intervalId = setInterval(() => {
+        if (computedWidth.value >= 300) {
+            computedWidth.value = 100; // 重置宽度，避免超过最大值
+        } else {
+            computedWidth.value += 10; // 增加宽度
+        }
+    }, 100);
+});
+
+onUnmounted(() => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+});
 watch(() => props.overlay, (val) => {
     overlayValue.value = val;
     if (val) {
@@ -81,9 +93,7 @@ watch(() => props.overlay, (val) => {
     }
 });
 
-watch(() => volume, (val) => {
-    computedwidth.value = 100 + val * 20;
-});
+
 
 function toggleOverlay() {
     stopRecording();
