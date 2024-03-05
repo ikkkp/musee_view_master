@@ -14,8 +14,8 @@
             <div v-for="(message, index) in dialogueArray" :key="index">
                 <ChatComponent v-if="message.speaker == '用户'" :userMessage=message.message :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-                <ChatComponent v-else :userMessage=message.message :avatarSrc="user.avatarSrc" :userName="message.speaker"
-                    :userInfo="user.userInfo"></ChatComponent>
+                <ChatComponent v-else :userMessage=message.message :avatarSrc="user.avatarSrc"
+                    :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
             </div>
         </div>
         <div class="tags-section">
@@ -29,7 +29,8 @@
         <div class="textarea-container" v-if="!ConversationShow">
             <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
                 class="single-line-textarea"></v-text-field>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend" color="#2081C3">
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend"
+                color="#2081C3">
                 <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
             </v-btn>
             <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel"
@@ -56,51 +57,18 @@ import GPTSVGComponent from './GPTSVGComponent.vue';
 import EditableArea from './EditableArea.vue';
 import ChatComponent from '../components/ConversationComponent/ChatComponent.vue';
 import ConversationComponents from './ConversationComponent/ConversationComponents.vue';
+import Axios from '@/axios/axiosPlugin';
+
 
 const textValue = ref('');
 const ConversationShow = ref(false);
 const dialog = ref(false);
-const user = ref({ 'userName': '测试01', 'avatarSrc': 'test', 'userInfo': '初高中万千少萝的梦' });
+const user = ref({ 'userName': '测试01', 'avatarSrc': 'user-avatar.jpg', 'userInfo': '初高中万千少萝的梦' });
 const scrollContainer = ref(null);
 
 // 与大模型对话的会话信息数组（初中数学题相关）
 const dialogueArray = ref([
-    {
-        "speaker": "用户",
-        "message": "你好，大模型！请问能帮我解决一道初中数学题吗？",
-        "avatarSrc": "user-avatar.jpg", // 用户头像假设路径
-        "timestamp": "2023-03-24T16:30:00Z"
-    },
-    {
-        "speaker": "大模型",
-        "message": "当然可以，请告诉我具体题目内容。",
-        "avatarSrc": "model-avatar.png", // 模型头像假设路径
-        "timestamp": "2023-03-24T16:30:05Z"
-    },
-    {
-        "speaker": "用户",
-        "message": "好的，这是一道代数题：已知 2x + 3 = 7，求 x 的值。",
-        "avatarSrc": "user-avatar.jpg",
-        "timestamp": "2023-03-24T16:30:10Z"
-    },
-    {
-        "speaker": "大模型",
-        "message": "解这个方程很简单，首先将等式两边减去3得到：2x = 4，然后两边同时除以2得到：x = 2。",
-        "avatarSrc": "model-avatar.png",
-        "timestamp": "2023-03-24T16:30:15Z"
-    },
-    {
-        "speaker": "用户",
-        "message": "非常感谢，那接下来这是一道几何题：在直角三角形中，直角边长分别为3和4，求斜边长度。",
-        "avatarSrc": "user-avatar.jpg",
-        "timestamp": "2023-03-24T16:30:20Z"
-    },
-    {
-        "speaker": "大模型",
-        "message": "根据勾股定理，斜边的长度等于两直角边平方和的平方根。所以，斜边长度 c = √(3² + 4²) = √(9 + 16) = √25 = 5。",
-        "avatarSrc": "model-avatar.png",
-        "timestamp": "2023-03-24T16:30:25Z"
-    },
+
 ]);
 
 
@@ -110,6 +78,7 @@ onMounted(() => {
     MathJax.typesetPromise();
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
+    user.username = localStorage.getItem('username');
     setTimeout(() => {
         scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
     }, 0);
@@ -121,12 +90,26 @@ watchEffect(() => {
 });
 
 function TextSend() {
+    if (textValue.value === '') {
+        return;
+    }
+    Axios({
+        method: 'post',
+        url: '/api/student/bigModel',
+    }).then(function (response) {
+        console.log('发送成功', response);
+        // 可以在这里处理成功的逻辑，比如更新UI等
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
     dialogueArray.value.push({
         "speaker": "用户",
-        "message": textValue.value,
-        "avatarSrc": "user-avatar.jpg",
-        "timestamp": "2023-03-24T16:30:20Z"
+        "message": textValue.value,  // 假设textValue.value是绑定到用户输入的变量
+        "avatarSrc": "user-avatar.jpg",  // 用户头像图片的路径
+        "timestamp": new Date().toLocaleString()  // 获取当前时间并转换为字符串
     });
+
     setTimeout(() => {
         scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
     }, 0);

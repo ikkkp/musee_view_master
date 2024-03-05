@@ -1,46 +1,55 @@
 <template>
-    <v-list>
-        <v-card v-for="(step, index) in listItems.solutionSteps" :key="index" :elevation="0" class="list-item-card" color="">
-            <v-list-item>
-                <div style="display: flex;">
-                    <!-- 由于此处不再需要显示id，移除avatar-with-id -->
-                    <v-avatar size="45px" class="avatar-item">
-                        <!-- 可以在这里显示步骤编号 -->
-                        <span class="step-index">{{ index + 1 }}</span>
-                    </v-avatar>
-                    <!-- 使用step作为标题，展示解题步骤序号及内容 -->
-                    <v-card-title class="list-item-title">步骤 {{ index + 1 }}: {{ step }}</v-card-title>
-                    <!-- 步骤内容已包含在标题中，此处可以留空或提供额外信息 -->
-                    <v-card-text class="list-item-subtitle"></v-card-text>
-                </div>
-            </v-list-item>
-        </v-card>
-    </v-list>
+    <div v-if="globalState.steps.length != 0" class="text-area" @click="openStepsCard">
+        <v-list>
+            <v-card v-for="(step, index) in globalState.steps" :key="index" :elevation="0" class="list-item-card"
+                color="">
+                <v-list-item>
+                    <div style="display: flex;">
+                        <!-- 由于此处不再需要显示id，移除avatar-with-id -->
+                        <v-avatar size="45px" class="avatar-item">
+                            <!-- 可以在这里显示步骤编号 -->
+                            <span class="step-index">{{ index + 1 }}</span>
+                        </v-avatar>
+                        <!-- 使用step作为标题，展示解题步骤序号及内容 -->
+                        <v-card-title class="list-item-title"> {{ step }}</v-card-title>
+                        <!-- 步骤内容已包含在标题中，此处可以留空或提供额外信息 -->
+                        <v-card-text class="list-item-subtitle"></v-card-text>
+                    </div>
+                </v-list-item>
+            </v-card>
+        </v-list>
+    </div>
+    <template v-else>
+        <div class="text-area empty-area">
+            <img src="@/images/empty-picture/no_data.svg" style="height: 50%" />
+            <div class="text-font">请先拍题哦</div>
+        </div>
+    </template>
 </template>
-  
-<script>
-export default {
-    props: {
-        listItems: {
-            type: Object,
-            required: true,
-            default: () => ({
-                id: 1,
-                title: '双曲线题目1',
-                question: '已知双曲线方程为$\\frac{x^2}{9} - \\frac{y^2}{4} = 1$，求焦点坐标、顶点坐标和渐近线方程。',
-                solutionSteps: [
-                    '第一步：根据标准双曲线方程形式，可知a² = 9, b² = 4，则c² = a² + b² = 9 + 4 = 13，所以$c = \\sqrt{13}$。',
-                    '第二步：焦点坐标位于原点两侧且距离为$c$，因此焦点坐标为$(±\\sqrt{13}, 0)$。',
-                    '第三步：顶点坐标是中心与实轴的交点，对于此双曲线，顶点坐标为$(±a, 0)$，即顶点坐标为$(±3, 0)$。',
-                    '第四步：计算渐近线方程。由于双曲线的标准形式下，渐近线方程为$y = ±\\frac{b}{a}x$，所以此处渐近线方程为$y = ±\\frac{2}{3}x$。'
-                ]
-            })
-        }
-    }
-}
+
+<script setup>
+import { globalState } from '@/utils/store.js';
+
+
 </script>
-  
+
 <style scoped>
+.text-area {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+
+.empty-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+}
+
 .list-item-card {
     margin: 5px 0;
     max-width: 100%;

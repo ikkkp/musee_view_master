@@ -4,6 +4,7 @@ import QuestionsCollectionView from '../views/QuestionsCollectionView.vue'
 import UserInformationView from '../views/UserInformationView.vue'
 import NotFoundComponent from '../views/NotFoundPage.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

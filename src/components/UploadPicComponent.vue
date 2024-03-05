@@ -1,8 +1,7 @@
 <template>
     <v-card class="card-small" elevation="0" color="#F7F9F9">
         <div class="card-grid" v-for="(image, index) in smallImages" :key="index">
-            <v-img class="grid-image" cover :height="90" :src="image.url" :lazy-src="image.lazySrc"
-                max-width="500">
+            <v-img class="grid-image" cover :height="90" :src="image.url" :lazy-src="image.lazySrc" max-width="500">
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -14,7 +13,9 @@
 
     <v-card class="card-large" elevation="0">
         <div class="card-content">
-            <v-img class="large-image" cover height="300" :src="largeImage.url" :lazy-src="largeImage.lazySrc" max-width="500">
+            <v-img class="large-image" cover height="300" :src="largeImage.url" :lazy-src="largeImage.lazySrc"
+                max-width="500" @click="handleClick()">
+
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -23,32 +24,76 @@
             </v-img>
         </div>
     </v-card>
+    <input type="file" accept="image/*" ref="docFileUploader" name="docFileUploader" @change="handleFileChange"
+        hidden />
+
 </template>
-  
-<script>
-export default {
-    props: {
-        smallImages: {
-            type: Array,
-            required: true,
-            default: () => [
-                { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-                { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-                { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-                // Add more default images or make sure you pass an array with the correct structure from parent component
-            ]
-        },
-        largeImage: {
-            type: Object,
-            required: true,
-            default: () => ({
-                url: 'src/images/empty-picture/no_search.svg'
-            })
-        }
+
+<script setup>
+import { ref, defineProps } from 'vue';
+import { globalState } from '@/utils/store.js';
+import Axios from '@/axios/axiosPlugin';
+const docFileUploader = ref(null);
+const selectedFile = ref(null);
+const props = defineProps({
+    smallImages: {
+        type: Array,
+        required: true,
+        default: () => [
+            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
+            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
+            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
+            // Add more default images or make sure you pass an array with the correct structure from parent component
+        ]
+    },
+    largeImage: {
+        type: Object,
+        required: true,
+        default: () => ({
+            url: 'src/images/empty-picture/no_search.svg'
+        })
     }
+});
+
+function handleClick() {
+    docFileUploader.value.click();
+};
+
+function handleFileChange(event) {
+    // 获取到选中的文件
+    selectedFile.value = event.target.files[0];
+    uploadFile();
+};
+
+
+function uploadFile() {
+    let formData = new FormData();
+    formData.append('question', selectedFile.value);
+    Axios({
+        method: 'post',
+        url: '/api/student/bigModel',
+        data: formData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+        .then((response) => {
+            if (response.data.status === 1) {
+                let match = response.data.data.match(/题目：\n\n([^\n]+)/);
+                let steps = response.data.data.match(/(步骤\d+：[^\n]+)/g);
+                globalState.title = match
+                globalState.Analyserdata = response.data.data
+                globalState.steps = steps
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            // 这里可以添加一些上传失败的处理
+        });
 }
 </script>
-  
+
+
 <style scoped>
 .card-small {
     height: 95%;

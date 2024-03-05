@@ -4,11 +4,10 @@ import App from './App.vue'
 import router from './router'
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import Axios from '@/axios/axiosPlugin.js'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import * as mdi from '@mdi/font/css/materialdesignicons.css'
-// import "@/utils/mathjax"; // 必须在引入mathjax前引入mathjax的配置文件
-// import "mathjax/es5/tex-mml-chtml"; // 使用 tex-mml-chtml
 
 const vuetify = createVuetify({
   icons: {
@@ -20,6 +19,8 @@ const vuetify = createVuetify({
   components,
   directives,
 })
+const app = createApp(App);
+app.config.globalProperties.$Axios = Axios;
 
-createApp(App).use(router).use(vuetify).mount('#app')
+app.use(router).use(vuetify).mount('#app')
 
