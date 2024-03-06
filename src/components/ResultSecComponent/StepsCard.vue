@@ -1,5 +1,5 @@
 <template>
-    <div v-if="globalState.steps.length != 0" class="text-area" @click="openStepsCard">
+    <div v-if="globalState.steps!=null" class="text-area" @click="openStepsCard">
         <v-list>
             <v-card v-for="(step, index) in globalState.steps" :key="index" :elevation="0" class="list-item-card"
                 color="">

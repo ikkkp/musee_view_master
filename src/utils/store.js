@@ -2,8 +2,10 @@ import { reactive } from 'vue';
 
 export const globalState = reactive({
     showModal: false,
-    Analyserdata: "",
     title: "",
+    Analyserdata: "",
+    questionText: "",
     steps: [],
-    history: [{}],
+    history: [],
 });
+

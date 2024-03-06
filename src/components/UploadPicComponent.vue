@@ -1,7 +1,7 @@
 <template>
     <v-card class="card-small" elevation="0" color="#F7F9F9">
         <div class="card-grid" v-for="(image, index) in smallImages" :key="index">
-            <v-img class="grid-image" cover :height="90" :src="image.url" :lazy-src="image.lazySrc" max-width="500">
+            <v-img class="grid-image" Default :height="90" :src="image.path" :lazy-src="lazySrc" max-width="500">
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -13,8 +13,8 @@
 
     <v-card class="card-large" elevation="0">
         <div class="card-content">
-            <v-img class="large-image" cover height="300" :src="largeImage.url" :lazy-src="largeImage.lazySrc"
-                max-width="500" @click="handleClick()">
+            <v-img class="large-image" Default height="300" :src="largeImage.path" :lazy-src="lazySrc" max-width="500"
+                @click="handleClick()">
 
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
@@ -30,30 +30,29 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, computed } from 'vue';
 import { globalState } from '@/utils/store.js';
 import Axios from '@/axios/axiosPlugin';
+
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
-const props = defineProps({
-    smallImages: {
-        type: Array,
-        required: true,
-        default: () => [
-            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-            { url: 'src/images/empty-picture/no_search.svg', lazySrc: 'src/images/empty-picture/no_search.svg' },
-            // Add more default images or make sure you pass an array with the correct structure from parent component
-        ]
-    },
-    largeImage: {
-        type: Object,
-        required: true,
-        default: () => ({
-            url: 'src/images/empty-picture/no_search.svg'
-        })
-    }
+const lazySrc = ref('src/images/empty-picture/no_search.svg');
+
+// 使用computed函数创建计算属性
+const smallImages = computed(() => {
+    // 使用globalState.history.value访问响应式引用的值
+    return globalState.history.slice(1, 4);
 });
+
+const largeImage = computed(() => {
+    if (globalState.history.length === 0) {
+        return {
+            path: 'src/images/empty-picture/no_search.svg',
+        };
+    }
+    return globalState.history[0];
+});
+
 
 function handleClick() {
     docFileUploader.value.click();

@@ -1,26 +1,34 @@
 <template>
-  <v-card class="analysis-content mx-auto" elevation="0">
-    <v-card-item>
-      <v-card-title>{{ globalState.title }}</v-card-title>
-      <!-- 单个视频源 -->
-      <!-- <div class="video-container">
+  <div v-if="globalState.title!=null" class="text-area" @click="openStepsCard">
+    <v-card class="analysis-content mx-auto" elevation="0">
+      <v-card-item>
+        <v-card-title>{{ globalState.title }}</v-card-title>
+        <!-- 单个视频源 -->
+        <!-- <div class="video-container">
         <video controls width="100%" height="240px">
           <source src="https://youtu.be/YRvf00NooN8" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       </div> -->
-      <v-sheet>
-        <v-chip-group mandatory selected-class="primary-text">
-          <v-chip v-for="tag in tags" :key="tag" class="chip-item">{{ tag }}</v-chip>
-        </v-chip-group>
-      </v-sheet>
-      <v-card-subtitle style="white-space: normal; font-size: inherit;">
-        {{ globalState.Analyserdata }}
-      </v-card-subtitle>
-    </v-card-item>
-  </v-card>
+        <v-sheet>
+          <v-chip-group mandatory selected-class="primary-text">
+            <v-chip v-for="tag in tags" :key="tag" class="chip-item">{{ tag }}</v-chip>
+          </v-chip-group>
+        </v-sheet>
+        <v-card-subtitle style="white-space: normal; font-size: inherit;">
+          {{ globalState.Analyserdata }}
+        </v-card-subtitle>
+      </v-card-item>
+    </v-card>
+  </div>
+  <template v-else>
+    <div class="text-area empty-area">
+      <img src="@/images/empty-picture/no_data.svg" style="height: 50%" />
+      <div class="text-font">请先拍题哦</div>
+    </div>
+  </template>
 </template>
-  
+
 <script setup>
 import { globalState } from '@/utils/store.js';
 const tags = [
@@ -41,7 +49,7 @@ const tags = [
 }
 
 .video-container {
-  padding: 10px 0 0 0 ;
+  padding: 10px 0 0 0;
   border-radius: 10px;
   background-color: #ffffff;
 }

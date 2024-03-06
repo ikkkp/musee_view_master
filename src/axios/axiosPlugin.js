@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { globalState } from '@/utils/store.js';
 import { baseURL } from '@/config.js';
-
 const Axios = axios.create({
     baseURL: baseURL,
     timeout: 20 * 1000,
@@ -28,10 +27,11 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
     response => {
         // 你的响应成功处理逻辑
-        if (localStorage.getItem('token') == null)
+        if (localStorage.getItem('token') == null){
             if (response.data && response.data.status === 0) {
                 globalState.showModal = true;
             }
+        }
         return response;
     },
     error => {
