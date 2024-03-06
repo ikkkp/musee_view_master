@@ -73,8 +73,8 @@ function handleLogin() {
                     localStorage.setItem('uid', response.data.data[0]);
                     localStorage.setItem('token', response.data.data[1]);
                     localStorage.setItem('username', username.value);
-                    fetchData();
                 }
+                return fetchData();
             }).catch(function (error) {
                 console.log('登录失败', error);
             });

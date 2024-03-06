@@ -1,8 +1,8 @@
 <template>
-  <div v-if="globalState.title!=null" class="text-area" @click="openStepsCard">
+  <div v-if="globalState.Analyserdata != null" class="text-area" @click="openStepsCard">
     <v-card class="analysis-content mx-auto" elevation="0">
       <v-card-item>
-        <v-card-title>{{ globalState.title }}</v-card-title>
+        <v-card-title style="white-space: normal;">{{ globalState.Analyserdata }}</v-card-title>
         <!-- 单个视频源 -->
         <!-- <div class="video-container">
         <video controls width="100%" height="240px">
@@ -10,13 +10,13 @@
           Your browser does not support the video tag.
         </video>
       </div> -->
-        <v-sheet>
+        <!-- <v-sheet>
           <v-chip-group mandatory selected-class="primary-text">
             <v-chip v-for="tag in tags" :key="tag" class="chip-item">{{ tag }}</v-chip>
           </v-chip-group>
-        </v-sheet>
-        <v-card-subtitle style="white-space: normal; font-size: inherit;">
-          {{ globalState.Analyserdata }}
+        </v-sheet> -->
+        <v-card-subtitle style="white-space: normal; font-size: larger;line-height: 2rem;">
+          {{ globalState.questionAnswer }}
         </v-card-subtitle>
       </v-card-item>
     </v-card>
@@ -31,13 +31,23 @@
 
 <script setup>
 import { globalState } from '@/utils/store.js';
-const tags = [
-  '#双曲线',
-  '#选择题',
-  '#初中数学'
-];
+import { onMounted, nextTick } from "vue";
+function convert() {
+  MathJax.texReset();
+  MathJax.typesetClear();
+  MathJax.typesetPromise();
+}
 
+function updateFormula() {
+  setTimeout(() => {
+    nextTick(convert);
+  }, 100);
+  
+}
 
+onMounted(() => {
+  updateFormula();
+});
 </script>
 
 <style scoped>

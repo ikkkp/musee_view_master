@@ -3,7 +3,7 @@ import { globalState } from '@/utils/store.js';
 import { baseURL } from '@/config.js';
 const Axios = axios.create({
     baseURL: baseURL,
-    timeout: 20 * 1000,
+    timeout: 30 * 1000,
 });
 
 // 请求拦截器

@@ -11,7 +11,7 @@
                             <span class="step-index">{{ index + 1 }}</span>
                         </v-avatar>
                         <!-- 使用step作为标题，展示解题步骤序号及内容 -->
-                        <v-card-title class="list-item-title"> {{ step }}</v-card-title>
+                        <v-card-title class="list-item-title"> {{ step.content }}</v-card-title>
                         <!-- 步骤内容已包含在标题中，此处可以留空或提供额外信息 -->
                         <v-card-text class="list-item-subtitle"></v-card-text>
                     </div>

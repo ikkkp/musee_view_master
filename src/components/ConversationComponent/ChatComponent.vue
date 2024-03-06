@@ -5,13 +5,13 @@
                 <template v-slot:prepend>
                     <v-avatar color="grey-darken-3"
                         image="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                        v-if="props.userName == '用户'"></v-avatar>
+                        v-if="props.userName == 'user'"></v-avatar>
                     <v-avatar color="grey-lignt-3" v-else>
                         <GPTSVGComponent></GPTSVGComponent>
                     </v-avatar>
                 </template>
-                <v-list-item-title>{{ props.userName == '用户' ? props.userName : "ChatGpt" }}</v-list-item-title>
-                <v-list-item-subtitle>{{ props.userName == '用户' ? props.userInfo : "沐斯慧教AI大模型" }}</v-list-item-subtitle>
+                <v-list-item-title>{{ props.userName == 'user' ? props.userName : "ChatGpt" }}</v-list-item-title>
+                <v-list-item-subtitle>{{ props.userName == 'user' ? props.userInfo : "沐斯慧教AI大模型" }}</v-list-item-subtitle>
             </v-list-item>
         </v-card-actions>
         <v-card-subtitle style="white-space: normal; font-size: inherit;">{{ props.userMessage }}</v-card-subtitle>

@@ -12,7 +12,7 @@
 
         <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
             <div v-for="(message, index) in dialogueArray" :key="index">
-                <ChatComponent v-if="message.speaker == '用户'" :userMessage=message.message :avatarSrc="user.avatarSrc"
+                <ChatComponent v-if="message.speaker == 'user'" :userMessage=message.message :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
                 <ChatComponent v-else :userMessage=message.message :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
@@ -22,7 +22,7 @@
             <span class="tags-title">Tags:</span>
             <v-sheet class="tags-wrapper">
                 <v-chip-group mandatory class="chip-group" selected-class="primary-text">
-                    <v-chip v-for="tag in tags" :key="tag" class="chip-item">{{ tag }}</v-chip>
+                    <v-chip v-for="tag in tags" :key="tag" class="chip-item" @click="TagClick(tag)">{{ tag }}</v-chip>
                 </v-chip-group>
             </v-sheet>
         </div>
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, watchEffect, onMounted, nextTick, onUpdated ,watch} from 'vue';
 import { mdiArrowUpCircle, mdiFormatListBulleted, mdiMicrophone } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
@@ -58,6 +58,7 @@ import EditableArea from './EditableArea.vue';
 import ChatComponent from '../components/ConversationComponent/ChatComponent.vue';
 import ConversationComponents from './ConversationComponent/ConversationComponents.vue';
 import Axios from '@/axios/axiosPlugin';
+import { globalState } from '@/utils/store.js';
 
 
 const textValue = ref('');
@@ -79,9 +80,7 @@ onMounted(() => {
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
     user.username = localStorage.getItem('username');
-    setTimeout(() => {
-        scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
-    }, 0);
+
 });
 
 watchEffect(() => {
@@ -89,33 +88,62 @@ watchEffect(() => {
     textValue.value = localStorage.getItem('renderedFormula');
 });
 
+watch(dialogueArray, () => {
+    scrollToBottom();
+});
+
+// 使用onUpdated生命周期钩子确保在每次组件更新后滚动到底部
+onUpdated(() => {
+    scrollToBottom();
+});
+
+function scrollToBottom() {
+    // 使用nextTick来确保DOM更新完成
+    nextTick(() => {
+        const container = scrollContainer.value;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+}
+
+function TagClick(tag) {
+    textValue.value += tag;
+}
+
 function TextSend() {
     if (textValue.value === '') {
         return;
     }
     Axios({
         method: 'post',
-        url: '/api/student/bigModel',
+        url: '/api/student/question/communication',
+        data: {
+            "basicQuestion": { "qid": globalState.history[0].qid },
+            "content": textValue.value,
+        }
     }).then(function (response) {
-        console.log('发送成功', response);
+        dialogueArray.value = response.data.data.map((item, index) => {
+            // 确定发言者是用户还是助手
+            const speaker = index % 2 === 0 ? "user" : "assistant";
+
+            return {
+                speaker: speaker, // 设置发言者
+                message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
+                avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
+                timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
+            };
+        });
+
         // 可以在这里处理成功的逻辑，比如更新UI等
     }).catch(function (error) {
         console.error('发送失败', error);
         // 可以在这里处理错误的逻辑
     });
-    dialogueArray.value.push({
-        "speaker": "用户",
-        "message": textValue.value,  // 假设textValue.value是绑定到用户输入的变量
-        "avatarSrc": "user-avatar.jpg",  // 用户头像图片的路径
-        "timestamp": new Date().toLocaleString()  // 获取当前时间并转换为字符串
-    });
-
-    setTimeout(() => {
-        scrollContainer.value.scrollTop = scrollContainer.value.scrollHeight;
-    }, 0);
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
 }
+
 
 function ConversationModel() {
     ConversationShow.value = true;
@@ -134,11 +162,10 @@ function openDialog() {
     dialog.value = true;
 }
 
-var tags = [
-    '#步骤1',
-    '#步骤2',
-    '#步骤3'
-];
+var tags = globalState.steps.map((item, index) => {
+    return `步骤${index + 1}`;
+});
+
 </script>
 
 <style scoped>

@@ -33,6 +33,7 @@
 import { ref, computed } from 'vue';
 import { globalState } from '@/utils/store.js';
 import Axios from '@/axios/axiosPlugin';
+import { fetchData } from '@/utils/common.js';
 
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
@@ -68,6 +69,7 @@ function handleFileChange(event) {
 function uploadFile() {
     let formData = new FormData();
     formData.append('question', selectedFile.value);
+    globalState.dialogVisible = true
     Axios({
         method: 'post',
         url: '/api/student/bigModel',
@@ -78,15 +80,23 @@ function uploadFile() {
     })
         .then((response) => {
             if (response.data.status === 1) {
-                let match = response.data.data.match(/题目：\n\n([^\n]+)/);
-                let steps = response.data.data.match(/(步骤\d+：[^\n]+)/g);
-                globalState.title = match
-                globalState.Analyserdata = response.data.data
-                globalState.steps = steps
+                console.log(response.data.data);
+                const temp = response.data.data
+                globalState.qid = temp.qid
+                globalState.title = temp.questionText
+                globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
+                globalState.questionAnswer = temp.concreteQuestion.questionAnswer
+                globalState.steps = temp.concreteQuestion.questionSteps
+                globalState.knowledges = temp.concreteQuestion.knowledges
+                console.log('上传成功', globalState.steps);
+                console.log('上传成功', globalState);
             }
+            globalState.dialogVisible = false
+            return fetchData();
         })
         .catch((error) => {
             console.error(error);
+            globalState.dialogVisible = false
             // 这里可以添加一些上传失败的处理
         });
 }
