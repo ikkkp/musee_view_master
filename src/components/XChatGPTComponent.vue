@@ -19,7 +19,6 @@
             </div>
         </div>
         <div class="tags-section">
-            <span class="tags-title">Tags:</span>
             <v-sheet class="tags-wrapper">
                 <v-chip-group mandatory class="chip-group" selected-class="primary-text">
                     <v-chip v-for="tag in tags" :key="tag" class="chip-item" @click="TagClick(tag)">{{ tag }}</v-chip>
@@ -85,7 +84,7 @@ function convert() {
 function updateFormula() {
   setTimeout(() => {
     nextTick(convert);
-  }, 100);
+  }, 0);
 }
 
 
@@ -120,8 +119,15 @@ function TagClick(tag) {
 
 function TextSend() {
     if (textValue.value === '') {
+        globalState.warntitle = '你想问些什么呢~'
+        globalState.dialogVisible = true;
+        setTimeout(() => {
+            globalState.dialogVisible = false;
+        }, 1000);
         return;
     }
+    globalState.warntitle = '小沐正在努力思考~'
+    globalState.dialogVisible = true;
     Axios({
         method: 'post',
         url: '/api/student/question/communication',
@@ -133,7 +139,6 @@ function TextSend() {
         globalState.dialogueArray = response.data.data.map((item, index) => {
             // 确定发言者是用户还是助手
             const speaker = index % 2 === 0 ? "user" : "assistant";
-
             return {
                 speaker: speaker, // 设置发言者
                 message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
@@ -141,7 +146,7 @@ function TextSend() {
                 timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
             };
         });
-
+        globalState.dialogVisible = false;
         // 可以在这里处理成功的逻辑，比如更新UI等
     }).catch(function (error) {
         console.error('发送失败', error);
@@ -195,7 +200,7 @@ var tags = globalState.steps.map((item, index) => {
 .tags-section {
     display: flex;
     align-items: center;
-    padding-left: 40px;
+    padding: 0px 20px;
 }
 
 .tags-title {

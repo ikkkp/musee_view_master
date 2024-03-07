@@ -5,7 +5,7 @@
   <div class="pa-4 text-center">
         <v-dialog v-model="globalState.dialogVisible" max-width="320" persistent>
             <v-list class="py-2" color="primary" elevation="12" rounded="lg">
-                <v-list-item prepend-icon="$vuetify-outline" title="正在生成题解中哦！">
+                <v-list-item prepend-icon="$vuetify-outline" :title='globalState.warntitle'>
                     <template v-slot:prepend>
                         <div class="pe-4">
                             <v-icon color="primary" size="x-large"></v-icon>

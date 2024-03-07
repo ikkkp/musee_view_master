@@ -2,7 +2,7 @@
   <div v-if="globalState.Analyserdata != ''" class="text-area" @click="openStepsCard">
     <v-card class="analysis-content mx-auto" elevation="0">
       <v-card-item>
-        <v-card-title style="white-space: normal;">{{ globalState.Analyserdata }}</v-card-title>
+        <!-- <v-card-title style="white-space: normal;">{{ globalState.Analyserdata }}</v-card-title> -->
         <!-- 单个视频源 -->
         <!-- <div class="video-container">
         <video controls width="100%" height="240px">
@@ -10,15 +10,15 @@
           Your browser does not support the video tag.
         </video>
       </div> -->
-        <!-- <v-sheet>
-          <v-chip-group mandatory selected-class="primary-text">
-            <v-chip v-for="tag in tags" :key="tag" class="chip-item">{{ tag }}</v-chip>
-          </v-chip-group>
-        </v-sheet> -->
-        <v-card-subtitle style="white-space: normal; font-size: larger;line-height: 2rem;">
-          {{ globalState.questionAnswer }}
+        <v-card-subtitle style="white-space: normal; font-size: larger;line-height: 1.5rem;">
+          {{ globalState.Analyserdata }}
         </v-card-subtitle>
       </v-card-item>
+      <v-sheet style="margin: 0px 10px;">
+          <v-chip-group mandatory selected-class="primary-text">
+            <v-chip v-for="tag in globalState.knowledges" :key="tag" class="chip-item">{{ tag }}</v-chip>
+          </v-chip-group>
+        </v-sheet>
     </v-card>
   </div>
   <template v-else>

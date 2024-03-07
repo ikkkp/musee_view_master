@@ -9,15 +9,12 @@
                 </template>
             </v-img>
         </div>
-
-
     </v-card>
 
     <v-card class="card-large" elevation="0">
         <div class="card-content">
             <v-img class="large-image" Default height="300" :src="largeImage.path" :lazy-src="lazySrc" max-width="500"
                 @click="handleClick()">
-
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -26,8 +23,7 @@
             </v-img>
         </div>
     </v-card>
-    <input type="file" accept="image/*" ref="docFileUploader" name="docFileUploader" @change="handleFileChange"
-        hidden />
+    <input type="file" accept="image/*" ref="docFileUploader" name="docFileUploader" @change="handleFileChange" hidden />
 
 </template>
 
@@ -79,6 +75,7 @@ function uploadFile() {
     let formData = new FormData();
     formData.append('question', selectedFile.value);
     globalState.dialogVisible = true
+    globalState.warntitle = '让小沐想想看哈~'
     Axios({
         method: 'post',
         url: '/api/student/bigModel',
@@ -96,6 +93,7 @@ function uploadFile() {
                 globalState.questionAnswer = temp.concreteQuestion.questionAnswer
                 globalState.steps = temp.concreteQuestion.questionSteps
                 globalState.knowledges = temp.concreteQuestion.knowledges
+                globalState.dialogueArray = []
             }
             globalState.dialogVisible = false
             return fetchData();

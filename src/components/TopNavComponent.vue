@@ -27,7 +27,7 @@
     <div class="text-center">
         <v-dialog v-model="ConversationShow" width="600px">
             <v-card>
-                <v-card-title class="headline blue lighten-2 white--text">关于沐斯慧教</v-card-title>
+                <v-card-title class="headline blue lighten-2 white--text" style="padding-left:40px;">关于沐斯慧教</v-card-title>
                 <v-card-text class="mt-4">
                     <v-container>
                         <v-row>

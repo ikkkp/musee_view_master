@@ -28,7 +28,7 @@ export async function fetchData() {
             // 更新globalState
             globalState.title = concreteInfo.questionAnswer;
             globalState.Analyserdata = concreteInfo.questionAnswer;
-            globalState.steps = concreteInfo.questionSteps;
+            globalState.steps = concreteInfo.questionSteps.filter(step => step !== '');
             globalState.questionText = concreteInfo.questionText;
             globalState.knowledges = concreteInfo.knowledges;
             await updataContent();
@@ -46,6 +46,7 @@ export async function updataContent() {
             "content": '你好',
         }
     }).then(function (response) {
+
         globalState.dialogueArray = response.data.data.map((item, index) => {
             // 确定发言者是用户还是助手
             const speaker = index % 2 === 0 ? "user" : "assistant";
@@ -56,7 +57,9 @@ export async function updataContent() {
                 avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
                 timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
             };
-        });
+        },
+            console.log('发送成功', globalState.dialogueArray)
+        );
 
         // 可以在这里处理成功的逻辑，比如更新UI等
     }).catch(function (error) {

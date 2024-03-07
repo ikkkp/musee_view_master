@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" :key="componentKey">
         <!-- Left Section -->
         <div class="left-section">
             <v-card class="left-card" color="#A1C9E3">
@@ -22,8 +22,19 @@
 import SearchResultComponent from '@/components/SearchResultComponent.vue';
 import UploadPicComponent from '@/components/UploadPicComponent.vue';
 import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
+import { globalState } from '@/utils/store';
+import { ref, watch } from 'vue';
+const componentKey = ref(0);
+
+// 监听某个响应式状态的变化
+watch(globalState, (newValue, oldValue) => {
+    // 当状态发生变化时，改变key以强制组件重新创建
+    console.log('render again');
+    componentKey.value++;
+});
+
 </script>
-  
+
 <style scoped>
 .container {
     height: 85vh;
@@ -57,7 +68,4 @@ import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
     flex-direction: row;
     justify-content: space-around;
 }
-
-
 </style>
-  
