@@ -11,5 +11,6 @@ export const globalState = reactive({
     steps: [],
     history: [],
     knowledges: [],
+    dialogueArray: [],
 });
 

@@ -37,7 +37,6 @@ function updateFormula() {
 
 onMounted(() => {
     editor.value = new E("#wang-editor-area");
-    console.log(editor.value);
     editor.value.menus.extend('LatexSvgRender', AlertMenu)
     editor.value.config.height = 400;
     editor.value.config.menus = ['head',

@@ -4,28 +4,38 @@
             :color="card.isActive ? '#FFFFFF' : card.color" :width="card.width"
             :height="card.isActive ? '39px' : card.height" @click="selectCard(index)">
             <div class="custom-style" :style="{
-                'color': card.isActive ? '#000' : '#8F9CA6'
-            }">
+            'color': card.isActive ? '#000' : '#8F9CA6'
+        }">
                 {{ card.title }}
             </div>
         </v-card>
     </div>
 
-    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 0">
-        <AnalysisCard />
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 0" :key='key'>
+        <AnalysisCard/>
     </v-card>
-    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 1">
-        <StepsCard />
+    <v-card class="content-cards" color="#FFFFFF" elevation="0" v-show="selectedCardIndex === 1" >
+        <StepsCard/>
     </v-card>
     <v-card class="content-cards" color="#FFFFFF" elevation="0" v-if="selectedCardIndex === 2">
         <NotesCard />
     </v-card>
 </template>
+
 <script setup>
-import { ref } from 'vue';
+import { ref ,watchEffect} from 'vue';
 import AnalysisCard from './ResultSecComponent/AnalysisCard.vue';
 import StepsCard from './ResultSecComponent/StepsCard.vue';
 import NotesCard from './ResultSecComponent/NotesCard.vue';
+import { globalState } from '@/utils/store.js';
+
+
+const key = ref(Math.random());
+
+watchEffect(() => {
+    globalState.Analyserdata;
+    key.value = Math.random();
+});
 
 const colorCards = ref([
     { color: '#D0E4F1', width: '120px', height: '34px', elevation: '0', isActive: false, title: '题目解析' },
@@ -41,6 +51,7 @@ const selectCard = (index) => {
     });
 };
 </script>
+
 <style scoped>
 .content-cards {
     margin: 0px 10px 10px 10px;

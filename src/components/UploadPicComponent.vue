@@ -9,6 +9,8 @@
                 </template>
             </v-img>
         </div>
+
+
     </v-card>
 
     <v-card class="card-large" elevation="0">
@@ -41,6 +43,13 @@ const lazySrc = ref('src/images/empty-picture/no_search.svg');
 
 // 使用computed函数创建计算属性
 const smallImages = computed(() => {
+    if (globalState.history.length === 0) {
+        return [
+            { path: 'src/images/empty-picture/no_search.svg' },
+            { path: 'src/images/empty-picture/no_search.svg' },
+            { path: 'src/images/empty-picture/no_search.svg' },
+        ];
+    }
     // 使用globalState.history.value访问响应式引用的值
     return globalState.history.slice(1, 4);
 });
@@ -80,7 +89,6 @@ function uploadFile() {
     })
         .then((response) => {
             if (response.data.status === 1) {
-                console.log(response.data.data);
                 const temp = response.data.data
                 globalState.qid = temp.qid
                 globalState.title = temp.questionText
@@ -88,8 +96,6 @@ function uploadFile() {
                 globalState.questionAnswer = temp.concreteQuestion.questionAnswer
                 globalState.steps = temp.concreteQuestion.questionSteps
                 globalState.knowledges = temp.concreteQuestion.knowledges
-                console.log('上传成功', globalState.steps);
-                console.log('上传成功', globalState);
             }
             globalState.dialogVisible = false
             return fetchData();

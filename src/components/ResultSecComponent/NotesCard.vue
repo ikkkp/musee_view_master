@@ -14,21 +14,49 @@
         </v-card>
     </v-dialog>
 </template>
-  
+
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, watchEffect, onMounted ,watch} from 'vue';
 import NotesEditableArea from '../NotesEditableArea.vue';
+import Axios from '@/axios/axiosPlugin';
+import { globalState } from '@/utils/store';
 
 const dialog = ref(false);
 const textValue = ref('');
 const hasData = ref(false);
 
 onMounted(() => {
-    textValue.value = '';
     localStorage.setItem('Notes', '');
-    if (localStorage.getItem('Notes') !== '') {
-        hasData.value = true;
+    Axios({
+        method: 'get',
+        url: '/api/student/question/note',
+        params: {
+            qid: globalState.history[0].qid,
+        }
+    }).then((res) => {
+        textValue.value = res.data.data;
+        hasData.value = res.data.data !== '';
+        localStorage.setItem('Notes', res.data.data);
+    });
+});
+
+watch(() => dialog.value, () => {
+    if(dialog.value === false){
+        textValue.value = localStorage.getItem('Notes');
+        Axios({
+        method: 'post',
+        url: '/api/student/question/note',
+        params: {
+            qid: globalState.history[0].qid,
+            note: textValue.value
+        }
+    }).then((res) => {
+        textValue.value = res.data.data;
+        hasData.value = res.data.data !== '';
+        localStorage.setItem('Notes', textValue.value);
+    });
     }
+
 });
 
 watchEffect(() => {
@@ -37,11 +65,13 @@ watchEffect(() => {
     hasData.value = localStorage.getItem('Notes') !== '';
 });
 
+
+
 function openNotesCard() {
     dialog.value = true;
 }
 </script>
-  
+
 <style>
 .text-area {
     width: 100%;

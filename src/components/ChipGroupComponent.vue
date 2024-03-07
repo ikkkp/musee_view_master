@@ -4,8 +4,8 @@
             <v-col cols="auto">
                 <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
                     <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
-                        <div class="prompts_btn" v-if="globalState.suggest != null">
-                            <v-btn v-for="(tag, index) in globalState.suggest" :key="tag" :color="getTagColor(index)"
+                        <div class="prompts_btn" v-if="knowledges != null">
+                            <v-btn v-for="(tag, index) in knowledges" :color="getTagColor(index)"
                                 elevation="0" rounded style="margin: 0 10px;" @click="addToTextArea(tag)">
                                 <span class="chip-around">
                                     {{ tag }}
@@ -17,8 +17,8 @@
 
                 <v-sheet elevation="0" class="py-4 px-1" style="padding:0 !important">
                     <v-chip-group elevation="0" class="py-4 px-1" style="padding-bottom: 0 !important;">
-                        <div class="prompts_btn" v-if="globalState.suggest != null">
-                            <v-btn v-for="(tag, index) in globalState.suggest.reverse()" :key="tag" :color="getTagColor(index)"
+                        <div class="prompts_btn2" v-if="knowledges != null">
+                            <v-btn v-for="(tag, index) in knowledges" :color="getTagColor(index)"
                                 elevation="0" rounded style="margin: 0 10px;" @click="addToTextArea(tag)">
                                 <span class="chip-around">
                                     {{ tag }}
@@ -33,11 +33,14 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue';
+import { computed, defineEmits } from 'vue';
 import { globalState } from '@/utils/store';
 
 // 声明将要使用的自定义事件
 const emit = defineEmits(['addToTextArea']);
+const knowledges = computed(() => {
+    return [...globalState.knowledges,...globalState.knowledges];
+});
 
 function addToTextArea(tag) {
     // 使用 emit 触发事件
@@ -65,6 +68,16 @@ var tagColors = ["A1C9E3", "2081C3", "BED8D4"]
     animation-play-state: paused;
 }
 
+
+/* 伪类失效 */
+.prompts_btn2:hover {
+    animation-play-state: paused;
+}
+
+.prompts_btn2 {
+    animation: marquee2 20s linear infinite;
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(-50%);
@@ -72,6 +85,16 @@ var tagColors = ["A1C9E3", "2081C3", "BED8D4"]
 
     100% {
         transform: translateX(0%);
+    }
+}
+
+@keyframes marquee2 {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
     }
 }
 

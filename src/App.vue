@@ -29,7 +29,8 @@ import { globalState } from '@/utils/store.js';
 import { onMounted } from 'vue';
 import { fetchData } from './utils/common.js';
 onMounted(
-  fetchData
+  fetchData,
+//   updataContent
 );
 
 </script>

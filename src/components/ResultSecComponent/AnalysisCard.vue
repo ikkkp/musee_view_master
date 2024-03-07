@@ -1,5 +1,5 @@
 <template>
-  <div v-if="globalState.Analyserdata != null" class="text-area" @click="openStepsCard">
+  <div v-if="globalState.Analyserdata != ''" class="text-area" @click="openStepsCard">
     <v-card class="analysis-content mx-auto" elevation="0">
       <v-card-item>
         <v-card-title style="white-space: normal;">{{ globalState.Analyserdata }}</v-card-title>
@@ -48,6 +48,7 @@ function updateFormula() {
 onMounted(() => {
   updateFormula();
 });
+
 </script>
 
 <style scoped>

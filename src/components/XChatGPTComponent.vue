@@ -3,7 +3,7 @@
         <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted">
             <svg-icon type="mdi" :path="mdiFormatListBulleted" class="icon-svg"></svg-icon>
         </v-btn>
-        <div v-if="dialogueArray.length === 0" style="height: 70vh;">
+        <div v-if="globalState.dialogueArray.length === 0" style="height: 70vh;">
             <div class="svg-container">
                 <GPTSVGComponent></GPTSVGComponent>
             </div>
@@ -11,7 +11,7 @@
         </div>
 
         <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
-            <div v-for="(message, index) in dialogueArray" :key="index">
+            <div v-for="(message, index) in globalState.dialogueArray" :key="index">
                 <ChatComponent v-if="message.speaker == 'user'" :userMessage=message.message :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
                 <ChatComponent v-else :userMessage=message.message :avatarSrc="user.avatarSrc"
@@ -67,28 +67,34 @@ const dialog = ref(false);
 const user = ref({ 'userName': '测试01', 'avatarSrc': 'user-avatar.jpg', 'userInfo': '初高中万千少萝的梦' });
 const scrollContainer = ref(null);
 
-// 与大模型对话的会话信息数组（初中数学题相关）
-const dialogueArray = ref([
-
-]);
 
 
 onMounted(() => {
-    MathJax.texReset();
-    MathJax.typesetClear();
-    MathJax.typesetPromise();
+    updateFormula();
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
     user.username = localStorage.getItem('username');
-
 });
+
+function convert() {
+  MathJax.texReset();
+  MathJax.typesetClear();
+  MathJax.typesetPromise();
+}
+
+function updateFormula() {
+  setTimeout(() => {
+    nextTick(convert);
+  }, 100);
+}
+
 
 watchEffect(() => {
     dialog.value;
     textValue.value = localStorage.getItem('renderedFormula');
 });
 
-watch(dialogueArray, () => {
+watch(globalState.dialogueArray, () => {
     scrollToBottom();
 });
 
@@ -109,6 +115,7 @@ function scrollToBottom() {
 
 function TagClick(tag) {
     textValue.value += tag;
+    localStorage.setItem('renderedFormula', textValue.value);
 }
 
 function TextSend() {
@@ -123,7 +130,7 @@ function TextSend() {
             "content": textValue.value,
         }
     }).then(function (response) {
-        dialogueArray.value = response.data.data.map((item, index) => {
+        globalState.dialogueArray = response.data.data.map((item, index) => {
             // 确定发言者是用户还是助手
             const speaker = index % 2 === 0 ? "user" : "assistant";
 
