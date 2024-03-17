@@ -3,10 +3,10 @@
     /* width: 80%; */
     flex-direction: row;
     justify-content: center;">
-        <v-card-text style="width: 70%;    padding: 1rem 3rem !important;" >
+        <v-card-text style="width: 70%;    padding: 2rem 2rem 1rem 2rem!important;" >
             <v-text-field :loading="loading" density="compact" variant="solo" label="点我搜索之前的错题吧！"
                 append-inner-icon="mdi-magnify" single-line hide-details
-                @click:append-inner="onSearchFieldClick"></v-text-field>
+                @click:append-inner="onSearchFieldClick" rounded></v-text-field>
         </v-card-text>
 
     </div>
@@ -26,7 +26,6 @@
 <script setup>
 import { ref } from 'vue';
 import CollectGroup from './CollectGroupComponent.vue';
-
 const mistakeCollections = ref([
     {
         id: 1,
@@ -37,36 +36,47 @@ const mistakeCollections = ref([
     },
     {
         id: 2,
-        tags: ['填空', '几何'],
+        tags: ['数学', '代数'],
         title: '物理错题集',
-        subtitle: '3',
-        color: '#D0E4F1',
-    },
-    {
-        id: 3,
-        tags: ['阅读理解', '写作技巧'],
-        title: '英语阅读写作错题集',
         subtitle: '5',
         color: '#A1C9E3',
     },
     {
-        id: 4,
-        tags: ['化学方程式', '元素周期表'],
-        title: '高中化学错题集',
-        subtitle: '2',
-        color: '#D0E4F1',
-    },
-    {
-        id: 5,
-        tags: ['生物结构', '生态学'],
-        title: '生物学错题集',
-        subtitle: '4',
+        id: 3,
+        tags: ['物理', '力学'],
+        title: '化学错题集',
+        subtitle: '3',
         color: '#A1C9E3',
     },
-    // 更多其他错题集...
+    {
+        id: 4,
+        tags: ['化学', '化学键'],
+        title: '英语错题集',
+        subtitle: '7',
+        color: '#A1C9E3',
+    },
 ]);
 const loaded = ref(false);
 const loading = ref(false);
+
+// onMounted(() => {
+//     Axios({
+//             method: 'get',
+//             url: '/api/student/question/position/basicQuestion',
+//             params: {
+//                 qid: globalState.qid,
+//             },
+//         })
+//             .then((response) => {
+//                 if (response.data.status === 1) {
+//                     const temp = response.data.data;
+//                     mistakeCollections.value = temp;
+//                 }
+//             })
+//             .catch((error) => {
+//                 console.error(error);
+//             });
+// });
 
 function onSearchFieldClick() {
     loading.value = true

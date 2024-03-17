@@ -1,44 +1,52 @@
 <template>
     <div class="text-center">
-        <v-dialog v-model="globalState.showModal" max-width="500px">
-            <v-card class="pa-4" elevation="2">
-                <v-card-title class="text-h5 mb-4">
+        <v-dialog v-model="globalState.showModal" max-width="40%" persistent>
+            <v-card class="pa-4" elevation="2" style="border-radius: 16px;">
+                <v-card-title class="d-flex justify-space-between align-center"
+                    style="color: #a1c9e3;font-weight: bold;font-size: 25px;padding-right: 30px;">
+                    <div class="logo-text">
+                        <div class="main-title">Musee</div>
+                        <div class="subtitle">Education</div>
+                    </div>
                     {{ isLoginMode ? '登录' : '注册' }}
                 </v-card-title>
 
-                <v-card-text v-if="isLoginMode">
+                <v-card-text v-if="isLoginMode" style="margin: 30px 0px 10px 0px">
                     <v-text-field v-model="username" label="用户名" prepend-icon="mdi-account" outlined class="mb-4"
                         required></v-text-field>
 
                     <v-text-field v-model="password" label="密码" :type="showPassword ? 'text' : 'password'"
                         prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="showPassword = !showPassword" outlined required></v-text-field>
-
                 </v-card-text>
 
                 <!-- 注册表单 -->
-                <v-card-text v-else>
+                <v-card-text v-else style="margin: 30px 0px 10px 0px">
                     <v-text-field v-model="username" label="用户名" prepend-icon="mdi-account" outlined class="mb-4"
                         required></v-text-field>
-
                     <v-text-field v-model="email" label="邮箱" prepend-icon="mdi-email" outlined class="mb-4"
                         required></v-text-field>
-
                     <v-text-field v-model="password" label="密码" :type="showPassword ? 'text' : 'password'"
                         prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         @click:append="showPassword = !showPassword" outlined required></v-text-field>
-
                 </v-card-text>
 
-                <v-card-actions>
-                    <v-btn text color="primary" @click="toggleMode">{{ isLoginMode ? '没有账号？注册' : '已有账号？登录' }}
+                <v-card-actions style="padding: 0 20px;">
+                    <v-btn text color="rgb(143, 156, 166)" @click="toggleMode">{{ isLoginMode ? '没有账号？注册' : '已有账号？登录' }}
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn text color="grey" @click="globalState.showModal = false">取消</v-btn>
-                    <v-btn color="primary" depressed @click="handleLogin">
+                    <v-btn text color="grey" @click="globalState.showModal = true" variant="flat">取消</v-btn>
+                    <v-btn color="#388fca" depressed @click="handleLogin" variant="flat">
                         {{ isLoginMode ? '登录' : '注册' }}
                     </v-btn>
                 </v-card-actions>
+                <div style="padding: 0 25px;">
+                    <div class="text-overline mb-4" style="font-size: 15px !important;margin-bottom: 0px !important">💎 专业版</div>
+
+                    <div class="text-medium-emphasis mb-1">
+                        Musee专业版提供更多功能和服务，包括：错题集功能、AI个性化分析、定制家庭教师服务等。
+                    </div>
+                </div>
             </v-card>
         </v-dialog>
     </div>
@@ -90,10 +98,33 @@ function handleLogin() {
 </script>
 
 
-<style>
+<style scoped>
 .v-card {
-    background-color: #f5f5f5;
-    /* 淡色背景 */
+    background-color: #f5f5f5; /* 设置对话框的背景颜色为淡灰色 */
 }
-</style>
 
+.header-container {
+    display: flex; /* 使用弹性盒布局 */
+    align-items: center; /* 项目在交叉轴上的对齐方式为居中 */
+    justify-content: space-between; /* 项目在主轴上的对齐方式为两端对齐，项目之间的间隔都相等 */
+}
+
+.logo-text {
+    color: black; /* 设置字体颜色为黑色 */
+    font-size: xx-large; /* 设置字体尺寸为非常大 */
+    font-weight: bolder; /* 设置字体的粗细为更粗 */
+    padding: 10px 10px; /* 设置内边距 */
+    display: flex; /* 使用弹性盒布局 */
+}
+
+.main-title {
+    color: #388fca; /* 设置主标题的颜色 */
+    font-weight: bold; /* 设置字体的粗细为粗体 */
+}
+
+.subtitle {
+    color: #a1c9e3; /* 设置副标题的颜色 */
+    font-weight: bold; /* 设置字体的粗细为粗体 */
+}
+
+</style>

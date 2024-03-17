@@ -20,13 +20,13 @@
                     </div>
                 </template>
             </v-img>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" 
                 style="position: absolute;bottom: 20px; right: 20px;" size="small" @click="handleClick()">
-                <svg-icon type="mdi" :path="mdiCamera" class="icon-svg"></svg-icon>
+                <svg-icon type="mdi" :path="mdiCamera" class="icon-svg" color="rgb(32, 129, 195)"></svg-icon>
             </v-btn>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" 
                 style="position: absolute;bottom: 20px; right: 75px;" size="small" @click="handleClassifyClick()">
-                <svg-icon type="mdi" :path="mdiBookPlus" class="icon-svg"></svg-icon>
+                <svg-icon type="mdi" :path="mdiBookPlus" class="icon-svg" color="rgb(32, 129, 195)"></svg-icon>
             </v-btn>
         </div>
     </v-card>

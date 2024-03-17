@@ -46,7 +46,7 @@ watch(() => dialog.value, () => {
         Axios({
         method: 'post',
         url: '/api/student/question/note',
-        params: {
+        data: {
             qid: globalState.history[0].qid,
             note: textValue.value
         }
