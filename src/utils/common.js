@@ -3,6 +3,7 @@ import { globalState } from '@/utils/store.js';
 export async function fetchData() {
     try {
         // 发起第一个请求并等待结果
+        // todo
         const responseOne = await Axios({
             method: 'get',
             url: '/api/student/question/base/order',
@@ -37,17 +38,34 @@ export async function fetchData() {
         console.log('获取历史信息失败', error);
     }
 }
+
+export async function updataconcrete() {
+    const responseTwo = await Axios({
+        method: 'post',
+        url: '/api/student/question/concrete',
+        data: {
+            qid: globalState.history[0].qid,
+        },
+    });
+    const concreteInfo = responseTwo.data.data;
+    console.log('concreteInfo', concreteInfo);
+    // 更新globalState
+    globalState.title = concreteInfo.questionAnswer;
+    globalState.Analyserdata = concreteInfo.questionAnswer;
+    globalState.steps = concreteInfo.questionSteps.filter(step => step !== '');
+    globalState.questionText = concreteInfo.questionText;
+    globalState.knowledges = concreteInfo.knowledges;
+}
+
 export async function updataContent() {
     Axios({
-        method: 'post',
+        method: 'get',
         url: '/api/student/question/communication',
-        data: {
-            "basicQuestion": { "qid": globalState.history[0].qid },
-            "content": '你好',
+        params: {
+            "qid": globalState.history[0].qid,
         }
     }).then(function (response) {
-
-        globalState.dialogueArray = response.data.data.map((item, index) => {
+        globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
             // 确定发言者是用户还是助手
             const speaker = index % 2 === 0 ? "user" : "assistant";
 

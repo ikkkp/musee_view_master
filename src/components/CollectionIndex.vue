@@ -4,7 +4,7 @@
     flex-direction: row;
     justify-content: center;">
         <v-card-text style="width: 70%;    padding: 1rem 3rem !important;" >
-            <v-text-field :loading="loading" density="compact" variant="solo" label="Search templates"
+            <v-text-field :loading="loading" density="compact" variant="solo" label="点我搜索之前的错题吧！"
                 append-inner-icon="mdi-magnify" single-line hide-details
                 @click:append-inner="onSearchFieldClick"></v-text-field>
         </v-card-text>

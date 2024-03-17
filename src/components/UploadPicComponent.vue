@@ -1,6 +1,6 @@
 <template>
     <v-card class="card-small" elevation="0" color="#F7F9F9">
-        <div class="card-grid" v-for="(image, index) in smallImages" :key="index">
+        <div class="card-grid" v-for="(image, index) in smallImages" :key="index" @click="handlesmallImageClick(index)">
             <v-img class="grid-image" Default :height="90" :src="image.path" :lazy-src="lazySrc" max-width="500">
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
@@ -13,26 +13,34 @@
 
     <v-card class="card-large" elevation="0">
         <div class="card-content">
-            <v-img class="large-image" Default height="300" :src="largeImage.path" :lazy-src="lazySrc" max-width="500"
-                @click="handleClick()">
+            <v-img class="large-image" Default height="300" :src="largeImage.path" :lazy-src="lazySrc" max-width="500">
                 <template v-slot:placeholder>
                     <div class="progress-placeholder">
                         <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
                     </div>
                 </template>
             </v-img>
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+                style="position: absolute;bottom: 20px; right: 20px;" size="small" @click="handleClick()">
+                <svg-icon type="mdi" :path="mdiCamera" class="icon-svg"></svg-icon>
+            </v-btn>
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+                style="position: absolute;bottom: 20px; right: 75px;" size="small" @click="handleClassifyClick()">
+                <svg-icon type="mdi" :path="mdiBookPlus" class="icon-svg"></svg-icon>
+            </v-btn>
         </div>
     </v-card>
-    <input type="file" accept="image/*" ref="docFileUploader" name="docFileUploader" @change="handleFileChange" hidden />
-
+    <input type="file" accept="image/*" ref="docFileUploader" name="docFileUploader" @change="handleFileChange"
+        hidden />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
+import { mdiCamera, mdiBookPlus } from '@mdi/js';
 import { globalState } from '@/utils/store.js';
 import Axios from '@/axios/axiosPlugin';
-import { fetchData } from '@/utils/common.js';
-
+import { fetchData, updataContent, updataconcrete } from '@/utils/common.js';
+import SvgIcon from '@jamescoyle/vue-icon';
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
 const lazySrc = ref('src/images/empty-picture/no_search.svg');
@@ -59,9 +67,44 @@ const largeImage = computed(() => {
     return globalState.history[0];
 });
 
+function handlesmallImageClick(index) {
+    globalState.history.unshift(globalState.history.splice(index + 1, 1)[0]);
+    updataContent();
+    updataconcrete();
+
+}
 
 function handleClick() {
     docFileUploader.value.click();
+};
+
+
+function handleClassifyClick() {
+    globalState.DraggableDialogVisible = true
+    //在这边进行json的获取
+    // Axios({
+    //     method: 'get',
+    //     url: '/api/student/question/position/details',
+    //     data: {
+    //         position: globalState.position,
+    //     },
+    //     headers: {
+    //         'Content-Type': 'multipart/form-data',
+    //     },
+    // })
+    //     .then((response) => {
+    //         if (response.data.status === 1) {
+    //             response.data.data.forEach((element) => {
+    //                 if (element.classification) {
+    //                     console.log('找到了classification属性:', element.classification);
+    //                 }
+    //             });
+    //         }
+    //     })
+    //     .catch((error) => {
+    //         console.error(error);
+    //     });
+
 };
 
 function handleFileChange(event) {

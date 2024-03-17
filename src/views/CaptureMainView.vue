@@ -6,6 +6,7 @@
                 <!-- First Card in Left Section -->
                 <v-card class="inner-card" color="#F7F9F9">
                     <UploadPicComponent></UploadPicComponent>
+                    <DoClassifyComponent></DoClassifyComponent>
                 </v-card>
                 <SearchResultComponent />
             </v-card>
@@ -16,12 +17,14 @@
             <XChatGPTComponent></XChatGPTComponent>
         </div>
     </div>
+
 </template>
 
 <script setup>
 import SearchResultComponent from '@/components/SearchResultComponent.vue';
 import UploadPicComponent from '@/components/UploadPicComponent.vue';
 import XChatGPTComponent from '@/components/XChatGPTComponent.vue';
+import DoClassifyComponent from '@/components/DoClassifyComponent.vue';
 import { globalState } from '@/utils/store';
 import { ref, watch } from 'vue';
 const componentKey = ref(0);
