@@ -1,8 +1,18 @@
 <template>
     <v-card class="card">
-        <!-- <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted">
-            <svg-icon type="mdi" :path="mdiFormatListBulleted" class="icon-svg"></svg-icon>
-        </v-btn> -->
+        <v-menu>
+            <template v-slot:activator="{ props }">
+                <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+                    color="rgb(32, 129, 195)" v-bind="props">
+                    <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF"></svg-icon>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="()=>globalState.chatModel=index">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
         <div v-if="globalState.dialogueArray.length === 0" style="height: 70vh;">
             <div class="svg-container">
                 <GPTSVGComponent></GPTSVGComponent>
@@ -48,8 +58,8 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted, nextTick, onUpdated ,watch} from 'vue';
-import { mdiArrowUpCircle, mdiMicrophone } from '@mdi/js';
+import { ref, watchEffect, onMounted, nextTick, onUpdated, watch } from 'vue';
+import { mdiArrowUpCircle, mdiMicrophone, mdiCog } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
 import GPTSVGComponent from './GPTSVGComponent.vue';
@@ -63,6 +73,12 @@ import { globalState } from '@/utils/store.js';
 const textValue = ref('');
 const ConversationShow = ref(false);
 const dialog = ref(false);
+const items = [
+    { title: '默认配置' },
+    { title: '引导式问答' },
+    { title: '错题分析' },
+    { title: '费曼学习法' },
+];
 const user = ref({ 'userName': '测试01', 'avatarSrc': 'user-avatar.jpg', 'userInfo': '别人能做到的事情，我也能做到。' });
 const scrollContainer = ref(null);
 
@@ -76,15 +92,15 @@ onMounted(() => {
 });
 
 function convert() {
-  MathJax.texReset();
-  MathJax.typesetClear();
-  MathJax.typesetPromise();
+    MathJax.texReset();
+    MathJax.typesetClear();
+    MathJax.typesetPromise();
 }
 
 function updateFormula() {
-  setTimeout(() => {
-    nextTick(convert);
-  }, 0);
+    setTimeout(() => {
+        nextTick(convert);
+    }, 0);
 }
 
 

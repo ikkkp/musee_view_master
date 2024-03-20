@@ -59,24 +59,24 @@ const mistakeCollections = ref([
 const loaded = ref(false);
 const loading = ref(false);
 
-// onMounted(() => {
-//     Axios({
-//             method: 'get',
-//             url: '/api/student/question/position/basicQuestion',
-//             params: {
-//                 qid: globalState.qid,
-//             },
-//         })
-//             .then((response) => {
-//                 if (response.data.status === 1) {
-//                     const temp = response.data.data;
-//                     mistakeCollections.value = temp;
-//                 }
-//             })
-//             .catch((error) => {
-//                 console.error(error);
-//             });
-// });
+onMounted(() => {
+    Axios({
+            method: 'get',
+            url: '/api/student/question/position/basicQuestion',
+            params: {
+                qid: globalState.qid,
+            },
+        })
+            .then((response) => {
+                if (response.data.status === 1) {
+                    const temp = response.data.data;
+                    mistakeCollections.value = temp;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+});
 
 function onSearchFieldClick() {
     loading.value = true
