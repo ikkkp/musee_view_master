@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="globalState.DraggableDialogVisible" width="40%">
+    <v-dialog v-model="commonGlobalState.DraggableDialogVisible" width="40%">
         <v-card prepend-icon="mdi-update" style="
         color: #388fca;
     font-weight: bold;
@@ -11,7 +11,7 @@
                 <v-icon size="large"></v-icon>
             </template>
             <v-list :v-model:opened=open style="margin: 10px 30px;">
-                <FolderTree :items="globalState.folderList" :currentPath="[]"/>
+                <FolderTree :items="commonGlobalState.folderList" :currentPath="[]" />
             </v-list>
             <v-list-item :prepend-icon="'mdi-plus-circle-outline'" title="新建根目录错题本" @click="openCreateFolder()"
                 style="margin: 0px 30px;" color="#FFFFFF">
@@ -34,7 +34,7 @@
 
 <script setup>
 import FolderTree from './FolderTree.vue';
-import { globalState } from '@/utils/store.js';
+import { commonGlobalState } from '@/utils/commonStore.js';
 import { ref, watch } from 'vue';
 
 const open = ref([]);
@@ -49,7 +49,7 @@ function openCreateFolder() {
 watch(createFolderDialogVisible, (newValue, oldValue) => {
     if (oldValue === true && newValue === false && newFolderName.value.trim() !== '') {
         createFolder([newFolderName.value]);
-        console.log(globalState.folderList);
+        console.log(commonGlobalState.folderList);
         newFolderName.value = ''; // Reset folder name after creation
     }
 });
@@ -66,7 +66,7 @@ function createFolder(pathArray = []) {
         }
         // 返回下一层级的引用，供下一次迭代使用
         return accumulator[currentKey];
-    }, globalState.folderList);
+    }, commonGlobalState.folderList);
 }
 
 

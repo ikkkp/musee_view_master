@@ -47,10 +47,9 @@ const echartRef1 = ref(null);
 const echartRef2 = ref(null);
 const echartRef3 = ref(null);
 const days = Array.from({ length: 30 }, (_, i) => i + 1); // 生成1到30的数组表示天数
-const searchData = days.map(() => Math.floor(Math.random() * 100)); // 生成随机搜索量数据
+const searchData = days.map(() => Math.floor(Math.random() * 20)); // 生成随机搜索量数据
 const categories = ['代数', '几何', '物理', '化学', '生物', '历史', '地理']; // 错题种类
 const categoryData = [120, 200, 150, 80, 70, 110, 130]; // 各种类错题数量
-const errorTypes = ['语法错误', '拼写错误', '逻辑错误', '事实错误'];
 const errorData = [
     { value: 40, name: '语法错误' },
     { value: 30, name: '拼写错误' },
@@ -71,7 +70,7 @@ onMounted(() => {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: Array.from({ length: 30 }, (_, i) => `${i + 1}`) // 生成1到30日的标签
+            data: Array.from({ length: 15 }, (_, i) => `${i + 1}`) // 生成1到30日的标签
         },
         yAxis: {
             type: 'value'

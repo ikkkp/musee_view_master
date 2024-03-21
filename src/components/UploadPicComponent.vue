@@ -20,11 +20,11 @@
                     </div>
                 </template>
             </v-img>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" 
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
                 style="position: absolute;bottom: 20px; right: 20px;" size="small" @click="handleClick()">
                 <svg-icon type="mdi" :path="mdiCamera" class="icon-svg" color="rgb(32, 129, 195)"></svg-icon>
             </v-btn>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" 
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
                 style="position: absolute;bottom: 20px; right: 75px;" size="small" @click="handleClassifyClick()">
                 <svg-icon type="mdi" :path="mdiBookPlus" class="icon-svg" color="rgb(32, 129, 195)"></svg-icon>
             </v-btn>
@@ -39,7 +39,9 @@ import { ref, computed } from 'vue';
 import { mdiCamera, mdiBookPlus } from '@mdi/js';
 import { globalState } from '@/utils/store.js';
 import Axios from '@/axios/axiosPlugin';
-import { fetchData, updataContent, updataconcrete } from '@/utils/common.js';
+import {  updataContent, updataconcrete } from '@/utils/common.js';
+import {commonGlobalState}from '@/utils/commonStore.js'
+import { handleUploadMistakePic, handleUploadCommonPic } from '@/utils/handleUploadPic.js';
 import SvgIcon from '@jamescoyle/vue-icon';
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
@@ -71,7 +73,6 @@ function handlesmallImageClick(index) {
     globalState.history.unshift(globalState.history.splice(index + 1, 1)[0]);
     updataContent();
     updataconcrete();
-
 }
 
 function handleClick() {
@@ -80,30 +81,30 @@ function handleClick() {
 
 
 function handleClassifyClick() {
-    globalState.DraggableDialogVisible = true
+    commonGlobalState.DraggableDialogVisible = true
     //在这边进行json的获取
-    // Axios({
-    //     method: 'get',
-    //     url: '/api/student/question/position/details',
-    //     data: {
-    //         position: globalState.position,
-    //     },
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //     },
-    // })
-    //     .then((response) => {
-    //         if (response.data.status === 1) {
-    //             response.data.data.forEach((element) => {
-    //                 if (element.classification) {
-    //                     console.log('找到了classification属性:', element.classification);
-    //                 }
-    //             });
-    //         }
-    //     })
-    //     .catch((error) => {
-    //         console.error(error);
-    //     });
+    Axios({
+        method: 'get',
+        url: '/api/student/question/position/details',
+        data: {
+            position: globalState.position,
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+        .then((response) => {
+            if (response.data.status === 1) {
+                response.data.data.forEach((element) => {
+                    if (element.classification) {
+                        console.log('找到了classification属性:', element.classification);
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
 };
 
@@ -117,35 +118,16 @@ function handleFileChange(event) {
 function uploadFile() {
     let formData = new FormData();
     formData.append('question', selectedFile.value);
-    globalState.dialogVisible = true
-    globalState.warntitle = '让小沐想想看哈~'
-    Axios({
-        method: 'post',
-        url: '/api/student/bigModel',
-        data: formData,
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    })
-        .then((response) => {
-            if (response.data.status === 1) {
-                const temp = response.data.data
-                globalState.qid = temp.qid
-                globalState.title = temp.questionText
-                globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
-                globalState.questionAnswer = temp.concreteQuestion.questionAnswer
-                globalState.steps = temp.concreteQuestion.questionSteps
-                globalState.knowledges = temp.concreteQuestion.knowledges
-                globalState.dialogueArray = []
-            }
-            globalState.dialogVisible = false
-            return fetchData();
-        })
-        .catch((error) => {
-            console.error(error);
-            globalState.dialogVisible = false
-            // 这里可以添加一些上传失败的处理
-        });
+    commonGlobalState.dialogVisible = true
+    commonGlobalState.warntitle = '让小沐想想看哈~'
+    switch (commonGlobalState.chatModel) {
+        case 2:
+            handleUploadMistakePic(formData);
+            break;
+        default:
+            handleUploadCommonPic(formData);
+            break;
+    }
 }
 </script>
 

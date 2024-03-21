@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { globalState } from '@/utils/store.js';
+import { commonGlobalState } from '@/utils/commonStore.js';
 import { baseURL } from '@/config.js';
 const Axios = axios.create({
     baseURL: baseURL,
@@ -29,7 +29,7 @@ Axios.interceptors.response.use(
         // 你的响应成功处理逻辑
         if (localStorage.getItem('token') == null){
             if (response.data && response.data.status === 0) {
-                globalState.showModal = true;
+                commonGlobalState.showModal = true;
             }
         }
         return response;

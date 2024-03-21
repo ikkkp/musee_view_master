@@ -8,7 +8,10 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="()=>globalState.chatModel=index">
+                <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
+                commonGlobalState.chatModel = index;
+                console.log(commonGlobalState.chatModel);
+            }">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -21,12 +24,13 @@
         </div>
 
         <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
-            <div v-for="(message, index) in globalState.dialogueArray" :key="index">
-                <ChatComponent v-if="message.speaker == 'user'" :userMessage=message.message :avatarSrc="user.avatarSrc"
-                    :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-                <ChatComponent v-else :userMessage=message.message :avatarSrc="user.avatarSrc"
+            <div v-for="(message, index) in globalState.dialogueArray.slice(1)" :key="index">
+                <ChatComponent v-if="message.speaker == 'user'" :userMessage="message.message"
+                    :avatarSrc="user.avatarSrc" :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
+                <ChatComponent v-else :userMessage="message.message" :avatarSrc="user.avatarSrc"
                     :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
             </div>
+
         </div>
         <div class="tags-section">
             <v-sheet class="tags-wrapper">
@@ -66,9 +70,9 @@ import GPTSVGComponent from './GPTSVGComponent.vue';
 import EditableArea from './EditableArea.vue';
 import ChatComponent from '../components/ConversationComponent/ChatComponent.vue';
 import ConversationComponents from './ConversationComponent/ConversationComponents.vue';
-import Axios from '@/axios/axiosPlugin';
+import { sendDefault, sendGuide, sendMistake, sendFeynman, sendexplanation } from '@/utils/handleChatRequest.js';
 import { globalState } from '@/utils/store.js';
-
+import { commonGlobalState } from '@/utils/commonStore.js';
 
 const textValue = ref('');
 const ConversationShow = ref(false);
@@ -78,6 +82,7 @@ const items = [
     { title: '引导式问答' },
     { title: '错题分析' },
     { title: '费曼学习法' },
+    { title: '个性化解析' },
 ];
 const user = ref({ 'userName': '测试01', 'avatarSrc': 'user-avatar.jpg', 'userInfo': '别人能做到的事情，我也能做到。' });
 const scrollContainer = ref(null);
@@ -135,39 +140,32 @@ function TagClick(tag) {
 
 function TextSend() {
     if (textValue.value === '') {
-        globalState.warntitle = '你想问些什么呢~'
-        globalState.dialogVisible = true;
+        commonGlobalState.warntitle = '你想问些什么呢~'
+        commonGlobalState.dialogVisible = true;
         setTimeout(() => {
-            globalState.dialogVisible = false;
+            commonGlobalState.dialogVisible = false;
         }, 1000);
         return;
     }
-    globalState.warntitle = '小沐正在努力思考~'
-    globalState.dialogVisible = true;
-    Axios({
-        method: 'post',
-        url: '/api/student/question/communication',
-        data: {
-            "basicQuestion": { "qid": globalState.history[0].qid },
-            "content": textValue.value,
-        }
-    }).then(function (response) {
-        globalState.dialogueArray = response.data.data.map((item, index) => {
-            // 确定发言者是用户还是助手
-            const speaker = index % 2 === 0 ? "user" : "assistant";
-            return {
-                speaker: speaker, // 设置发言者
-                message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
-                avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
-                timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
-            };
-        });
-        globalState.dialogVisible = false;
-        // 可以在这里处理成功的逻辑，比如更新UI等
-    }).catch(function (error) {
-        console.error('发送失败', error);
-        // 可以在这里处理错误的逻辑
-    });
+    commonGlobalState.warntitle = '小沐正在努力思考~'
+    commonGlobalState.dialogVisible = true;
+    switch (commonGlobalState.chatModel) {
+        case 0:
+            sendDefault(textValue);
+            break;
+        case 1:
+            sendGuide(textValue);
+            break;
+        case 2:
+            sendMistake(textValue);
+            break;
+        case 3:
+            sendFeynman(textValue);
+            break;
+        case 4:
+            sendexplanation(textValue);
+            break;
+    }
     textValue.value = '';
     localStorage.setItem('renderedFormula', '');
 }
@@ -286,4 +284,4 @@ var tags = globalState.steps.map((item, index) => {
     /* Internet Explorer和旧版Edge */
     width: 10px;
 }
-</style>
+</style>@/utils/handleChatRequest.js

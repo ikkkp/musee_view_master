@@ -1,6 +1,6 @@
 <template>
     <div class="text-center">
-        <v-dialog v-model="globalState.showModal" max-width="40%" persistent>
+        <v-dialog v-model="commonGlobalState.showModal" max-width="40%" persistent>
             <v-card class="pa-4" elevation="2" style="border-radius: 16px;">
                 <v-card-title class="d-flex justify-space-between align-center"
                     style="color: #a1c9e3;font-weight: bold;font-size: 25px;padding-right: 30px;">
@@ -35,7 +35,7 @@
                     <v-btn text color="rgb(143, 156, 166)" @click="toggleMode">{{ isLoginMode ? '没有账号？注册' : '已有账号？登录' }}
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn text color="grey" @click="globalState.showModal = true" variant="flat">取消</v-btn>
+                    <v-btn text color="grey" @click="commonGlobalState.showModal = true" variant="flat">取消</v-btn>
                     <v-btn color="#388fca" depressed @click="handleLogin" variant="flat">
                         {{ isLoginMode ? '登录' : '注册' }}
                     </v-btn>
@@ -54,7 +54,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { globalState } from '@/utils/store.js';
+import { commonGlobalState } from '@/utils/commonStore.js';
 import Axios from '@/axios/axiosPlugin';
 import { fetchData } from '@/utils/common.js';
 const isLoginMode = ref(true); // 切换登录和注册模式
@@ -90,7 +90,7 @@ function handleLogin() {
         } else {
             console.log('注册', username.value, password.value);
         }
-        globalState.showModal = false; // 成功后关闭对话框
+        commonGlobalState.showModal = false; // 成功后关闭对话框
     } catch (error) {
         console.error('登录失败', error);
     }

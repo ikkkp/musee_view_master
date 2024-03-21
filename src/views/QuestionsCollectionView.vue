@@ -24,7 +24,6 @@
 <script setup>
 import CollectionIndex from '@/components/CollectionIndex.vue';
 import MistakePreviewComponent from '@/components/MistakePreviewComponent.vue';
-import { globalState } from '@/utils/store';
 const mistakeData = [
     {
         tags: ['综合', '选择'],

@@ -24,7 +24,8 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted } from 'vue';
+import { defineProps, ref } from 'vue';
+import {commonGlobalState} from '@/utils/commonStore.js';
 import FolderTree from './FolderTree.vue';
 import { globalState } from '@/utils/store.js';
 import Axios from '@/axios/axiosPlugin';
@@ -101,7 +102,7 @@ function createFolder(pathArray = []) {
         }
         // 返回下一层级的引用，供下一次迭代使用
         return accumulator[currentKey];
-    }, globalState.folderList);
+    }, commonGlobalState.folderList);
 
     // 获取新文件夹的名称，它是路径数组的最后一个元素
     const newFolderName = pathArray[pathArray.length - 1];

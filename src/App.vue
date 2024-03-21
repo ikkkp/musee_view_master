@@ -3,9 +3,9 @@
   <RouterView />
   <LoginModal ref="loginModal" />
   <div class="pa-4 text-center">
-        <v-dialog v-model="globalState.dialogVisible" max-width="320" persistent>
+        <v-dialog v-model="commonGlobalState.dialogVisible" max-width="320" persistent>
             <v-list class="py-2" color="primary" elevation="12" rounded="lg">
-                <v-list-item prepend-icon="$vuetify-outline" :title='globalState.warntitle'>
+                <v-list-item prepend-icon="$vuetify-outline" :title='commonGlobalState.warntitle'>
                     <template v-slot:prepend>
                         <div class="pe-4">
                             <v-icon color="primary" size="x-large"></v-icon>
@@ -22,10 +22,9 @@
 </template>
 
 <script setup>
+import{commonGlobalState}from '@/utils/commonStore.js'
 import TopNavComponent from './components/TopNavComponent.vue';
 import LoginModal from './views/LoginModal.vue';
-import { globalState } from '@/utils/store.js';
-// import DialogComponent from './components/DialogComponent.vue';
 import { onMounted } from 'vue';
 import { fetchData } from './utils/common.js';
 onMounted(

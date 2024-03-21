@@ -1,6 +1,6 @@
 <template>
     <div class="pa-4 text-center">
-        <v-dialog v-model="globalState.dialogVisible" max-width="320" persistent>
+        <v-dialog v-model="commonGlobalState.dialogVisible" max-width="320" persistent>
             <v-list class="py-2" color="primary" elevation="12" rounded="lg">
                 <v-list-item prepend-icon="$vuetify-outline" title="Refreshing Application...">
                     <template v-slot:prepend>
@@ -21,5 +21,6 @@
 
 <script>
 import { globalState } from '@/utils/store.js';
+import { commonGlobalState } from '@/utils/commonStore.js';
 
 </script>

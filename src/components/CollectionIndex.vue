@@ -3,10 +3,10 @@
     /* width: 80%; */
     flex-direction: row;
     justify-content: center;">
-        <v-card-text style="width: 70%;    padding: 2rem 2rem 1rem 2rem!important;" >
+        <v-card-text style="width: 70%;    padding: 2rem 2rem 1rem 2rem!important;">
             <v-text-field :loading="loading" density="compact" variant="solo" label="点我搜索之前的错题吧！"
-                append-inner-icon="mdi-magnify" single-line hide-details
-                @click:append-inner="onSearchFieldClick" rounded></v-text-field>
+                append-inner-icon="mdi-magnify" single-line hide-details @click:append-inner="onSearchFieldClick"
+                rounded></v-text-field>
         </v-card-text>
 
     </div>
@@ -15,7 +15,8 @@
     flex-direction: column;
     align-items: center;  overflow-y: auto;">
         <div v-for="collection in mistakeCollections" :key="collection.id" style="margin:10px 0  ;">
-            <CollectGroup :tags="collection.tags" :cardTitle="collection.title" :cardSubtitle="collection.subtitle" :cardColor="collection.color"/>
+            <CollectGroup :tags="collection.tags" :cardTitle="collection.title" :cardSubtitle="collection.subtitle"
+                :cardColor="collection.color" />
         </div>
     </div>
     <div>
@@ -24,7 +25,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import Axios from '@/axios/axiosPlugin';
+import { ref, onMounted } from 'vue';
+import { globalState } from '@/utils/store.js';
 import CollectGroup from './CollectGroupComponent.vue';
 const mistakeCollections = ref([
     {
@@ -59,24 +62,24 @@ const mistakeCollections = ref([
 const loaded = ref(false);
 const loading = ref(false);
 
-onMounted(() => {
-    Axios({
-            method: 'get',
-            url: '/api/student/question/position/basicQuestion',
-            params: {
-                qid: globalState.qid,
-            },
-        })
-            .then((response) => {
-                if (response.data.status === 1) {
-                    const temp = response.data.data;
-                    mistakeCollections.value = temp;
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-});
+// onMounted(() => {
+//     Axios({
+//         method: 'get',
+//         url: '/api/student/question/position/basicQuestion',
+//         params: {
+//             qid: globalState.qid,
+//         },
+//     })
+//         .then((response) => {
+//             if (response.data.status === 1) {
+//                 const temp = response.data.data;
+//                 mistakeCollections.value = temp;
+//             }
+//         })
+//         .catch((error) => {
+//             console.error(error);
+//         });
+// });
 
 function onSearchFieldClick() {
     loading.value = true
