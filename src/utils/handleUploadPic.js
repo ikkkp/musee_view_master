@@ -15,8 +15,9 @@ export const handleUploadCommonPic = async (formData) =>
         .then((response) => {
             if (response.data.status === 1) {
                 const temp = response.data.data
-                globalState.qid = temp.qid
-                globalState.title = temp.questionText
+                console.log(temp.basicQuestion.qid)
+                globalState.qid = temp.basicQuestion.qid
+                globalState.title = temp.basicQuestion.questionText
                 globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
                 globalState.questionAnswer = temp.concreteQuestion.questionAnswer
                 globalState.steps = temp.concreteQuestion.questionSteps
@@ -35,7 +36,7 @@ export const handleUploadCommonPic = async (formData) =>
 export const handleUploadMistakePic = async (formData) =>
     Axios({
         method: 'post',
-        url: '/api/student/bigModel/wrongType',
+        url: '/api/student/bigModel/wrongAnswer',
         data: formData,
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -43,14 +44,15 @@ export const handleUploadMistakePic = async (formData) =>
     })
         .then((response) => {
             if (response.data.status === 1) {
-                const temp = response.data.data
-                globalState.qid = temp.qid
-                globalState.title = temp.questionText
-                globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
-                globalState.questionAnswer = temp.concreteQuestion.questionAnswer
-                globalState.steps = temp.concreteQuestion.questionSteps
-                globalState.knowledges = temp.concreteQuestion.knowledges
-                globalState.dialogueArray = []
+                // 这里后端并不会传参数
+                // const temp = response.data.data
+                // globalState.qid = temp.qid
+                // globalState.title = temp.questionText
+                // globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
+                // globalState.questionAnswer = temp.concreteQuestion.questionAnswer
+                // globalState.steps = temp.concreteQuestion.questionSteps
+                // globalState.knowledges = temp.concreteQuestion.knowledges
+                // globalState.dialogueArray = []
             }
             commonGlobalState.dialogVisible = false
             return fetchData();

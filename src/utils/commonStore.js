@@ -6,6 +6,7 @@ export const commonGlobalState = reactive({
     DraggableDialogVisible: false,
     warntitle: "",
     showModal: false,
+    btnflag : false,
     folderList: {
         "数学错题本": {
             "导数": {
