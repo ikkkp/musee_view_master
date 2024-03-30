@@ -1,7 +1,7 @@
-import Axios from  '@/axios/axiosPlugin.js'
+import Axios from '@/axios/axiosPlugin.js'
 import { globalState } from '@/utils/store.js'
 import { commonGlobalState } from '@/utils/commonStore.js'
-
+import { fetchData } from '@/utils/common.js'
 
 export const handleUploadCommonPic = async (formData) =>
     Axios({

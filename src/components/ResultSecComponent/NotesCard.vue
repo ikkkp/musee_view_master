@@ -28,9 +28,9 @@ const hasData = ref(false);
 onMounted(() => {
     localStorage.setItem('Notes', '');
     Axios({
-        method: 'get',
-        url: '/api/student/question/note',
-        params: {
+        method: 'post',
+        url: '/api/student/question/getnote',
+        data: {
             qid: globalState.history[0].qid,
         }
     }).then((res) => {

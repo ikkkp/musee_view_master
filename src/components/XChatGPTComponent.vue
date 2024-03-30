@@ -99,9 +99,9 @@
 
     <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
   </v-card>
-  <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="test"
+  <!-- <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="test"
          color="#2081C3">
-  </v-btn>
+  </v-btn> -->
   <v-dialog v-model="dialog" width="auto">
     <v-card>
       <EditableArea :initMessage="textValue"></EditableArea>
