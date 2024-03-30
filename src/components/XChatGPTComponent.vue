@@ -1,64 +1,112 @@
 <template>
-    <v-card class="card">
-        <v-menu>
-            <template v-slot:activator="{ props }">
-                <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
-                    color="rgb(32, 129, 195)" v-bind="props">
-                    <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF"></svg-icon>
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
-                commonGlobalState.chatModel = index;
+  <v-card class="card">
+    <v-menu>
+      <template v-slot:activator="{ props }">
+        <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
+               color="rgb(32, 129, 195)" v-bind="props">
+          <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF"></svg-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
                 console.log(commonGlobalState.chatModel);
-            }">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu>
-        <div v-if="globalState.dialogueArray.length === 0" style="height: 70vh;">
-            <div class="svg-container">
-                <GPTSVGComponent></GPTSVGComponent>
-            </div>
-            <ChipGroupComponent @addToTextArea="handleTagClick" />
+                commonGlobalState.chatModel = index;
+                console.log(item.title);
+                console.log('change to');
+                console.log(commonGlobalState.chatModel);
+                console.log('clear');
+                globalState.dialogueArray.splice(0, globalState.dialogueArray.length);
+                console.log('end');
+                recoverMsg();
+            }" :style="{ backgroundColor: index == commonGlobalState.chatModel ? 'rgb(32, 129, 195)' : 'white' }">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    <div v-if="globalState.dialogueArray.length === 0" style="height: 70vh;">
+      <div class="svg-container">
+        <GPTSVGComponent></GPTSVGComponent>
+        <!--文字标签-->
+        <div class="prompts_btn">
+          <v-btn style="background: rgb(161, 201, 227);height: 25px; background-image: url('../assets/flash.png');color: white; font-weight: bold;">
+            <v-icon color='rgb(25,192,122)' style="left: -7px">mdi-flash</v-icon>
+            <template v-if="commonGlobalState.chatModel === 0">
+              默认配置
+            </template>
+            <template v-else-if="commonGlobalState.chatModel === 1">
+              引导式问答
+            </template>
+            <template v-else-if="commonGlobalState.chatModel === 2">
+              错题分析
+            </template>
+            <template v-else-if="commonGlobalState.chatModel === 3">
+              费曼学习法
+            </template>
+            <template v-else>
+              个性化解析
+            </template>
+          </v-btn>
         </div>
+      </div>
+      <ChipGroupComponent @addToTextArea="handleTagClick" />
+    </div>
 
-        <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
-            <div v-for="(message, index) in globalState.dialogueArray.slice(1)" :key="index">
-                <ChatComponent v-if="message.speaker == 'user'" :userMessage="message.message"
-                    :avatarSrc="user.avatarSrc" :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-                <ChatComponent v-else :userMessage="message.message" :avatarSrc="user.avatarSrc"
-                    :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-            </div>
+    <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
+      <div v-for="(message, index) in globalState.dialogueArray.slice(1)" :key="index">
+        <ChatComponent v-if="message.speaker == 'user'" :userMessage="message.message"
+                       :avatarSrc="user.avatarSrc" :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
+        <ChatComponent v-else :userMessage="message.message" :avatarSrc="user.avatarSrc"
+                       :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
+      </div>
 
-        </div>
-        <div class="tags-section">
-            <v-sheet class="tags-wrapper">
-                <v-chip-group mandatory class="chip-group" selected-class="primary-text">
-                    <v-chip v-for="tag in tags" :key="tag" class="chip-item" @click="TagClick(tag)">{{ tag }}</v-chip>
-                </v-chip-group>
-            </v-sheet>
-        </div>
-        <div class="textarea-container" v-if="!ConversationShow">
-            <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
-                class="single-line-textarea"></v-text-field>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend"
-                color="#2081C3">
-                <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
-            </v-btn>
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel"
-                color="#2081C3">
-                <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"
-                    style="height: 40px;height: 40px;"></svg-icon>
-            </v-btn>
-        </div>
-        <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
+    </div>
+    <div class="tags-section">
+      <v-sheet class="tags-wrapper">
+        <v-chip-group mandatory class="chip-group" selected-class="primary-text">
+          <v-chip v-for="tag in tags" :key="tag" class="chip-item" @click="TagClick(tag)">{{ tag }}</v-chip>
+        </v-chip-group>
+      </v-sheet>
+    </div>
+
+    <!-- 更改 -->
+    <div class="textarea-container" v-if="!ConversationShow">
+      <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
+                    class="single-line-textarea" ></v-text-field>
+
+
+
+
+      <!-- 更改 -->
+      <v-btn v-if="commonGlobalState.chatModel !== 0 && commonGlobalState.chatModel !== 3 && commonGlobalState.btnflag === true "
+             :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="FirstSend" color="#2081C3" rounded width="auto" style="padding: 5px;border-radius: 15px;">
+        开始对话
+      </v-btn>
+
+      <!-- 更改 -->
+      <v-btn v-else
+             :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend"
+             color="#2081C3">
+        <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
+      </v-btn>
+
+
+      <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel"
+             color="#2081C3">
+        <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"
+                  style="height: 40px;height: 40px;"></svg-icon>
+      </v-btn>
+    </div>
+
+    <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
+  </v-card>
+  <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="test"
+         color="#2081C3">
+  </v-btn>
+  <v-dialog v-model="dialog" width="auto">
+    <v-card>
+      <EditableArea :initMessage="textValue"></EditableArea>
     </v-card>
-    <v-dialog v-model="dialog" width="auto">
-        <v-card>
-            <EditableArea :initMessage="textValue"></EditableArea>
-        </v-card>
-    </v-dialog>
+  </v-dialog>
 </template>
 
 <script setup>
@@ -73,16 +121,17 @@ import ConversationComponents from './ConversationComponent/ConversationComponen
 import { sendDefault, sendGuide, sendMistake, sendFeynman, sendexplanation } from '@/utils/handleChatRequest.js';
 import { globalState } from '@/utils/store.js';
 import { commonGlobalState } from '@/utils/commonStore.js';
+import {getCommunication, getFeiman, getIns, getPersonalCom, getWrong} from "../utils/handleChatRequest";
 
 const textValue = ref('');
 const ConversationShow = ref(false);
 const dialog = ref(false);
 const items = [
-    { title: '默认配置' },
-    { title: '引导式问答' },
-    { title: '错题分析' },
-    { title: '费曼学习法' },
-    { title: '个性化解析' },
+  { title: '默认配置' },
+  { title: '引导式问答' },
+  { title: '错题分析' },
+  { title: '费曼学习法' },
+  { title: '个性化解析' },
 ];
 const user = ref({ 'userName': '测试01', 'avatarSrc': 'user-avatar.jpg', 'userInfo': '别人能做到的事情，我也能做到。' });
 const scrollContainer = ref(null);
@@ -90,198 +139,247 @@ const scrollContainer = ref(null);
 
 
 onMounted(() => {
-    updateFormula();
-    textValue.value = '';
-    localStorage.setItem('renderedFormula', '');
-    user.username = localStorage.getItem('username');
+  updateFormula();
+  textValue.value = '';
+  localStorage.setItem('renderedFormula', '');
+  user.username = localStorage.getItem('username');
 });
 
 function convert() {
-    MathJax.texReset();
-    MathJax.typesetClear();
-    MathJax.typesetPromise();
+  MathJax.texReset();
+  MathJax.typesetClear();
+  MathJax.typesetPromise();
 }
 
 function updateFormula() {
-    setTimeout(() => {
-        nextTick(convert);
-    }, 0);
+  setTimeout(() => {
+    nextTick(convert);
+  }, 0);
+}
+
+function test() {
+  commonGlobalState.dialogVisible = false;//加载框
+  console.log(globalState.dialogueArray.slice(1))
+  console.log(commonGlobalState.chatModel)
+  console.log(globalState.qid)
+  globalState.qid = "1711182676399"
 }
 
 
 watchEffect(() => {
-    dialog.value;
-    textValue.value = localStorage.getItem('renderedFormula');
+  dialog.value;
+  textValue.value = localStorage.getItem('renderedFormula');
 });
 
 watch(globalState.dialogueArray, () => {
-    scrollToBottom();
+  scrollToBottom();
 });
+
 
 // 使用onUpdated生命周期钩子确保在每次组件更新后滚动到底部
 onUpdated(() => {
-    scrollToBottom();
+  scrollToBottom();
 });
 
 function scrollToBottom() {
-    // 使用nextTick来确保DOM更新完成
-    nextTick(() => {
-        const container = scrollContainer.value;
-        if (container) {
-            container.scrollTop = container.scrollHeight;
-        }
-    });
+  // 使用nextTick来确保DOM更新完成
+  nextTick(() => {
+    const container = scrollContainer.value;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  });
 }
 
 function TagClick(tag) {
-    textValue.value += tag;
-    localStorage.setItem('renderedFormula', textValue.value);
+  textValue.value += tag;
+  localStorage.setItem('renderedFormula', textValue.value);
 }
+
 
 function TextSend() {
-    if (textValue.value === '') {
-        commonGlobalState.warntitle = '你想问些什么呢~'
-        commonGlobalState.dialogVisible = true;
-        setTimeout(() => {
-            commonGlobalState.dialogVisible = false;
-        }, 1000);
-        return;
-    }
-    commonGlobalState.warntitle = '小沐正在努力思考~'
-    commonGlobalState.dialogVisible = true;
-    switch (commonGlobalState.chatModel) {
-        case 0:
-            sendDefault(textValue);
-            break;
-        case 1:
-            sendGuide(textValue);
-            break;
-        case 2:
-            sendMistake(textValue);
-            break;
-        case 3:
-            sendFeynman(textValue);
-            break;
-        case 4:
-            sendexplanation(textValue);
-            break;
-    }
-    textValue.value = '';
-    localStorage.setItem('renderedFormula', '');
+  commonGlobalState.warntitle = '小沐正在努力思考~'
+  commonGlobalState.dialogVisible = true;
+  switch (commonGlobalState.chatModel) {
+    case 0:
+      sendDefault(textValue);
+      break;
+    case 1:
+      sendGuide(textValue);
+      break;
+    case 2:
+      sendMistake(textValue);
+      break;
+    case 3:
+      sendFeynman(textValue);
+      break;
+    case 4:
+      sendexplanation(textValue);
+      break;
+  }
+  textValue.value = '';
+  localStorage.setItem('renderedFormula', '');
 }
 
+//更改
+function FirstSend() {
+  commonGlobalState.btnflag = false;
+  switch (commonGlobalState.chatModel) {
+    case 1:
+      textValue.value = "";
+      commonGlobalState.warntitle = '小沐正在思考中~'
+      commonGlobalState.dialogVisible = true;
+      console.log("guide")
+      sendGuide(textValue);
+      break;
+    case 2:
+      textValue.value = "";
+      commonGlobalState.warntitle = '小沐正在思考中~'
+      commonGlobalState.dialogVisible = true;
+      console.log("Mistake")
+      sendMistake(textValue);
+      break;
+    case 4:
+      textValue.value = "";
+      commonGlobalState.warntitle = '小沐正在思考中~'
+      commonGlobalState.dialogVisible = true;
+      console.log("explanation")
+      sendexplanation(textValue);
+      break;
+  }
+}
+
+function recoverMsg() {
+  switch (commonGlobalState.chatModel) {
+    case 0:
+      getCommunication();
+      break;
+    case 1:
+      getIns();
+      break;
+    case 2:
+      getWrong();
+      break;
+    case 3:
+      getFeiman();
+      break;
+    case 4:
+      getPersonalCom();
+      break;
+  }
+}
 
 function ConversationModel() {
-    ConversationShow.value = true;
+  ConversationShow.value = true;
 }
 
 function handleOverlayUpdate(value) {
-    ConversationShow.value = value;
+  ConversationShow.value = value;
 };
 
 function handleTagClick(tag) {
-    textValue.value += tag;
-    localStorage.setItem('renderedFormula', textValue.value);
+  textValue.value += tag;
+  localStorage.setItem('renderedFormula', textValue.value);
 }
 
 function openDialog() {
-    dialog.value = true;
+  dialog.value = true;
 }
 
 var tags = globalState.steps.map((item, index) => {
-    return `步骤${index + 1}`;
+  return `步骤${index + 1}`;
 });
 
 </script>
 
 <style scoped>
 .card {
-    padding: 20px 10px 20px 10px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  padding: 20px 10px 20px 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
 }
 
 .svg-container {
-    display: flex;
-    justify-content: flex-end;
-    height: 40%;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  height: 40%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .tags-section {
-    display: flex;
-    align-items: center;
-    padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  padding: 0px 20px;
 }
 
 .tags-title {
-    color: #398FCA;
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 600;
+  color: #398FCA;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .tags-wrapper {
-    padding: 10px !important;
-    overflow-x: hidden;
+  padding: 10px !important;
+  overflow-x: hidden;
 }
 
 .compact-button {
-    margin: 5px;
-    density: compact;
-    elevation: 0;
-    width: 30px;
-    height: 30px;
+  margin: 5px;
+  density: compact;
+  elevation: 0;
+  width: 30px;
+  height: 30px;
 }
 
 .icon-button {
-    width: 52px;
-    height: 52px;
+  width: 52px;
+  height: 52px;
 }
 
 .textarea-container {
-    display: flex;
-    padding: 0 10px 0 30px;
-    width: 95%;
+  display: flex;
+  padding: 0 10px 0 30px;
+  width: 95%;
 }
 
 .textarea-field {
-    rows: 1;
+  rows: 1;
 }
 
 .expand-icon {
-    height: 49px;
-    width: 48px;
+  height: 49px;
+  width: 48px;
 }
 
 .primary-text {
-    color: primary;
+  color: primary;
 }
 
 /* 对于一些浏览器可能需要自定义滚动条样式 */
 /* 注意：这些是实验性质或特定浏览器的前缀属性 */
 ::-webkit-scrollbar {
-    /* Webkit 浏览器（Chrome, Safari等） */
-    width: 10px;
+  /* Webkit 浏览器（Chrome, Safari等） */
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    /* 滚动条滑块部分 */
-    background-color: rgba(143, 156, 166, 0.8);
-    border-radius: 5px;
+  /* 滚动条滑块部分 */
+  background-color: rgba(143, 156, 166, 0.8);
+  border-radius: 5px;
 }
 
 /* 其他浏览器的滚动条样式支持，但请注意不是所有浏览器都支持完全自定义滚动条 */
 ::-moz-scrollbar {
-    /* Firefox */
-    width: 10px;
+  /* Firefox */
+  width: 10px;
 }
 
 ::-ms-scrollbar {
-    /* Internet Explorer和旧版Edge */
-    width: 10px;
+  /* Internet Explorer和旧版Edge */
+  width: 10px;
 }
 </style>@/utils/handleChatRequest.js
