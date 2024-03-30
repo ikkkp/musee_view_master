@@ -1,7 +1,7 @@
 <template>
   <v-card class="card-small" elevation="0" color="#F7F9F9">
-    <div class="card-grid" v-for="(image, index) in smallImages" :key="index" @click="handlesmallImageClick(index)">
-      <v-img class="grid-image" Default :height="90" :src="image.path" :lazy-src="lazySrc" max-width="500">
+    <div class="card-grid" v-for="(image, index) in smallImages" :key="index" @click="handlesmallImageClick(index)" style="height: 33%;">
+      <v-img class="grid-image" Default :src="image.path" :lazy-src="lazySrc" max-width="500">
         <template v-slot:placeholder>
           <div class="progress-placeholder">
             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
@@ -13,7 +13,7 @@
 
   <v-card class="card-large" elevation="0">
     <div class="card-content">
-      <v-img class="large-image" Default height="300" :src="largeImage.path" :lazy-src="lazySrc" max-width="500">
+      <v-img class="large-image" Default :src="largeImage.path" :lazy-src="lazySrc" max-width="500">
         <template v-slot:placeholder>
           <div class="progress-placeholder">
             <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>

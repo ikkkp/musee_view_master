@@ -1,6 +1,7 @@
 import { reactive } from 'vue';
 
 export const commonGlobalState = reactive({
+    globalModel: false,
     chatModel: 0,
     dialogVisible: false,
     DraggableDialogVisible: false,
