@@ -2,59 +2,84 @@ import Axios from '@/axios/axiosPlugin.js';
 import { globalState } from '@/utils/store.js';
 import { commonGlobalState } from '@/utils/commonStore.js';
 
-export const sendDefault = (textValue) => Axios({
-    method: 'post',
-    url: '/api/student/question/communication',
-    data: {
-        "basicQuestion": { "qid": globalState.qid },
-        "content": textValue.value,
-    }
-}).then(function (response) {
-    globalState.dialogueArray = response.data.data.map((item, index) => {
-        // 确定发言者是用户还是助手
-        const speaker = index % 2 === 0 ? "user" : "assistant";
-        return {
-            speaker: speaker, // 设置发言者
-            message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
-            avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
-            timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
-        };
-    });
-    commonGlobalState.dialogVisible = false;
-    commonGlobalState.btnflag = false;
+export const sendDefault = (textValue) => {
+    getCommunication().then(function (response) {
+        globalState.dialogueArray.push({
+            speaker: 'user',
+            message: textValue,
+            avatarSrc: 'user-avatar.jpg',
+            timestamp: new Date().toLocaleString()
+        });
+        globalState.dialogueArray.push({
+            speaker: 'assistant',
+            message: '',
+            avatarSrc: 'assistant-avatar.jpg',
+            timestamp: new Date().toLocaleString()
+        });
 
-    // 可以在这里处理成功的逻辑，比如更新UI等
-}).catch(function (error) {
-    console.error('发送失败', error);
-    // 可以在这里处理错误的逻辑
-});
+        // 对用户输入进行编码，准备发送
+        const encodedContent = encodeURIComponent(textValue);
+        const qid = globalState.history[0].qid;
 
-export const sendMistake = (textValue) => Axios({
-    method: 'post',
-    url: '/api/student/question/communication/wrongAnswer',
-    data: {
-        "basicQuestion": { "qid": globalState.qid },
-        "content": textValue.value,
-    }
-}).then(function (response) {
-    globalState.dialogueArray = response.data.data.map((item, index) => {
-        // 确定发言者是用户还是助手
-        const speaker = index % 2 === 0 ? "user" : "assistant";
-        return {
-            speaker: speaker, // 设置发言者
-            message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
-            avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
-            timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
-        };
-    });
-    commonGlobalState.dialogVisible = false;
-    commonGlobalState.btnflag = false;
+        // 初始化 EventSource 连接，如果它尚未存在
+        if (!globalState.eventSource) {
+            globalState.eventSource = new EventSource(`http://127.0.0.1:8080/api/student/question/communicationWithUser/?content=${encodedContent}&qid=${qid}`);
 
-    // 可以在这里处理成功的逻辑，比如更新UI等
-}).catch(function (error) {
-    console.error('发送失败', error);
-    // 可以在这里处理错误的逻辑
-});
+            // 设置接收消息的回调函数
+            globalState.eventSource.onmessage = (event) => {
+                globalState.dialogueArray[globalState.dialogueArray.length - 1].message += event.data;
+                commonGlobalState.dialogVisible = false;
+                // 将大模型的回答添加到对话数组中
+            };
+            // 监听错误事件
+            globalState.eventSource.onerror = (error) => {
+                commonGlobalState.dialogVisible = false;
+                globalState.eventSource.close(); // 关闭出错的连接
+                globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
+            };
+        }
+    })
+}
+
+export const sendMistake = (textValue) => {
+    getWrong().then(function (response) {
+        globalState.dialogueArray.push({
+            speaker: 'user',
+            message: textValue,
+            avatarSrc: 'user-avatar.jpg',
+            timestamp: new Date().toLocaleString()
+        });
+        globalState.dialogueArray.push({
+            speaker: 'assistant',
+            message: '',
+            avatarSrc: 'assistant-avatar.jpg',
+            timestamp: new Date().toLocaleString()
+        });
+
+        // 对用户输入进行编码，准备发送
+        const encodedContent = encodeURIComponent(textValue);
+        const qid = globalState.history[0].qid;
+
+        // 初始化 EventSource 连接，如果它尚未存在
+        if (!globalState.eventSource) {
+            globalState.eventSource = new EventSource(`http://127.0.0.1:8080/api/student/question/communicationWithUser/wrongAnswer?content=${encodedContent}&qid=${qid}`);
+
+            // 设置接收消息的回调函数
+            globalState.eventSource.onmessage = (event) => {
+                globalState.dialogueArray[globalState.dialogueArray.length - 1].message += event.data;
+                commonGlobalState.dialogVisible = false;
+                // 将大模型的回答添加到对话数组中
+            };
+            // 监听错误事件
+            globalState.eventSource.onerror = (error) => {
+                commonGlobalState.dialogVisible = false;
+                globalState.eventSource.close(); // 关闭出错的连接
+                globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
+            };
+        }
+    })
+}
+
 
 export const sendGuide = (textValue) => Axios({
     method: 'get',
@@ -140,43 +165,12 @@ export const sendexplanation = (textValue) => Axios({
     // 可以在这里处理错误的逻辑
 });
 
-// export const sendExplanation = (textValue) => {
-//     const question = textValue.value !== null ? textValue.value : ""; // 如果textValue.value为null，设置question为""
-//
-//     return Axios({
-//         method: 'get',
-//         url: '/api/student/chat/explanation',
-//         params: {
-//             "qid": globalState.qid,
-//             "question": question,
-//         }
-//     }).then(function (response) {
-//         globalState.dialogueArray = response.data.map((item, index) => {
-//             // 确定发言者是用户还是助手
-//             const speaker = index % 2 === 0 ? "user" : "assistant";
-//             return {
-//                 speaker: speaker, // 设置发言者
-//                 message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
-//                 avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
-//                 timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
-//             };
-//         });
-//         commonGlobalState.dialogVisible = false;
-//         commonGlobalState.btnflag = false;
-//
-//         // 可以在这里处理成功的逻辑，比如更新UI等
-//     }).catch(function (error) {
-//         console.error('发送失败', error);
-//         // 可以在这里处理错误的逻辑
-//     });
-// };
-
 
 export const getCommunication = () => Axios({
     method: 'get',
     url: '/api/student/question/communication',
     params: {
-        "qid": globalState.qid,
+        "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
 
@@ -195,8 +189,6 @@ export const getCommunication = () => Axios({
     commonGlobalState.dialogVisible = false;
     // 可以在这里处理成功的逻辑，比如更新UI等
 
-
-
 }).catch(function (error) {
     console.error('发送失败', error);
     // 可以在这里处理错误的逻辑
@@ -211,9 +203,9 @@ export const getWrong = () => Axios({
 }).then(function (response) {
 
     //检测内容是否为空
-    if (response.data.data === undefined){
+    if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
-    }else {
+    } else {
 
         commonGlobalState.btnflag = false;
         console.log('发送成功', response);
@@ -246,9 +238,9 @@ export const getIns = () => Axios({
 }).then(function (response) {
 
     //检测内容是否为空
-    if (response.data.data === undefined){
+    if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
-    }else {
+    } else {
         commonGlobalState.btnflag = false;
 
         console.log('发送成功', response);
@@ -283,9 +275,9 @@ export const getPersonalCom = () => Axios({
     }
 }).then(function (response) {
     //检测内容是否为空
-    if (response.data.data === undefined){
+    if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
-    }else {
+    } else {
         commonGlobalState.btnflag = false;
         console.log('发送成功', response);
         globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {

@@ -11,5 +11,6 @@ export const globalState = reactive({
     knowledges: [],
     dialogueArray: [],
     position: "",
+    eventSource: null,
 });
 

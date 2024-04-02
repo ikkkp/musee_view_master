@@ -76,7 +76,6 @@ export async function updataContent() {
                 timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
             };
         },
-            console.log('发送成功', globalState.dialogueArray)
         );
 
         // 可以在这里处理成功的逻辑，比如更新UI等
