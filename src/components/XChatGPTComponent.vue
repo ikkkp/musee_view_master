@@ -326,19 +326,19 @@ function TextSend() {
   commonGlobalState.dialogVisible = true;
   switch (commonGlobalState.chatModel) {
     case 0:
-      sendDefault(textValue);
+      sendDefault(textValue.value);
       break;
     case 1:
-      sendGuide(textValue);
+      sendGuide(textValue.value);
       break;
     case 2:
-      sendMistake(textValue);
+      sendMistake(textValue.value);
       break;
     case 3:
-      sendFeynman(textValue);
+      sendFeynman(textValue.value);
       break;
     case 4:
-      sendexplanation(textValue);
+      sendexplanation(textValue.value);
       break;
   }
   textValue.value = '';
