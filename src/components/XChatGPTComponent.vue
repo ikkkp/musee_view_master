@@ -114,21 +114,40 @@
 
   <v-dialog v-model="commonGlobalState.globalModel" width="70vw" persistent>
     <v-card elevation="0">
-      <div style="display: flex;justify-content: flex-end;margin-right: 20px;">
+      <div style="display: flex;justify-content: space-between;margin: 0px 10px;">
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" color="rgb(161, 201, 227)"
+              v-bind="props">
+              <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF" ></svg-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
+            commonGlobalState.chatModel = index;
+            globalState.dialogueArray.splice(0, globalState.dialogueArray.length);
+            recoverMsg();
+          }" :style="{ backgroundColor: index == commonGlobalState.chatModel ? 'rgb(161, 201, 227)' : 'white' }">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-switch v-model="commonGlobalState.globalModel" :label="`沉浸式`" hide-details inset
           color="rgb(32, 129, 195)"></v-switch>
+        <div class="menu-container">
+        </div>
       </div>
 
       <v-stepper editable :items="['拍照', '启发式问答', '题解']" elevation="0">
         <template v-slot:item.1>
           <div
-            style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 40vh;">
+            style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 50vh;">
             <UploadPicComponent></UploadPicComponent>
           </div>
         </template>
 
         <template v-slot:item.2>
-          <div v-if="globalState.dialogueArray.length === 0" style="height: 70vh;">
+          <div v-if="globalState.dialogueArray.length === 0" style="height: 50vh;">
             <div class="svg-container">
               <GPTSVGComponent></GPTSVGComponent>
               <!--文字标签-->
@@ -157,7 +176,7 @@
             <ChipGroupComponent @addToTextArea="handleTagClick" />
           </div>
 
-          <div v-else style="height: 65vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
+          <div v-else style="height: 50vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
             <div v-for="(message, index) in globalState.dialogueArray.slice(1)" :key="index">
               <ChatComponent v-if="message.speaker == 'user'" :userMessage="message.message" :avatarSrc="user.avatarSrc"
                 :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
@@ -205,7 +224,7 @@
         </template>
 
         <template v-slot:item.3>
-          <AnalysisCard></AnalysisCard>
+          <AnalysisCard style="height: 50vh;"></AnalysisCard>
         </template>
       </v-stepper>
     </v-card>
