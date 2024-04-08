@@ -39,7 +39,10 @@ export const sendDefault = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
-    })
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
 }
 
 export const sendMistake = (textValue) => {
@@ -78,7 +81,10 @@ export const sendMistake = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
-    })
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
 }
 
 
@@ -119,7 +125,10 @@ export const sendGuide = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
-    })
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
 }
 
 export const sendFeynman = (textValue) => {
@@ -159,7 +168,10 @@ export const sendFeynman = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
-    })
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
 }
 
 
@@ -200,7 +212,10 @@ export const sendexplanation = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
-    })
+    }).catch(function (error) {
+        console.error('发送失败', error);
+        // 可以在这里处理错误的逻辑
+    });
 }
 
 
@@ -274,7 +289,6 @@ export const getIns = () => Axios({
         "qid": globalState.qid,
     }
 }).then(function (response) {
-
     //检测内容是否为空
     if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
@@ -294,12 +308,7 @@ export const getIns = () => Axios({
         });
         commonGlobalState.dialogVisible = false;
         // 可以在这里处理成功的逻辑，比如更新UI等
-
     }
-
-
-
-
 }).catch(function (error) {
     console.error('发送失败', error);
     // 可以在这里处理错误的逻辑
@@ -330,12 +339,7 @@ export const getPersonalCom = () => Axios({
         });
         commonGlobalState.dialogVisible = false;
         // 可以在这里处理成功的逻辑，比如更新UI等
-
     }
-
-
-
-
 }).catch(function (error) {
     console.error('发送失败', error);
     // 可以在这里处理错误的逻辑
@@ -364,9 +368,6 @@ export const getFeiman = () => Axios({
     });
     commonGlobalState.dialogVisible = false;
     // 可以在这里处理成功的逻辑，比如更新UI等
-
-
-
 }).catch(function (error) {
     console.error('发送失败', error);
     // 可以在这里处理错误的逻辑

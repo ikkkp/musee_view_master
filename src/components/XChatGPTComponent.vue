@@ -112,123 +112,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog v-model="commonGlobalState.globalModel" width="70vw" persistent>
-    <v-card elevation="0">
-      <div style="display: flex;justify-content: space-between;margin: 0px 10px;">
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" color="rgb(161, 201, 227)"
-              v-bind="props">
-              <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF" ></svg-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
-            commonGlobalState.chatModel = index;
-            globalState.dialogueArray.splice(0, globalState.dialogueArray.length);
-            recoverMsg();
-          }" :style="{ backgroundColor: index == commonGlobalState.chatModel ? 'rgb(161, 201, 227)' : 'white' }">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <v-switch v-model="commonGlobalState.globalModel" :label="`沉浸式`" hide-details inset
-          color="rgb(32, 129, 195)"></v-switch>
-        <div class="menu-container">
-        </div>
-      </div>
-
-      <v-stepper editable :items="['拍照', '启发式问答', '题解']" elevation="0">
-        <template v-slot:item.1>
-          <div
-            style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 50vh;">
-            <UploadPicComponent></UploadPicComponent>
-          </div>
-        </template>
-
-        <template v-slot:item.2>
-          <div v-if="globalState.dialogueArray.length === 0" style="height: 50vh;">
-            <div class="svg-container">
-              <GPTSVGComponent></GPTSVGComponent>
-              <!--文字标签-->
-              <div class="prompts_btn">
-                <v-btn
-                  style="background: rgb(161, 201, 227);height: 25px; background-image: url('../assets/flash.png');color: white; font-weight: bold;">
-                  <v-icon color='rgb(25,192,122)' style="left: -7px">mdi-flash</v-icon>
-                  <template v-if="commonGlobalState.chatModel === 0">
-                    默认配置
-                  </template>
-                  <template v-else-if="commonGlobalState.chatModel === 1">
-                    引导式问答
-                  </template>
-                  <template v-else-if="commonGlobalState.chatModel === 2">
-                    错题分析
-                  </template>
-                  <template v-else-if="commonGlobalState.chatModel === 3">
-                    费曼学习法
-                  </template>
-                  <template v-else>
-                    个性化解析
-                  </template>
-                </v-btn>
-              </div>
-            </div>
-            <ChipGroupComponent @addToTextArea="handleTagClick" />
-          </div>
-
-          <div v-else style="height: 50vh;overflow-y: auto;margin: 20px 0 0 0;" ref="scrollContainer">
-            <div v-for="(message, index) in globalState.dialogueArray.slice(1)" :key="index">
-              <ChatComponent v-if="message.speaker == 'user'" :userMessage="message.message" :avatarSrc="user.avatarSrc"
-                :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-              <ChatComponent v-else :userMessage="message.message" :avatarSrc="user.avatarSrc"
-                :userName="message.speaker" :userInfo="user.userInfo"></ChatComponent>
-            </div>
-
-          </div>
-          <div class="tags-section">
-            <v-sheet class="tags-wrapper">
-              <v-chip-group mandatory class="chip-group" selected-class="primary-text">
-                <v-chip v-for="tag in tags" :key="tag" class="chip-item" @click="TagClick(tag)">{{ tag }}</v-chip>
-              </v-chip-group>
-            </v-sheet>
-          </div>
-
-          <!-- 更改 -->
-          <div class="textarea-container" v-if="!ConversationShow">
-            <v-text-field placeholder="Message" :model-value="textValue" variant="solo" rounded @click="openDialog"
-              class="single-line-textarea"></v-text-field>
-
-            <!-- 更改 -->
-            <v-btn
-              v-if="commonGlobalState.chatModel !== 0 && commonGlobalState.chatModel !== 3 && commonGlobalState.btnflag === true"
-              :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="FirstSend" color="#2081C3"
-              rounded width="auto" style="padding: 5px;border-radius: 15px;">
-              开始对话
-            </v-btn>
-
-            <!-- 更改 -->
-            <v-btn v-else :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="TextSend"
-              color="#2081C3">
-              <svg-icon type="mdi" :path="mdiArrowUpCircle" class="expand-icon"></svg-icon>
-            </v-btn>
-
-
-            <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="ConversationModel"
-              color="#2081C3">
-              <svg-icon type="mdi" :path="mdiMicrophone" class="expand-icon"
-                style="height: 40px;height: 40px;"></svg-icon>
-            </v-btn>
-          </div>
-
-          <ConversationComponents v-bind:overlay="ConversationShow" @update:overlay="handleOverlayUpdate" />
-        </template>
-
-        <template v-slot:item.3>
-          <AnalysisCard style="height: 50vh;"></AnalysisCard>
-        </template>
-      </v-stepper>
-    </v-card>
-  </v-dialog>
+  
 </template>
 
 <script setup>
@@ -244,8 +128,6 @@ import { sendDefault, sendGuide, sendMistake, sendFeynman, sendexplanation } fro
 import { globalState } from '@/utils/store.js';
 import { commonGlobalState } from '@/utils/commonStore.js';
 import { getCommunication, getFeiman, getIns, getPersonalCom, getWrong } from "../utils/handleChatRequest";
-import UploadPicComponent from './UploadPicComponent.vue';
-import AnalysisCard from './ResultSecComponent/AnalysisCard.vue';
 
 const textValue = ref('');
 const ConversationShow = ref(false);
@@ -348,27 +230,18 @@ function TextSend() {
 //更改
 function FirstSend() {
   commonGlobalState.btnflag = false;
+  textValue.value = "";
+  commonGlobalState.warntitle = '小沐正在思考中~'
+  commonGlobalState.dialogVisible = true;
   switch (commonGlobalState.chatModel) {
     case 1:
-      textValue.value = "";
-      commonGlobalState.warntitle = '小沐正在思考中~'
-      commonGlobalState.dialogVisible = true;
-      console.log("guide")
-      sendGuide(textValue);
+      sendGuide(textValue.value);
       break;
     case 2:
-      textValue.value = "";
-      commonGlobalState.warntitle = '小沐正在思考中~'
-      commonGlobalState.dialogVisible = true;
-      console.log("Mistake")
-      sendMistake(textValue);
+      sendMistake(textValue.value);
       break;
     case 4:
-      textValue.value = "";
-      commonGlobalState.warntitle = '小沐正在思考中~'
-      commonGlobalState.dialogVisible = true;
-      console.log("explanation")
-      sendexplanation(textValue);
+      sendexplanation(textValue.value);
       break;
   }
 }

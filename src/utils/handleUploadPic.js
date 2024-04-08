@@ -15,7 +15,6 @@ export const handleUploadCommonPic = async (formData) =>
         .then((response) => {
             if (response.data.status === 1) {
                 const temp = response.data.data
-                console.log(temp.basicQuestion.qid)
                 globalState.qid = temp.basicQuestion.qid
                 globalState.title = temp.basicQuestion.questionText
                 globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
@@ -52,7 +51,7 @@ export const handleUploadMistakePic = async (formData) =>
                 // globalState.questionAnswer = temp.concreteQuestion.questionAnswer
                 // globalState.steps = temp.concreteQuestion.questionSteps
                 // globalState.knowledges = temp.concreteQuestion.knowledges
-                // globalState.dialogueArray = []
+                globalState.dialogueArray = []
             }
             commonGlobalState.dialogVisible = false
             return fetchData();
