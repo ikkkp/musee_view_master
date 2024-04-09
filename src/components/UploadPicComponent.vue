@@ -45,15 +45,15 @@ import { handleUploadMistakePic, handleUploadCommonPic } from '@/utils/handleUpl
 import SvgIcon from '@jamescoyle/vue-icon';
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
-const lazySrc = ref('src/images/empty-picture/no_search.svg');
+const lazySrc = ref('@/images/empty-picture/no_search.svg');
 
 // 使用computed函数创建计算属性
 const smallImages = computed(() => {
   if (globalState.history.length === 0) {
     return [
-      { path: 'src/images/empty-picture/no_search.svg' },
-      { path: 'src/images/empty-picture/no_search.svg' },
-      { path: 'src/images/empty-picture/no_search.svg' },
+      { path: '@/images/empty-picture/no_search.svg' },
+      { path: '@/images/empty-picture/no_search.svg' },
+      { path: '@/images/empty-picture/no_search.svg' },
     ];
   }
   // 使用globalState.history.value访问响应式引用的值
@@ -63,7 +63,7 @@ const smallImages = computed(() => {
 const largeImage = computed(() => {
   if (globalState.history.length === 0) {
     return {
-      path: 'src/images/empty-picture/no_search.svg',
+      path: '@/images/empty-picture/no_search.svg',
     };
   }
   return globalState.history[0];

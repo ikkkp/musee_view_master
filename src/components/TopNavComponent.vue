@@ -119,7 +119,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '沐斯拍题',
         isActive: false,
-        to: '/',
+        to: '/musee_view_master/collection',
     },
     {
         rounded: 'xl',
@@ -130,7 +130,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '错题集',
         isActive: false,
-        to: '/collection',
+        to: '/musee_view_master/collection',
     },
     {
         rounded: 'xl',
@@ -141,7 +141,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '学生档案',
         isActive: false,
-        to: '/userinfo'
+        to: '/musee_view_master/userinfo'
     },
 ]);
 
@@ -153,11 +153,11 @@ const changeColor = (index) => {
 };
 onMounted(() => {
     const path = window.location.pathname;
-    if (path === '/') {
+    if (path === '/musee_view_master/') {
         buttons.value[0].isActive = true;
-    } else if (path === '/collection') {
+    } else if (path === '/musee_view_master/collection') {
         buttons.value[1].isActive = true;
-    } else if (path === '/userinfo') {
+    } else if (path === '/musee_view_master/userinfo') {
         buttons.value[2].isActive = true;
     }
 });
