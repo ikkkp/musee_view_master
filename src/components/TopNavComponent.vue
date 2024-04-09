@@ -119,7 +119,7 @@ const buttons = ref([
         textColor: '#96ABB3',
         label: '沐斯拍题',
         isActive: false,
-        to: '/musee_view_master/collection',
+        to: '/musee_view_master/',
     },
     {
         rounded: 'xl',
