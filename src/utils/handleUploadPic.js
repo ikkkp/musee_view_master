@@ -23,6 +23,7 @@ export const handleUploadCommonPic = async (formData) =>
                 globalState.knowledges = temp.concreteQuestion.knowledges
                 globalState.dialogueArray = []
             }
+            console.log(globalState)
             commonGlobalState.dialogVisible = false
             return fetchData();
         })
