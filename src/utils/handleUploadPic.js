@@ -43,17 +43,6 @@ export const handleUploadMistakePic = async (formData) =>
         },
     })
         .then((response) => {
-            if (response.data.status === 1) {
-                // 这里后端并不会传参数
-                // const temp = response.data.data
-                // globalState.qid = temp.qid
-                // globalState.title = temp.questionText
-                // globalState.Analyserdata = temp.concreteQuestion.questionAnalysis
-                // globalState.questionAnswer = temp.concreteQuestion.questionAnswer
-                // globalState.steps = temp.concreteQuestion.questionSteps
-                // globalState.knowledges = temp.concreteQuestion.knowledges
-                globalState.dialogueArray = []
-            }
             commonGlobalState.dialogVisible = false
             return fetchData();
         })

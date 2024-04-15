@@ -11,11 +11,8 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="() => {
-            commonGlobalState.chatModel = index;
-            globalState.dialogueArray.splice(0, globalState.dialogueArray.length);
-            recoverMsg();
-          }" :style="{ backgroundColor: index == commonGlobalState.chatModel ? 'rgb(32, 129, 195)' : 'white' }">
+            <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="handleClick(index)"
+              :style="{ backgroundColor: index == commonGlobalState.chatModel ? 'rgb(32, 129, 195)' : 'white' }">
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -112,7 +109,7 @@
     </v-card>
   </v-dialog>
 
-  
+
 </template>
 
 <script setup>
@@ -195,6 +192,19 @@ function scrollToBottom() {
       container.scrollTop = container.scrollHeight;
     }
   });
+}
+
+function handleClick(index) {
+  commonGlobalState.chatModel = index;
+  if (commonGlobalState.chatModel == 2) {
+    commonGlobalState.warntitle = '该模式请上传错解后进行问答'
+    commonGlobalState.dialogVisible = true;
+    setTimeout(() => {
+      commonGlobalState.dialogVisible = false;
+    }, 2000);
+  }
+  globalState.dialogueArray.splice(0, globalState.dialogueArray.length);
+  recoverMsg();
 }
 
 function TagClick(tag) {

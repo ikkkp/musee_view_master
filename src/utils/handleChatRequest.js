@@ -251,15 +251,13 @@ export const getWrong = () => Axios({
     method: 'get',
     url: '/api/student/question/communication/wrongAnswer',
     params: {
-        "qid": globalState.qid,
+        "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
-
     //检测内容是否为空
     if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
     } else {
-
         commonGlobalState.btnflag = false;
         console.log('发送成功', response);
         globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
@@ -272,7 +270,6 @@ export const getWrong = () => Axios({
                 timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
             };
         });
-        commonGlobalState.dialogVisible = false;
         // 可以在这里处理成功的逻辑，比如更新UI等
     }
 
@@ -286,7 +283,7 @@ export const getIns = () => Axios({
     method: 'get',
     url: '/api/student/chat/inspiration/history',
     params: {
-        "qid": globalState.qid,
+        "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
     //检测内容是否为空
@@ -318,7 +315,7 @@ export const getPersonalCom = () => Axios({
     method: 'get',
     url: '/api/student/chat/explanation/history',
     params: {
-        "qid": globalState.qid,
+        "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
     //检测内容是否为空
@@ -349,7 +346,7 @@ export const getFeiman = () => Axios({
     method: 'get',
     url: '/api/student/chat/feiman/history',
     params: {
-        "qid": globalState.qid,
+        "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
 

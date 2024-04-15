@@ -125,7 +125,7 @@ function uploadFile() {
 
   commonGlobalState.dialogVisible = true
   commonGlobalState.warntitle = '让小沐想想看哈~'
-  console.log('commonGlobalState.chatModel:', commonGlobalState.chatModel);
+  console.log(commonGlobalState.chatModel);
   switch (commonGlobalState.chatModel) {
     case 2:
       handleUploadMistakePic(wrongFormData);
