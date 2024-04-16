@@ -147,7 +147,7 @@ function onStepChange(newStep) {
             commonGlobalState.chatModel = 0;
             break;
         case 2:
-            commonGlobalState.chatModel = 0;
+            commonGlobalState.chatModel = 2;
             break;
         case 3:
             commonGlobalState.chatModel = 1;

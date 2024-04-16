@@ -121,7 +121,7 @@ function uploadFile() {
 
   let wrongFormData = new FormData();
   wrongFormData.append('wrongAnswer', selectedFile.value);
-  wrongFormData.append("qid",globalState.qid)
+  wrongFormData.append("qid",globalState.history[0].qid)
 
   commonGlobalState.dialogVisible = true
   commonGlobalState.warntitle = '让小沐想想看哈~'
