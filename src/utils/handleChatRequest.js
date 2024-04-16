@@ -255,11 +255,10 @@ export const getWrong = () => Axios({
     }
 }).then(function (response) {
     //检测内容是否为空
-    if (response.data.data === undefined) {
+    if (response.data) {
         commonGlobalState.btnflag = true;
     } else {
         commonGlobalState.btnflag = false;
-        console.log('发送成功', response);
         globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
             // 确定发言者是用户还是助手
             const speaker = index % 2 === 0 ? "user" : "assistant";
