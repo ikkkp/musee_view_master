@@ -255,7 +255,6 @@ function TextSend() {
 
 //更改
 function FirstSend() {
-    commonGlobalState.btnflag = false;
     console.log('FirstSend',textValue.value);
     switch (commonGlobalState.chatModel) {
         case 1:
@@ -270,7 +269,7 @@ function FirstSend() {
     }
     textValue.value = "";
     commonGlobalState.warntitle = '小沐正在思考中~'
-    commonGlobalState.dialogVisible = true;
+    commonGlobalState.btnflag = false;
 }
 
 function recoverMsg() {

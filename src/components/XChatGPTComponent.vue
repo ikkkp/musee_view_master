@@ -231,9 +231,6 @@ function TextSend() {
 
 //更改
 function FirstSend() {
-  commonGlobalState.btnflag = false;
-  commonGlobalState.warntitle = '小沐正在思考中~'
-  commonGlobalState.dialogVisible = true;
   switch (commonGlobalState.chatModel) {
     case 1:
       sendGuide(textValue.value);
@@ -246,6 +243,9 @@ function FirstSend() {
       break;
   }
   textValue.value = "";
+  commonGlobalState.warntitle = '小沐正在思考中~'
+  commonGlobalState.dialogVisible = true;
+  commonGlobalState.btnflag = false;
 }
 
 function recoverMsg() {

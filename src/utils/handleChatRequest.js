@@ -126,6 +126,8 @@ export const sendGuide = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
+
+        commonGlobalState.btnflag = false;
     }).catch(function (error) {
         console.error('发送失败', error);
         // 可以在这里处理错误的逻辑
@@ -169,6 +171,7 @@ export const sendFeynman = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
+        commonGlobalState.btnflag = false;
     }).catch(function (error) {
         console.error('发送失败', error);
         // 可以在这里处理错误的逻辑
@@ -213,6 +216,7 @@ export const sendexplanation = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
+        commonGlobalState.btnflag = false;
     }).catch(function (error) {
         console.error('发送失败', error);
         // 可以在这里处理错误的逻辑
@@ -227,22 +231,24 @@ export const getCommunication = () => Axios({
         "qid": globalState.history[0].qid,
     }
 }).then(function (response) {
-
-    commonGlobalState.btnflag = false;
-
-    globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
-        // 确定发言者是用户还是助手
-        const speaker = index % 2 === 0 ? "user" : "assistant";
-        return {
-            speaker: speaker, // 设置发言者
-            message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
-            avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
-            timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
-        };
-    });
-    commonGlobalState.dialogVisible = false;
-    // 可以在这里处理成功的逻辑，比如更新UI等
-
+    if (response.data.data === undefined) {
+        commonGlobalState.btnflag = true;
+        globalState.dialogueArray = [];
+    } else {
+        commonGlobalState.btnflag = false;
+        globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
+            // 确定发言者是用户还是助手
+            const speaker = index % 2 === 0 ? "user" : "assistant";
+            return {
+                speaker: speaker, // 设置发言者
+                message: speaker === "user" ? item.user : item.assistant, // 根据发言者获取消息
+                avatarSrc: speaker === "user" ? "user-avatar.jpg" : "assistant-avatar.jpg", // 设置头像，假设有对应的头像文件
+                timestamp: new Date().toLocaleString() // 使用当前时间作为时间戳，您可能需要根据实际情况调整
+            };
+        });
+        commonGlobalState.dialogVisible = false;
+        // 可以在这里处理成功的逻辑，比如更新UI等
+    }
 }).catch(function (error) {
     console.error('发送失败', error);
     // 可以在这里处理错误的逻辑
@@ -256,8 +262,9 @@ export const getWrong = () => Axios({
     }
 }).then(function (response) {
     //检测内容是否为空
-    if (response.data.data) {
+    if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
+        globalState.dialogueArray = [];
     } else {
         commonGlobalState.btnflag = false;
         globalState.dialogueArray = response.data.data.wenxinChatHistory.map((item, index) => {
@@ -289,6 +296,7 @@ export const getIns = () => Axios({
     //检测内容是否为空
     if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
+        globalState.dialogueArray = [];
     } else {
         commonGlobalState.btnflag = false;
 
@@ -321,6 +329,7 @@ export const getPersonalCom = () => Axios({
     //检测内容是否为空
     if (response.data.data === undefined) {
         commonGlobalState.btnflag = true;
+        globalState.dialogueArray = [];
     } else {
         commonGlobalState.btnflag = false;
         console.log('发送成功', response);
