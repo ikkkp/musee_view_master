@@ -81,6 +81,7 @@ export const sendMistake = (textValue) => {
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
             };
         }
+        commonGlobalState.btnflag = false;
     }).catch(function (error) {
         console.error('发送失败', error);
         // 可以在这里处理错误的逻辑
@@ -255,7 +256,7 @@ export const getWrong = () => Axios({
     }
 }).then(function (response) {
     //检测内容是否为空
-    if (response.data) {
+    if (response.data.data) {
         commonGlobalState.btnflag = true;
     } else {
         commonGlobalState.btnflag = false;
