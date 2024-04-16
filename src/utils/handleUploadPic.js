@@ -44,7 +44,6 @@ export const handleUploadMistakePic = async (formData) =>
     })
         .then((response) => {
             commonGlobalState.dialogVisible = false
-            return fetchData();
         })
         .catch((error) => {
             console.error(error);
