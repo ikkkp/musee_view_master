@@ -40,7 +40,7 @@
                                 <UploadPicComponent></UploadPicComponent>
                             </div>
                         </template>
-                        <template v-for="i in [3,4,5]" :key="i" v-slot:[`item.${i}`]>
+                        <template v-for="i in [3, 4, 5]" :key="i" v-slot:[`item.${i}`]>
                             <div>
                                 <div v-if="globalState.dialogueArray.length === 0" style="height: 60vh;">
                                     <div class="svg-container">
@@ -102,7 +102,8 @@
                         </template>
 
                         <template v-slot:item.6>
-                            <AnalysisCard style="height: 50vh;"></AnalysisCard>
+                            <StepsCard></StepsCard>
+                            <AnalysisCard></AnalysisCard>
                         </template>
                     </v-stepper>
                 </keep-alive>
@@ -135,6 +136,7 @@ import AnalysisCard from '@/components/ResultSecComponent/AnalysisCard.vue';
 import EditableArea from '@/components/EditableArea.vue';
 import { sendDefault, sendGuide, sendMistake, sendFeynman, sendexplanation } from '@/utils/handleChatRequest.js';
 import { getCommunication, getFeiman, getIns, getPersonalCom, getWrong } from "../utils/handleChatRequest";
+import StepsCard from '@/components/ResultSecComponent/StepsCard.vue';
 
 const componentKey = ref(0);
 const textValue = ref('');
@@ -255,7 +257,7 @@ function TextSend() {
 
 //更改
 function FirstSend() {
-    console.log('FirstSend',textValue.value);
+    console.log('FirstSend', textValue.value);
     switch (commonGlobalState.chatModel) {
         case 1:
             sendGuide(textValue.value);
