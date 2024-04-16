@@ -256,6 +256,7 @@ function TextSend() {
 //更改
 function FirstSend() {
     commonGlobalState.btnflag = false;
+    console.log('FirstSend',textValue.value);
     switch (commonGlobalState.chatModel) {
         case 1:
             sendGuide(textValue.value);

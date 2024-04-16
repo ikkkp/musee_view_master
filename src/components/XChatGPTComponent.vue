@@ -160,15 +160,6 @@ function updateFormula() {
   }, 0);
 }
 
-function test() {
-  commonGlobalState.dialogVisible = false;//加载框
-  console.log(globalState.dialogueArray.slice(1))
-  console.log(commonGlobalState.chatModel)
-  console.log(globalState.qid)
-  globalState.qid = "1711182676399"
-}
-
-
 watchEffect(() => {
   dialog.value;
   textValue.value = localStorage.getItem('renderedFormula');
@@ -216,6 +207,7 @@ function TagClick(tag) {
 function TextSend() {
   commonGlobalState.warntitle = '小沐正在努力思考~'
   commonGlobalState.dialogVisible = true;
+  console.log('textValue.value', textValue.value);
   switch (commonGlobalState.chatModel) {
     case 0:
       sendDefault(textValue.value);
@@ -240,7 +232,6 @@ function TextSend() {
 //更改
 function FirstSend() {
   commonGlobalState.btnflag = false;
-  textValue.value = "";
   commonGlobalState.warntitle = '小沐正在思考中~'
   commonGlobalState.dialogVisible = true;
   switch (commonGlobalState.chatModel) {
@@ -254,6 +245,7 @@ function FirstSend() {
       sendexplanation(textValue.value);
       break;
   }
+  textValue.value = "";
 }
 
 function recoverMsg() {
