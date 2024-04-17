@@ -21,10 +21,11 @@ export const sendDefault = (textValue) => {
         // 对用户输入进行编码，准备发送
         const encodedContent = encodeURIComponent(textValue);
         const qid = globalState.history[0].qid;
+        const sid = localStorage.getItem('sid');
 
         // 初始化 EventSource 连接，如果它尚未存在
         if (!globalState.eventSource) {
-            globalState.eventSource = new EventSource(`${baseURL}/api/student/question/communicationWithUser/?content=${encodedContent}&qid=${qid}`);
+            globalState.eventSource = new EventSource(`${baseURL}/api/student/question/communicationWithUser/?content=${encodedContent}&qid=${qid}&sid=${sid}`);
 
             // 设置接收消息的回调函数
             globalState.eventSource.onmessage = (event) => {
@@ -63,10 +64,11 @@ export const sendMistake = (textValue) => {
         // 对用户输入进行编码，准备发送
         const encodedContent = encodeURIComponent(textValue);
         const qid = globalState.history[0].qid;
+        const sid = localStorage.getItem('sid');
 
         // 初始化 EventSource 连接，如果它尚未存在
         if (!globalState.eventSource) {
-            globalState.eventSource = new EventSource(`${baseURL}/api/student/question/communicationWithUser/wrongAnswer?content=${encodedContent}&qid=${qid}`);
+            globalState.eventSource = new EventSource(`${baseURL}/api/student/question/communicationWithUser/wrongAnswer?content=${encodedContent}&qid=${qid}&sid=${sid}`);
 
             // 设置接收消息的回调函数
             globalState.eventSource.onmessage = (event) => {
@@ -107,10 +109,11 @@ export const sendGuide = (textValue) => {
         // 对用户输入进行编码，准备发送
         const encodedContent = encodeURIComponent(textValue);
         const qid = globalState.history[0].qid;
+        const sid = localStorage.getItem('sid');
 
         // 初始化 EventSource 连接，如果它尚未存在
         if (!globalState.eventSource) {
-            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/inspiration?content=${encodedContent}&qid=${qid}`);
+            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/inspiration?content=${encodedContent}&qid=${qid}&sid=${sid}`);
 
             // 设置接收消息的回调函数
             globalState.eventSource.onmessage = (event) => {
@@ -152,10 +155,11 @@ export const sendFeynman = (textValue) => {
         // 对用户输入进行编码，准备发送
         const encodedContent = encodeURIComponent(textValue);
         const qid = globalState.history[0].qid;
+        const sid = localStorage.getItem('sid');
 
         // 初始化 EventSource 连接，如果它尚未存在
         if (!globalState.eventSource) {
-            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/feiman?content=${encodedContent}&qid=${qid}`);
+            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/feiman?content=${encodedContent}&qid=${qid}&sid=${sid}`);
 
             // 设置接收消息的回调函数
             globalState.eventSource.onmessage = (event) => {
@@ -197,10 +201,11 @@ export const sendexplanation = (textValue) => {
         // 对用户输入进行编码，准备发送
         const encodedContent = encodeURIComponent(textValue);
         const qid = globalState.history[0].qid;
+        const sid = localStorage.getItem('sid');
 
         // 初始化 EventSource 连接，如果它尚未存在
         if (!globalState.eventSource) {
-            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/explanation?content=${encodedContent}&qid=${qid}`);
+            globalState.eventSource = new EventSource(`${baseURL}/api/student/chat/explanation?content=${encodedContent}&qid=${qid}&sid=${sid}`);
 
             // 设置接收消息的回调函数
             globalState.eventSource.onmessage = (event) => {

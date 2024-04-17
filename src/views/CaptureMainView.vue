@@ -244,9 +244,7 @@ function TextSend() {
                 sendexplanation(textValue.value);
                 break;
         }
-        console.log('textValue.value:', textValue.value);
         textValue.value = ' ';
-        console.log('textValue.value:', textValue.value);
         localStorage.setItem('renderedFormula', '');
     } catch (error) {
         textValue.value = '';

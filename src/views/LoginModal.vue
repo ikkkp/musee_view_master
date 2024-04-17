@@ -41,7 +41,8 @@
                     </v-btn>
                 </v-card-actions>
                 <div style="padding: 0 25px;">
-                    <div class="text-overline mb-4" style="font-size: 15px !important;margin-bottom: 0px !important">💎 专业版</div>
+                    <div class="text-overline mb-4" style="font-size: 15px !important;margin-bottom: 0px !important">💎
+                        专业版</div>
 
                     <div class="text-medium-emphasis mb-1">
                         Musee专业版提供更多功能和服务，包括：错题集功能、AI个性化分析、定制家庭教师服务等。
@@ -77,8 +78,8 @@ function handleLogin() {
                     password: password.value,
                 },
             }).then(function (response) {
-                if (response.data.code === 200 && response.data.status === 1) {
-                    localStorage.setItem('uid', response.data.data[0]);
+                if (response.data.status === 1) {
+                    localStorage.setItem('sid', response.data.data[0]);
                     localStorage.setItem('token', response.data.data[1]);
                     localStorage.setItem('username', username.value);
                 }
@@ -100,31 +101,43 @@ function handleLogin() {
 
 <style scoped>
 .v-card {
-    background-color: #f5f5f5; /* 设置对话框的背景颜色为淡灰色 */
+    background-color: #f5f5f5;
+    /* 设置对话框的背景颜色为淡灰色 */
 }
 
 .header-container {
-    display: flex; /* 使用弹性盒布局 */
-    align-items: center; /* 项目在交叉轴上的对齐方式为居中 */
-    justify-content: space-between; /* 项目在主轴上的对齐方式为两端对齐，项目之间的间隔都相等 */
+    display: flex;
+    /* 使用弹性盒布局 */
+    align-items: center;
+    /* 项目在交叉轴上的对齐方式为居中 */
+    justify-content: space-between;
+    /* 项目在主轴上的对齐方式为两端对齐，项目之间的间隔都相等 */
 }
 
 .logo-text {
-    color: black; /* 设置字体颜色为黑色 */
-    font-size: xx-large; /* 设置字体尺寸为非常大 */
-    font-weight: bolder; /* 设置字体的粗细为更粗 */
-    padding: 10px 10px; /* 设置内边距 */
-    display: flex; /* 使用弹性盒布局 */
+    color: black;
+    /* 设置字体颜色为黑色 */
+    font-size: xx-large;
+    /* 设置字体尺寸为非常大 */
+    font-weight: bolder;
+    /* 设置字体的粗细为更粗 */
+    padding: 10px 10px;
+    /* 设置内边距 */
+    display: flex;
+    /* 使用弹性盒布局 */
 }
 
 .main-title {
-    color: #388fca; /* 设置主标题的颜色 */
-    font-weight: bold; /* 设置字体的粗细为粗体 */
+    color: #388fca;
+    /* 设置主标题的颜色 */
+    font-weight: bold;
+    /* 设置字体的粗细为粗体 */
 }
 
 .subtitle {
-    color: #a1c9e3; /* 设置副标题的颜色 */
-    font-weight: bold; /* 设置字体的粗细为粗体 */
+    color: #a1c9e3;
+    /* 设置副标题的颜色 */
+    font-weight: bold;
+    /* 设置字体的粗细为粗体 */
 }
-
 </style>
