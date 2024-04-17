@@ -7,15 +7,18 @@ const Axios = axios.create({
 });
 
 
-
 // 响应拦截器
 Axios.interceptors.response.use(
     response => {
         // 你的响应成功处理逻辑
+        console.log(response);
         if (localStorage.getItem('token') == null){
             if (response.data && response.data.status === 0) {
                 commonGlobalState.showModal = true;
             }
+        }
+        if (response.data.msg=="请先登录" && response.data.status === 0) {
+            commonGlobalState.showModal = true;
         }
         return response;
     },
