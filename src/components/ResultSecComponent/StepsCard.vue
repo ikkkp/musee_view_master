@@ -76,9 +76,9 @@ import { globalState } from '@/utils/store.js';
     white-space: normal;
     color: #969696;
     overflow-wrap: break-word;
+    font-size: 16px;
+    font-weight: 400;
     max-width: 90%;
-    font-size: 15px;
-    font-weight: 600;
     font-family: 'Inter';
     padding: 10px 50px 10px 10px;
 }

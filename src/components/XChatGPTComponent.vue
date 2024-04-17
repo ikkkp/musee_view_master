@@ -7,7 +7,7 @@
           <template v-slot:activator="{ props }">
             <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted" color="rgb(32, 129, 195)"
               v-bind="props">
-              <svg-icon type="mdi" :path="mdiCog" class="icon-svg" color="#FFF"></svg-icon>
+              <svg-icon type="mdi" :path="mdiFormatListBulletedType" class="icon-svg" color="#FFF"></svg-icon>
             </v-btn>
           </template>
           <v-list>
@@ -114,7 +114,7 @@
 
 <script setup>
 import { ref, watchEffect, onMounted, nextTick, onUpdated, watch } from 'vue';
-import { mdiArrowUpCircle, mdiMicrophone, mdiCog } from '@mdi/js';
+import { mdiArrowUpCircle, mdiMicrophone, mdiFormatListBulletedType } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import ChipGroupComponent from './ChipGroupComponent.vue';
 import GPTSVGComponent from './GPTSVGComponent.vue';
@@ -346,8 +346,8 @@ var tags = globalState.steps.map((item, index) => {
 }
 
 .icon-button {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
 }
 
 .textarea-container {
