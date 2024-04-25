@@ -44,7 +44,7 @@
               错题分析
             </template>
             <template v-else-if="commonGlobalState.chatModel === 3">
-              费曼学习法
+              举一反三
             </template>
             <template v-else>
               个性化解析

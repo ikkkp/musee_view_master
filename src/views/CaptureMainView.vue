@@ -348,6 +348,7 @@ var tags = globalState.steps.map((item, index) => {
 }
 
 .inner-card {
+    max-height: 350px;
     margin: 10px;
     display: flex;
     align-items: center;

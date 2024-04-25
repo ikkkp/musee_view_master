@@ -1,4 +1,5 @@
 <template>
+  
   <v-card class="card-small" elevation="0" color="#F7F9F9">
     <div class="card-grid" v-for="(image, index) in smallImages" :key="index" @click="handlesmallImageClick(index)" style="height: 33%;">
       <v-img class="grid-image" cover :src="image.path" :lazy-src="lazySrc" max-width="500">

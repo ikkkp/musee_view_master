@@ -27,6 +27,9 @@ const hasData = ref(false);
 
 onMounted(() => {
     localStorage.setItem('Notes', '');
+    if(globalState.history.length === 0){
+        return;
+    }
     Axios({
         method: 'post',
         url: '/api/student/question/getnote',
@@ -41,6 +44,9 @@ onMounted(() => {
 });
 
 watch(() => dialog.value, () => {
+    if(globalState.history.length === 0){
+        return;
+    }
     if(dialog.value === false){
         textValue.value = localStorage.getItem('Notes');
         Axios({
