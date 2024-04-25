@@ -26,17 +26,17 @@
                     </div>
                 </div>
                 <keep-alive>
-                    <v-stepper editable :items="['拍照', '错题分析', '启发式问答', '个性化解析', '费曼学习法', '题解']" elevation="0"
-                        @update:modelValue="onStepChange">
+                    <v-stepper editable :items="['拍照', '拍错题', '启发式问答', '个性化解析', '举一反三', '题解']" elevation="0"
+                        hide-actions @update:modelValue="onStepChange">
                         <template v-slot:item.1>
                             <div
-                                style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 50vh;">
+                                style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 30vh;">
                                 <UploadPicComponent></UploadPicComponent>
                             </div>
                         </template>
                         <template v-slot:item.2>
                             <div
-                                style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 50vh;">
+                                style="margin: 10px;display: flex;align-items: center;flex-direction: row;justify-content: space-around;height: 30vh;">
                                 <UploadPicComponent></UploadPicComponent>
                             </div>
                         </template>
@@ -102,8 +102,10 @@
                         </template>
 
                         <template v-slot:item.6>
-                            <StepsCard></StepsCard>
-                            <AnalysisCard></AnalysisCard>
+                            <div style="height: 50vh">
+                                <StepsCard></StepsCard>
+                                <AnalysisCard></AnalysisCard>
+                            </div>
                         </template>
                     </v-stepper>
                 </keep-alive>
