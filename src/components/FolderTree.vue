@@ -1,13 +1,13 @@
 <template>
     <v-list-group v-for="(value, name, index) in props.items" :key="index" :value="name">
         <template v-slot:activator="{ props }">
-            <v-list-item v-bind="props" :prepend-icon="'mdi-folder'" :title="name" @click="clickFolder(name, value)">
+            <v-list-item v-bind="props" :prepend-icon="'mdi-folder'"  color="#2081C3" :title="name" @click="clickFolder(name, value)">
             </v-list-item>
         </template>
 
         <!-- 递归地调用当前组件来显示子项 -->
         <FolderTree v-if="hasChildren(value)" :items="value" :currentPath="[...props.currentPath, name]" />
-        <v-list-item :prepend-icon="'mdi-plus-circle-outline'" title="添加"
+        <v-list-item :prepend-icon="'mdi-plus-circle-outline'" title="添加" 
             @click="openCreateFolder([...currentPath, name], value)">
         </v-list-item>
     </v-list-group>

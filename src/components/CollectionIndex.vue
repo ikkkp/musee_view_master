@@ -25,9 +25,7 @@
 </template>
 
 <script setup>
-import Axios from '@/axios/axiosPlugin';
-import { ref, onMounted } from 'vue';
-import { globalState } from '@/utils/store.js';
+import { ref } from 'vue';
 import CollectGroup from './CollectGroupComponent.vue';
 const mistakeCollections = ref([
     {
