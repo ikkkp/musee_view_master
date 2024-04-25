@@ -2,11 +2,6 @@
   <v-card class="card-small" elevation="0" color="#F7F9F9">
     <div class="card-grid" v-for="(image, index) in smallImages" :key="index" @click="handlesmallImageClick(index)" style="height: 33%;">
       <v-img class="grid-image" cover :src="image.path" :lazy-src="lazySrc" max-width="500">
-        <template v-slot:placeholder>
-          <div class="progress-placeholder">
-            <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-          </div>
-        </template>
       </v-img>
     </div>
   </v-card>
@@ -14,11 +9,6 @@
   <v-card class="card-large" elevation="0">
     <div class="card-content">
       <v-img class="large-image" cover :src="largeImage.path" :lazy-src="lazySrc" max-width="500">
-        <template v-slot:placeholder>
-          <div class="progress-placeholder">
-            <v-progress-circular color="grey-lighten-4" indeterminate></v-progress-circular>
-          </div>
-        </template>
       </v-img>
       <v-btn :class="['compact-button', 'icon-button']" icon="mdi-format-list-bulleted"
              style="position: absolute;bottom: 20px; right: 20px;" size="small" @click="handleClick()">
@@ -45,15 +35,15 @@ import { handleUploadMistakePic, handleUploadCommonPic } from '@/utils/handleUpl
 import SvgIcon from '@jamescoyle/vue-icon';
 const docFileUploader = ref(null);
 const selectedFile = ref(null);
-const lazySrc = ref('@images/empty-picture/no_search.svg');
+const lazySrc = ref('@/images/empty-picture/no_data.svg');
 
 // 使用computed函数创建计算属性
 const smallImages = computed(() => {
   if (globalState.history.length === 0) {
     return [
-      { path: '@images/empty-picture/no_search.svg' },
-      { path: '@images/empty-picture/no_search.svg' },
-      { path: '@images/empty-picture/no_search.svg' },
+      { path: '/src/images/empty-picture/no_search.svg' },
+      { path: '/src/images/empty-picture/no_search.svg' },
+      { path: '/src/images/empty-picture/no_search.svg' },
     ];
   }
   // 使用globalState.history.value访问响应式引用的值
@@ -63,7 +53,7 @@ const smallImages = computed(() => {
 const largeImage = computed(() => {
   if (globalState.history.length === 0) {
     return {
-      path: '@images/empty-picture/no_search.svg',
+      path: '/src/images/empty-picture/no_search.svg',
     };
   }
   return globalState.history[0];

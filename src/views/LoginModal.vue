@@ -61,6 +61,7 @@ import { fetchData } from '@/utils/common.js';
 const isLoginMode = ref(true); // 切换登录和注册模式
 const username = ref('');
 const password = ref('');
+const email = ref('');
 const showPassword = ref(false); // 控制密码的可见性
 
 function toggleMode() {
@@ -89,13 +90,33 @@ function handleLogin() {
             });
 
         } else {
-            console.log('注册', username.value, password.value);
+            // 注册
+            Axios({
+                method: 'post',
+                url: '/api/student/register',
+                data: {
+                    username: username.value,
+                    email: email.value,
+                    password: password.value,
+                },
+            }).then(function (response) {
+                if (response.data.status === 1) {
+                    alert('注册成功');
+                    isLoginMode.value = !isLoginMode.value;
+                }else{
+                    alert('注册失败: '+response.data.msg);
+                }
+                return fetchData();
+            }).catch(function (error) {
+                console.log('登录失败', error);
+            });
         }
         commonGlobalState.showModal = false; // 成功后关闭对话框
     } catch (error) {
         console.error('登录失败', error);
     }
 }
+
 </script>
 
 
