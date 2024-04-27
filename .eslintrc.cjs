@@ -2,6 +2,7 @@ module.exports = {
     "globals": {
         "MathJax": "readonly"
     },
+    "ignorePatterns": ["commitlint.config.js", "vite.config.js", "**/node_modules/"],
     "env": {
         "browser": true,
         "es2021": true
@@ -31,5 +32,6 @@ module.exports = {
         "vue"
     ],
     "rules": {
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
     }
 }

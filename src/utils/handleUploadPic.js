@@ -42,7 +42,7 @@ export const handleUploadMistakePic = async (formData) =>
             'Content-Type': 'multipart/form-data',
         },
     })
-        .then((response) => {
+        .then(() => {
             commonGlobalState.dialogVisible = false
         })
         .catch((error) => {

@@ -4,7 +4,7 @@ import { commonGlobalState } from '@/utils/commonStore.js';
 import { baseURL } from '@/config.js';
 
 export const sendDefault = (textValue) => {
-    getCommunication().then(function (response) {
+    getCommunication().then(function (_response) {
         globalState.dialogueArray.push({
             speaker: 'user',
             message: textValue,
@@ -34,7 +34,7 @@ export const sendDefault = (textValue) => {
                 // 将大模型的回答添加到对话数组中
             };
             // 监听错误事件
-            globalState.eventSource.onerror = (error) => {
+            globalState.eventSource.onerror = (_error) => {
                 commonGlobalState.dialogVisible = false;
                 globalState.eventSource.close(); // 关闭出错的连接
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
@@ -47,7 +47,7 @@ export const sendDefault = (textValue) => {
 }
 
 export const sendMistake = (textValue) => {
-    getWrong().then(function (response) {
+    getWrong().then(function (_response) {
         globalState.dialogueArray.push({
             speaker: 'user',
             message: textValue,
@@ -77,7 +77,7 @@ export const sendMistake = (textValue) => {
                 // 将大模型的回答添加到对话数组中
             };
             // 监听错误事件
-            globalState.eventSource.onerror = (error) => {
+            globalState.eventSource.onerror = (_error) => {
                 commonGlobalState.dialogVisible = false;
                 globalState.eventSource.close(); // 关闭出错的连接
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
@@ -92,7 +92,7 @@ export const sendMistake = (textValue) => {
 
 
 export const sendGuide = (textValue) => {
-    getIns().then(function (response) {
+    getIns().then(function (_response) {
         globalState.dialogueArray.push({
             speaker: 'user',
             message: textValue,
@@ -123,7 +123,7 @@ export const sendGuide = (textValue) => {
                 // 将大模型的回答添加到对话数组中
             };
             // 监听错误事件
-            globalState.eventSource.onerror = (error) => {
+            globalState.eventSource.onerror = (_error) => {
                 commonGlobalState.dialogVisible = false;
                 globalState.eventSource.close(); // 关闭出错的连接
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
@@ -138,7 +138,7 @@ export const sendGuide = (textValue) => {
 }
 
 export const sendFeynman = (textValue) => {
-    getFeiman().then(function (response) {
+    getFeiman().then(function (_response) {
         globalState.dialogueArray.push({
             speaker: 'user',
             message: textValue,
@@ -169,7 +169,7 @@ export const sendFeynman = (textValue) => {
                 // 将大模型的回答添加到对话数组中
             };
             // 监听错误事件
-            globalState.eventSource.onerror = (error) => {
+            globalState.eventSource.onerror = (_error) => {
                 commonGlobalState.dialogVisible = false;
                 globalState.eventSource.close(); // 关闭出错的连接
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
@@ -184,7 +184,7 @@ export const sendFeynman = (textValue) => {
 
 
 export const sendexplanation = (textValue) => {
-    getPersonalCom().then(function (response) {
+    getPersonalCom().then(function (_response) {
         globalState.dialogueArray.push({
             speaker: 'user',
             message: textValue,
@@ -215,7 +215,7 @@ export const sendexplanation = (textValue) => {
                 // 将大模型的回答添加到对话数组中
             };
             // 监听错误事件
-            globalState.eventSource.onerror = (error) => {
+            globalState.eventSource.onerror = (_error) => {
                 commonGlobalState.dialogVisible = false;
                 globalState.eventSource.close(); // 关闭出错的连接
                 globalState.eventSource = null; // 重置 eventSource 变量，允许重建连接
