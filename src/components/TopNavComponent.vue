@@ -17,7 +17,7 @@
         </div>
         <div class="about-us-section">
             <v-btn rounded="xl" size="x-large" variant="outlined" color="#388FCA"
-                @click="() => { ConversationShow = true; introShow = true }">About
+                @click="() => { show == false; ConversationShow = true;}">About
                 us</v-btn>
             <v-avatar color="info" size="45px" @click="() => dialog = true">
                 <span class="text-h6">IK</span>
@@ -26,45 +26,57 @@
     </div>
 
     <div class="text-center">
-        <v-dialog v-model="ConversationShow" width="600px">
-            <v-card>
-                <v-card-title class="headline blue lighten-2 white--text"
-                    style="padding-left:40px;">关于沐斯慧教</v-card-title>
-                <v-card-text class="mt-4">
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6">
-                                <v-img src="../src/images/musee-edu/musee-edu.webp" aspect-ratio="1.7" class="mx-auto"
-                                    cover :height="300"></v-img>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                                <Transition name="fade">
-                                    <div v-if="introShow"> {{ intro }} </div>
-                                </Transition>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text
-                        @click="() => { ConversationShow = false; introShow = !introShow }">关闭</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <template>
+            <v-dialog v-model="ConversationShow" width="600px">
+                <v-card class="mx-auto" max-width="344">
+                    <div class="image-container">
+                        <v-img src="../src/images/musee-edu/musee-edu.webp" height="200px" cover></v-img>
+                        <v-btn icon small class="close-button"
+                            @click="() => { show = false; ConversationShow = false;}">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </div>
+                    <v-card-title> 沐斯慧教 </v-card-title>
+
+                    <v-card-subtitle> MuseeEducation </v-card-subtitle>
+
+                    <v-card-actions>
+                        <v-btn color="orange-lighten-2" text="Explore More"></v-btn>
+
+                        <v-spacer></v-spacer>
+
+                        <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+
+                    </v-card-actions>
+
+                    <v-expand-transition>
+                        <div v-show="show">
+                            <v-divider></v-divider>
+                            <v-card-text>{{intro}}</v-card-text>
+                        </div>
+                    </v-expand-transition>
+                </v-card>
+            </v-dialog>
+        </template>
+
 
         <template>
             <v-row justify="center">
                 <v-dialog v-model="dialog" persistent width="1024">
-                    <v-card>
+                    <v-card class="hidden-flow">
                         <v-card-title>
-                            <span class="text-h5">个人信息</span>
+                            <div>
+                                <v-avatar color="info" size="33 !important">
+                                    <v-icon icon="mdi-account-circle" size="32"></v-icon>
+                                </v-avatar>&nbsp;&nbsp;&nbsp;
+                                <span class="text-h5">个人信息</span>
+                            </div>
                         </v-card-title>
                         <v-card-text>
                             <v-container>
                                 <v-row>
                                     <v-col cols="12" sm="6">
-                                        <v-text-field label="昵称"></v-text-field>
+                                        <v-text-field label="昵称" hint="Enter your nickname" clearable></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6">
                                         <v-select :items="['0-6', '7-12', '12-15', '18+']" label="年龄*"
@@ -76,19 +88,22 @@
                                     </v-col>
                                     <v-col cols="12" sm="6">
                                         <v-select :items="['语文', '数学', '英语', '物理', '化学', '生物', '历史', '政治', '地理']"
-                                            label="专业" multiple></v-select>
+                                            label="专业" chips multiple clearable></v-select>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field label="账号*" prepend-icon="mdi-account" required></v-text-field>
+                                        <v-text-field label="账号*" prepend-inner-icon="mdi-account"
+                                            hint="Enter your account" required clearable></v-text-field>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field label="密码*" required prepend-icon="mdi-lock"
+                                        <v-text-field label="密码*" required prepend-inner-icon="mdi-lock"
                                             :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                                             @click:append="showPassword = !showPassword"
-                                            :type="showPassword ? 'text' : 'password'"></v-text-field>
+                                            :type="showPassword ? 'text' : 'password'" hint="Enter your password"
+                                            counter="20" clearable></v-text-field>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field label="邮箱" prepend-icon="mdi-email"></v-text-field>
+                                        <v-text-field label="邮箱" prepend-inner-icon="mdi-email" hint="Enter your email"
+                                            clearable></v-text-field>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -96,11 +111,11 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue-darken-1" variant="tonal" @click="() => dialog = false">
+                            <v-btn rounded="xl" color="blue-darken-1" @click="() => dialog = false">
                                 关闭
                             </v-btn>
 
-                            <v-btn color="blue-darken-1" variant="tonal" @click="() => dialog = false">
+                            <v-btn rounded="xl" color="blue-darken-1"  @click="() => dialog = false">
                                 保存
                             </v-btn>
                         </v-card-actions>
@@ -116,8 +131,8 @@ import { onMounted, ref } from 'vue';
 import router from '@/router';
 const ConversationShow = ref(false);
 const dialog = ref(false);
-const introShow = ref(false);
 const showPassword = ref(false);
+const show=ref(false);
 const intro = ref("沐斯慧教（MuseeEducation）致力于运用人工智能大模型推动教育的智慧化转型。通过结合先进的AI技术和教育行业的深刻理解，能够为学习者提供更加个性化、互动性强和效率高的学习体验。沐斯慧教的核心理念是利用大数据分析、自然语言处理和机器学习等技术，为教育领域带来创新的解决方案，包括但不限于个性化学习路径推荐、智能辅导机器人、以及基于学习者表现的实时反馈系统。");
 const buttons = ref([
     {
@@ -223,18 +238,30 @@ onMounted(() => {
     align-items: center;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity .5s;
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
 }
 
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
+.close-button {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 1;
+    width: 13px !important;
+    height: 13px !important;
+    padding: 0;
 }
 
-.fade-enter-to,
-.fade-leave-from {
-    opacity: 1;
+.close-button .v-icon {
+    font-size: 13px;
+}
+
+.hidden-flow{
+    overflow: hidden !important;
 }
 </style>
