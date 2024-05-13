@@ -103,8 +103,8 @@ function handleLogin() {
                 if (response.data.status === 1) {
                     alert('注册成功');
                     isLoginMode.value = !isLoginMode.value;
-                }else{
-                    alert('注册失败: '+response.data.msg);
+                } else {
+                    alert('注册失败: ' + response.data.msg);
                 }
                 return fetchData();
             }).catch(function (error) {
