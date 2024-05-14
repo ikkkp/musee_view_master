@@ -4,14 +4,17 @@
             <GPTSVGComponent class="svg-display" :style="{ width: computedWidth + 'px' }" />
             {{ volume }}
             <div class="btn-area">
-                <div> <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle" @click="toggleOverlay"
-                        color="#2081C3" style="margin: 10px 10px;">
+                <div> <v-btn :class="['compact-button', 'icon-button']" icon="mdi-arrow-up-circle"
+                        @click="toggleOverlay" color="#2081C3" style="margin: 10px 10px;">
                         <svg-icon type="mdi" :path="mdiCloseCircleOutline" class="expand-icon"></svg-icon>
                     </v-btn>
                 </div>
                 <div>
-                    <v-btn icon="mdi-arrow-up-circle" @click="stopRecording" color="#2081C3" style="margin: 10px 10px; ">
-                        <svg-icon type="mdi" :path="mdiStopCircleOutline" class="expand-icon"></svg-icon>
+                    <v-btn icon="mdi-arrow-up-circle" @click="stopRecording" color="#2081C3"
+                        style="margin: 10px 10px; ">
+                        <svg-icon :type="'mdi'" :path="isRecord ? mdiStopCircleOutline : mdiRadioboxMarked"
+                            class="expand-icon">
+                        </svg-icon>
                     </v-btn>
                 </div>
 
@@ -21,11 +24,16 @@
 </template>
 
 <script setup>
-import { defineProps, ref, watch, onMounted, onUnmounted, nextTick } from 'vue';
+import { defineProps, ref, watch, onMounted, onUnmounted } from 'vue';
 import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiCloseCircleOutline, mdiStopCircleOutline, mdiRadioboxMarked } from '@mdi/js'
+import Recorder from 'recorder-core'
+import 'recorder-core/src/engine/pcm'
 import GPTSVGComponent from '@/components/GPTSVGComponent.vue';
-import { mdiCloseCircleOutline, mdiStopCircleOutline } from '@mdi/js'
-import useVolume from "@/hooks/useVolume/useVolume";
+import { recordSendDefault, recordSendGuide, recordSendMistake, recordSendFeynman, recordSendexplanation } from '@/utils/handleRecordRequest.js';
+import { globalState } from '@/utils/store.js';
+import { commonGlobalState } from '@/utils/commonStore.js';
+// import useVolume from "@/hooks/useVolume/useVolume";
 const volume = ref(0)
 const props = defineProps({
     overlay: {
@@ -36,43 +44,148 @@ const props = defineProps({
 const emit = defineEmits(['update:overlay']);
 const overlayValue = ref(props.overlay);
 const computedWidth = ref(200);
-var mediaRecorder;
-var recordedChunks = []; // 在函数内定义 recordedChunks 变量
+// var mediaRecorder;
+// var recordedChunks = []; // 在函数内定义 recordedChunks 变量
+const isRecord = ref(false);
+var rec, wave;
 
+// function startRecording() {
+//     navigator.mediaDevices.getUserMedia({ audio: true })
+//         .then(stream => {
+//             // 尝试设置输出为PCM，注意：这可能不被所有浏览器支持
+//             const options = { mimeType: 'audio/pcm' };
+//             if (MediaRecorder.isTypeSupported(options.mimeType)) {
+//                 mediaRecorder = new MediaRecorder(stream, options);
+//             } else {
+//                 // 如果不支持PCM，则回退到默认设置
+//                 mediaRecorder = new MediaRecorder(stream);
+//             }
+
+//             mediaRecorder.start();
+//             volume.value = useVolume(stream);
+//             mediaRecorder.ondataavailable = event => {
+//                 recordedChunks.push(event.data);
+//             };
+
+//             mediaRecorder.onstop = () => {
+//                 const audioBlob = new Blob(recordedChunks, { type: 'audio/pcm' });
+
+//                 const downloadLink = document.createElement('a');
+//                 downloadLink.href = URL.createObjectURL(audioBlob);
+//                 downloadLink.download = 'recorded_audio.pcm';
+
+//                 document.body.appendChild(downloadLink);
+//                 downloadLink.click();
+
+//                 document.body.removeChild(downloadLink);
+//             };
+//         })
+//         .catch(error => {
+//             console.error("Error starting recording: ", error);
+//         });
+// }
+
+
+// function stopRecording() {
+//     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+//         mediaRecorder.stop();
+//     }
+// }
+
+/**调用open打开录音请求好录音权限**/
+var recOpen = function (success) {
+    rec = Recorder({
+        type: "pcm", sampleRate: 16000, bitRate: 16
+        , onProcess: function (buffers, powerLevel, bufferDuration, bufferSampleRate, newBufferIdx, asyncEnd) {
+            wave && wave.input(buffers[buffers.length - 1], powerLevel, bufferSampleRate);
+        }
+    });
+
+    rec.open(function () {
+        isRecord.value = true;
+        if (Recorder.WaveView) wave = Recorder.WaveView({ elem: ".recwave" });
+        success && success();
+    }, function (msg, isUserNotAllow) {//用户拒绝未授权或不支持
+        console.log((isUserNotAllow ? "UserNotAllow，" : "") + "无法录音:" + msg);
+    });
+};
+
+/**开始录音**/
+function recStart() {//打开了录音后才能进行start、stop调用
+    rec.start();
+};
+
+/**结束录音**/
+function recStop() {
+    rec.stop(function (blob, duration) {
+        isRecord.value = false;
+        //简单利用URL生成本地文件地址，注意不用了时需要revokeObjectURL，否则霸占内存
+        //此地址只能本地使用，比如赋值给audio.src进行播放，赋值给a.href然后a.click()进行下载
+        var localUrl = (window.URL || webkitURL).createObjectURL(blob);
+        console.log(blob, localUrl, "时长:" + duration + "ms");
+        rec.close();//释放录音资源
+        rec = null;
+
+        uploadFile(blob);
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = localUrl;
+        downloadLink.download = 'recorded_audio.pcm';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+
+        document.body.removeChild(downloadLink);
+
+
+    }, function (msg) {
+        console.log("录音失败:" + msg);
+        rec.close();
+        rec = null;
+    });
+};
+
+function uploadFile(blob) {
+    const formData = new FormData();
+    formData.append('file', blob, 'recorded_audio.pcm');
+
+    commonGlobalState.warntitle = '小沐正在努力思考~'
+    commonGlobalState.dialogVisible = true;
+
+    switch (commonGlobalState.chatModel) {
+        case 0:
+            recordSendDefault(formData);
+            break;
+        case 1:
+            recordSendGuide(formData);
+            break;
+        case 2:
+            recordSendMistake(formData);
+            break;
+        case 3:
+            recordSendFeynman(formData);
+            break;
+        case 4:
+            recordSendexplanation(formData);
+            break;
+    }
+
+}
 
 function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.start();
-            volume.value = useVolume(stream);
-            mediaRecorder.ondataavailable = event => {
-                recordedChunks.push(event.data);
-            };
-
-            mediaRecorder.onstop = () => {
-                const audioBlob = new Blob(recordedChunks, { type: 'audio/wav' });
-
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(audioBlob);
-                downloadLink.download = 'recorded_audio.wav';
-
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-
-                document.body.removeChild(downloadLink);
-            };
-        })
-        .catch(error => {
-            console.error("Error starting recording: ", error);
-        });
+    recOpen(function () {
+        recStart();
+    });
 }
 
 function stopRecording() {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.stop();
-    }
+    if (isRecord.value)
+        recStop();
+    else recOpen(function () {
+        recStart();
+    });
 }
+
 
 let intervalId = null;
 onMounted(() => {
@@ -111,7 +224,6 @@ watch(() => props.overlay, (val) => {
 
 
 function toggleOverlay() {
-    stopRecording();
     overlayValue.value = !overlayValue.value;
     emit('update:overlay', overlayValue.value);
 }
